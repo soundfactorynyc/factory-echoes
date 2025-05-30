@@ -1,0 +1,101 @@
+---
+// ComboChain - Chain reaction display for viewer interactions
+---
+
+<div class="combo-chain">
+  <div class="combo-header">
+    <h4>🔥 Combo Chain</h4>
+    <span class="combo-multiplier" id="comboMultiplier">x1</span>
+  </div>
+  <div class="combo-progress">
+    <div class="combo-bar" id="comboBar"></div>
+  </div>
+  <div class="combo-effects" id="comboEffects"></div>
+</div>
+
+<style>
+  .combo-chain {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .combo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+  
+  .combo-header h4 {
+    margin: 0;
+    color: white;
+    font-weight: 600;
+  }
+  
+  .combo-multiplier {
+    color: #feca57;
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-shadow: 0 0 10px rgba(254, 202, 87, 0.5);
+  }
+  
+  .combo-progress {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    height: 8px;
+    overflow: hidden;
+  }
+  
+  .combo-bar {
+    background: linear-gradient(90deg, #feca57, #ff9ff3);
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 20px;
+  }
+  
+  .combo-effects {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  let comboCount = 0;
+  let comboTimer: ReturnType<typeof setTimeout>;
+  
+  function triggerCombo() {
+    comboCount++;
+    const multiplier = Math.min(comboCount, 10);
+    
+    const multiplierElement = document.getElementById('comboMultiplier');
+    const barElement = document.getElementById('comboBar');
+    
+    if (multiplierElement) {
+      multiplierElement.textContent = `x${multiplier}`;
+    }
+    
+    if (barElement) {
+      barElement.style.width = `${Math.min(comboCount * 10, 100)}%`;
+    }
+    
+    // Reset combo after 3 seconds of inactivity
+    clearTimeout(comboTimer);
+    comboTimer = setTimeout(() => {
+      comboCount = 0;
+      if (multiplierElement) multiplierElement.textContent = 'x1';
+      if (barElement) barElement.style.width = '0%';
+    }, 3000);
+  }
+  
+  // Listen for any interaction to trigger combo
+  document.addEventListener('click', triggerCombo);
+</script>

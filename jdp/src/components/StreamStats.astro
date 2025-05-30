@@ -1,0 +1,214 @@
+---
+// StreamStats - Live performance metrics
+---
+
+<div class="stream-stats">
+  <div class="stats-header">
+    <h3>📊 Stream Analytics</h3>
+  </div>
+  
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">⏱️</div>
+      <div class="stat-content">
+        <div class="stat-value" id="streamTime">02:34:12</div>
+        <div class="stat-label">Stream Time</div>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">📈</div>
+      <div class="stat-content">
+        <div class="stat-value">1,247</div>
+        <div class="stat-label">Peak Viewers</div>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">💬</div>
+      <div class="stat-content">
+        <div class="stat-value" id="messageCount">3,456</div>
+        <div class="stat-label">Messages</div>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">❤️</div>
+      <div class="stat-content">
+        <div class="stat-value" id="reactionCount">8,932</div>
+        <div class="stat-label">Reactions</div>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">💰</div>
+      <div class="stat-content">
+        <div class="stat-value">$127.50</div>
+        <div class="stat-label">Tips Today</div>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">👥</div>
+      <div class="stat-content">
+        <div class="stat-value">+48</div>
+        <div class="stat-label">New Followers</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="performance-indicator">
+    <div class="performance-label">Stream Health</div>
+    <div class="performance-bar">
+      <div class="performance-fill excellent"></div>
+    </div>
+    <div class="performance-status">Excellent</div>
+  </div>
+</div>
+
+<style>
+  .stream-stats {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .stats-header h3 {
+    margin: 0 0 1.5rem 0;
+    color: #2d3748;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .stat-card {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 1rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-3px);
+  }
+  
+  .stat-icon {
+    font-size: 1.5rem;
+    opacity: 0.9;
+  }
+  
+  .stat-content {
+    flex: 1;
+  }
+  
+  .stat-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  
+  .stat-label {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .performance-indicator {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 12px;
+  }
+  
+  .performance-label {
+    font-weight: 600;
+    color: #4a5568;
+  }
+  
+  .performance-bar {
+    height: 8px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .performance-fill {
+    height: 100%;
+    width: 92%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+  
+  .performance-fill.excellent {
+    background: linear-gradient(90deg, #48bb78, #38a169);
+  }
+  
+  .performance-status {
+    font-weight: 600;
+    color: #38a169;
+  }
+</style>
+
+<script>
+  let streamStartTime = Date.now() - (2 * 60 * 60 * 1000) - (34 * 60 * 1000) - (12 * 1000); // 2:34:12 ago
+  let messageCount = 3456;
+  let reactionCount = 8932;
+  
+  function updateStreamTime() {
+    const streamTimeElement = document.getElementById('streamTime');
+    if (streamTimeElement) {
+      const elapsed = Date.now() - streamStartTime;
+      const hours = Math.floor(elapsed / (1000 * 60 * 60));
+      const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+      
+      streamTimeElement.textContent = 
+        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+  }
+  
+  function updateStats() {
+    const messageCountElement = document.getElementById('messageCount');
+    const reactionCountElement = document.getElementById('reactionCount');
+    
+    // Simulate gradual increases
+    if (Math.random() > 0.7) {
+      messageCount += Math.floor(Math.random() * 3) + 1;
+      if (messageCountElement) {
+        messageCountElement.textContent = messageCount.toLocaleString();
+      }
+    }
+    
+    if (Math.random() > 0.5) {
+      reactionCount += Math.floor(Math.random() * 5) + 1;
+      if (reactionCountElement) {
+        reactionCountElement.textContent = reactionCount.toLocaleString();
+      }
+    }
+  }
+  
+  // Update stream time every second
+  setInterval(updateStreamTime, 1000);
+  
+  // Update stats every 3 seconds
+  setInterval(updateStats, 3000);
+  
+  // Initial call
+  updateStreamTime();
+</script>

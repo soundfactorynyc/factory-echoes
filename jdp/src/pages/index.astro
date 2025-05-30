@@ -1,0 +1,349 @@
+---
+// Hybrid Astro + React page with proper imports
+// Astro Components (server-side rendered)
+import LivestreamLayout from '../components/LivestreamLayout.astro';
+import StreamHeader from '../components/StreamHeader.astro';
+import ViewerCounter from '../components/ViewerCounter.astro';
+import ControlPanel from '../components/ControlPanel.astro';
+import ReactionBar from '../components/ReactionBar.astro';
+import StreamStats from '../components/StreamStats.astro';
+import TipNotification from '../components/TipNotification.astro';
+import FeatureShowcase from '../components/FeatureShowcase.astro';
+import GameInfoPanel from '../components/GameInfoPanel.astro';
+import MediaControls from '../components/MediaControls.astro';
+import SocialPanel from '../components/SocialPanel.astro';
+import StreamOverlay from '../components/StreamOverlay.astro';
+import ComboChain from '../components/ComboChain.astro';
+import InsanityMode from '../components/InsanityMode.astro';
+import ChatPanel from '../components/ChatPanel.astro';
+import UltimateGroupChat from '../components/UltimateGroupChat.astro';
+
+// React Components with client-side hydration
+import MainLayoutFrame from '../components/MainLayoutFrame.jsx';
+import UltimateGroupChatReact from '../components/UltimateGroupChat.jsx';
+import LivePage from '../components/LivePage.jsx';
+import ViewerCounterReact from '../components/ViewerCounter.jsx';
+import CustomReactions from '../components/CustomReactions.jsx';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JDP Livestream Hub</title>
+  </head>
+  <body>
+    <LivestreamLayout>
+      <main class="stream-container">
+        <div class="left-panel">
+          <StreamHeader />
+          <ViewerCounter />
+          <ChatPanel />
+          <ReactionBar />
+          <InsanityMode />
+        </div>
+        
+        <div class="main-content">
+          <h1>🎮 JDP Livestream Hub</h1>
+          <p class="subtitle">Professional Streaming Interface - Hybrid Astro + React</p>
+          
+          <!-- Astro Components (Server-Side Rendered) -->
+          <FeatureShowcase />
+          <StreamOverlay />
+          
+          <!-- React Components with Client-Side Hydration -->
+          <MainLayoutFrame client:load>
+            <div style="text-align: center; padding: 1rem;">
+              <h3 style="color: #4a5568; margin-bottom: 0.5rem;">🔥 Interactive React Components</h3>
+              <p style="color: #718096; margin: 0;">These components provide real-time interactivity and state management</p>
+            </div>
+          </MainLayoutFrame>
+          
+          <div style="margin-top: 2rem;">
+            <UltimateGroupChatReact client:load />
+          </div>
+          
+          <div style="margin-top: 2rem;">
+            <div style="text-align: center; padding: 1rem; background: rgba(245, 158, 11, 0.1); border-radius: 12px; margin-bottom: 1rem;">
+              <h3 style="color: #f59e0b; margin-bottom: 0.5rem;">⭐ Custom Reactions System</h3>
+              <p style="color: #4a5568; margin: 0;">Create, manage, and use custom emoji reactions with localStorage persistence</p>
+            </div>
+            <CustomReactions client:load />
+          </div>
+          
+          <div style="margin-top: 2rem;">
+            <LivePage client:load />
+          </div>
+          
+          <!-- Component Architecture Summary -->
+          <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(255,255,255,0.1); border-radius: 12px;">
+            <h3 style="color: #2d3748; margin-bottom: 1rem;">📊 Architecture Overview</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+              <div style="background: rgba(56, 178, 172, 0.1); padding: 1rem; border-radius: 8px;">
+                <h4 style="color: #38b2ac; margin-bottom: 0.5rem;">🚀 Astro Components (19)</h4>
+                <p style="color: #4a5568; font-size: 0.9rem; margin: 0;">Server-side rendered for optimal performance</p>
+              </div>
+              <div style="background: rgba(99, 102, 241, 0.1); padding: 1rem; border-radius: 8px;">
+                <h4 style="color: #6366f1; margin-bottom: 0.5rem;">⚛️ React Components (19)</h4>
+                <p style="color: #4a5568; font-size: 0.9rem; margin: 0;">Client-side hydrated for interactivity</p>
+              </div>
+              <div style="background: rgba(245, 101, 101, 0.1); padding: 1rem; border-radius: 8px;">
+                <h4 style="color: #f56565; margin-bottom: 0.5rem;">🛠️ Dev Tools</h4>
+                <p style="color: #4a5568; font-size: 0.9rem; margin: 0;">Testing panel at bottom of screen</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Updated Component Features -->
+          <div style="margin-top: 1rem; padding: 1.5rem; background: rgba(99, 102, 241, 0.1); border-radius: 12px;">
+            <h3 style="color: #4c51bf; margin-bottom: 1rem;">🎛️ Latest Interactive Components</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
+              <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px; text-align: center;">
+                <h4 style="color: #2d3748; margin-bottom: 0.5rem; font-size: 0.9rem;">📱 ComponentTogglePanel</h4>
+                <p style="color: #4a5568; font-size: 0.8rem; margin: 0;">Bottom panel with icon toggles</p>
+              </div>
+              <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px; text-align: center;">
+                <h4 style="color: #2d3748; margin-bottom: 0.5rem; font-size: 0.9rem;">⚡ FloatingActionButton</h4>
+                <p style="color: #4a5568; font-size: 0.8rem; margin: 0;">Gradient button with effects</p>
+              </div>
+              <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px; text-align: center;">
+                <h4 style="color: #2d3748; margin-bottom: 0.5rem; font-size: 0.9rem;">💬 ChatPanel</h4>
+                <p style="color: #4a5568; font-size: 0.8rem; margin: 0;">Full-featured chat with auto-scroll</p>
+              </div>
+              <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px; text-align: center;">
+                <h4 style="color: #2d3748; margin-bottom: 0.5rem; font-size: 0.9rem;">❤️ ReactionBar</h4>
+                <p style="color: #4a5568; font-size: 0.8rem; margin: 0;">Emoji reactions with animations</p>
+              </div>
+              <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px; text-align: center;">
+                <h4 style="color: #2d3748; margin-bottom: 0.5rem; font-size: 0.9rem;">⭐ CustomReactions</h4>
+                <p style="color: #4a5568; font-size: 0.8rem; margin: 0;">Custom emoji creation system</p>
+              </div>
+              <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px; text-align: center;">
+                <h4 style="color: #2d3748; margin-bottom: 0.5rem; font-size: 0.9rem;">🎮 LivePage</h4>
+                <p style="color: #4a5568; font-size: 0.8rem; margin: 0;">Complete interactive demo</p>
+              </div>
+            </div>
+            <div style="margin-top: 1rem; font-size: 0.85rem; color: #4a5568;">
+              <strong>Features:</strong> State management, floating animations, keyboard shortcuts, auto-scroll chat, emoji reactions, custom reactions with localStorage persistence
+            </div>
+          </div>
+        </div>
+        
+        <div class="right-panel">
+          <ControlPanel />
+          <StreamStats />
+          <ComboChain />
+          <TipNotification />
+          <UltimateGroupChat />
+          <GameInfoPanel />
+          <MediaControls />
+          <SocialPanel />
+        </div>
+      </main>
+      
+      <!-- Developer Chaos Tester -->
+      <div id="dev-chaos-tester" class="dev-tools">
+        <button class="dev-btn" onclick="addViewers()">+1k Viewers</button>
+        <button class="dev-btn" onclick="spamChat()">Spam Chat</button>
+        <button class="dev-btn" onclick="triggerBlasts()">All Blasts</button>
+        <button class="dev-btn" onclick="triggerAlert()">Trigger Alert</button>
+        <button class="dev-btn" onclick="fakeTips()">Fake Tips</button>
+        <button class="dev-close" onclick="hideDev()">✕</button>
+      </div>
+    </LivestreamLayout>
+  </body>
+</html>
+
+<style>
+  body {
+    margin: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+  }
+  
+  .stream-container {
+    display: grid;
+    grid-template-columns: 300px 1fr 300px;
+    gap: 1rem;
+    padding: 1rem;
+    min-height: calc(100vh - 80px);
+  }
+  
+  .left-panel, .right-panel {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .main-content {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  h1 {
+    color: #2d3748;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+  
+  .subtitle {
+    color: #718096;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    font-weight: 400;
+  }
+  
+  
+  .dev-tools {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(127, 29, 29, 0.8);
+    backdrop-filter: blur(16px);
+    padding: 0.75rem;
+    border-radius: 9999px;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 1000;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    box-shadow: 0 10px 25px rgba(127, 29, 29, 0.3);
+  }
+  
+  .dev-btn {
+    padding: 0.5rem 0.75rem;
+    background: #b91c1c;
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  
+  .dev-btn:hover {
+    background: #dc2626;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+  }
+  
+  .dev-close {
+    padding: 0.5rem;
+    background: #7f1d1d;
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 0.75rem;
+    border: none;
+    cursor: pointer;
+    margin-left: 0.5rem;
+  }
+  
+  .dev-close:hover {
+    background: #991b1b;
+  }
+  
+  @media (max-width: 1024px) {
+    .stream-container {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto 1fr;
+    }
+  }
+</style>
+
+<script>
+  function addViewers() {
+    console.log('🚀 Adding 1k viewers to the stream!');
+    // Simulate viewer count increase
+    const viewerElements = document.querySelectorAll('[class*="viewer"], [class*="count"]');
+    viewerElements.forEach(el => {
+      if (el.textContent.match(/\d+/)) {
+        const currentCount = parseInt(el.textContent.match(/\d+/)[0]);
+        el.textContent = el.textContent.replace(/\d+/, (currentCount + 1000).toString());
+      }
+    });
+  }
+  
+  function spamChat() {
+    console.log('💬 Spamming chat with messages!');
+    const messages = [
+      'OMG this stream is amazing! 🔥',
+      'First time watching, already subscribed! ❤️',
+      'Can you play my favorite song? 🎵',
+      'Stream quality is incredible! 👌',
+      'How long have you been streaming? 🤔'
+    ];
+    // Simulate chat activity
+    for (let i = 0; i < 5; i++) {
+      setTimeout(() => {
+        console.log(`Chat: ${messages[Math.floor(Math.random() * messages.length)]}`);
+      }, i * 500);
+    }
+  }
+  
+  function triggerBlasts() {
+    console.log('💥 Triggering all visual effects!');
+    // Add visual effects to the page
+    document.body.style.animation = 'shake 0.5s ease-in-out';
+    setTimeout(() => {
+      document.body.style.animation = '';
+    }, 500);
+  }
+  
+  function triggerAlert() {
+    console.log('🚨 Triggering subscriber alert!');
+    // Create a temporary alert overlay
+    const alert = document.createElement('div');
+    alert.innerHTML = '🎉 NEW SUBSCRIBER! Welcome to the community! 🎉';
+    alert.style.cssText = `
+      position: fixed; top: 20%; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(45deg, #ff6b9d, #4ecdc4);
+      color: white; padding: 1rem 2rem; border-radius: 10px;
+      font-size: 1.2rem; font-weight: bold; z-index: 9999;
+      animation: bounce 0.5s ease-in-out 3;
+    `;
+    document.body.appendChild(alert);
+    setTimeout(() => alert.remove(), 3000);
+  }
+  
+  function fakeTips() {
+    console.log('💰 Generating fake tip notifications!');
+    const tips = ['$5', '$10', '$25', '$50', '$100'];
+    const names = ['StreamFan123', 'GamerPro', 'ChatMaster', 'ViewerElite', 'StreamLover'];
+    
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => {
+        const tip = tips[Math.floor(Math.random() * tips.length)];
+        const name = names[Math.floor(Math.random() * names.length)];
+        console.log(`💝 ${name} tipped ${tip}! Thanks for the support!`);
+      }, i * 1000);
+    }
+  }
+  
+  function hideDev() {
+    document.getElementById('dev-chaos-tester').style.display = 'none';
+  }
+  
+  // Add shake animation
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-10px); }
+    }
+  `;
+  document.head.appendChild(style);
+</script>

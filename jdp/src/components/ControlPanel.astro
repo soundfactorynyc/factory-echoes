@@ -1,0 +1,163 @@
+---
+// ControlPanel - Stream control interface
+---
+
+<div class="control-panel">
+  <div class="panel-header">
+    <h3>🎛️ Stream Controls</h3>
+  </div>
+  
+  <div class="control-section">
+    <h4>Scene Management</h4>
+    <div class="scene-buttons">
+      <button class="scene-btn active">Main Scene</button>
+      <button class="scene-btn">Chat Focus</button>
+      <button class="scene-btn">Screen Share</button>
+    </div>
+  </div>
+  
+  <div class="control-section">
+    <h4>Audio/Video</h4>
+    <div class="av-controls">
+      <div class="control-item">
+        <label>Camera</label>
+        <button class="toggle-btn active">ON</button>
+      </div>
+      <div class="control-item">
+        <label>Microphone</label>
+        <button class="toggle-btn active">ON</button>
+      </div>
+      <div class="control-item">
+        <label>Screen Share</label>
+        <button class="toggle-btn">OFF</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="control-section">
+    <h4>Effects</h4>
+    <div class="effects-grid">
+      <button class="effect-btn">🎭 Filters</button>
+      <button class="effect-btn">✨ Overlays</button>
+      <button class="effect-btn">🎵 Music</button>
+      <button class="effect-btn">💫 Animations</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .control-panel {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+  
+  .panel-header h3 {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.1rem;
+    color: #ffffff;
+    opacity: 0.9;
+  }
+  
+  .control-section {
+    margin-bottom: 1.5rem;
+  }
+  
+  .control-section:last-child {
+    margin-bottom: 0;
+  }
+  
+  .control-section h4 {
+    margin: 0 0 0.75rem 0;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .scene-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .scene-btn {
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .scene-btn.active {
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    border-color: transparent;
+  }
+  
+  .scene-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+  
+  .av-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .control-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .control-item label {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .toggle-btn {
+    padding: 0.25rem 0.75rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .toggle-btn.active {
+    background: #2ed573;
+    color: white;
+  }
+  
+  .toggle-btn:not(.active) {
+    background: #ff4757;
+    color: white;
+  }
+  
+  .effects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  
+  .effect-btn {
+    padding: 0.75rem 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .effect-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+  }
+</style>

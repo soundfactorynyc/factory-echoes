@@ -1,0 +1,221 @@
+---
+// ChatPanel - Live chat interface
+---
+
+<div class="chat-panel">
+  <div class="chat-header">
+    <h3>💬 Live Chat</h3>
+    <span class="chat-count">324 online</span>
+  </div>
+  
+  <div class="chat-messages" id="chatMessages">
+    <div class="message">
+      <span class="username moderator">StreamMod</span>
+      <span class="text">Welcome to the stream! 🎉</span>
+    </div>
+    <div class="message">
+      <span class="username subscriber">TechFan99</span>
+      <span class="text">This setup looks amazing! 🔥</span>
+    </div>
+    <div class="message">
+      <span class="username">ViewerX</span>
+      <span class="text">How did you build this interface?</span>
+    </div>
+    <div class="message">
+      <span class="username subscriber">StreamLover</span>
+      <span class="text">The components are so smooth! ✨</span>
+    </div>
+    <div class="message">
+      <span class="username">DevCurious</span>
+      <span class="text">Is this built with Astro?</span>
+    </div>
+  </div>
+  
+  <div class="chat-input">
+    <input type="text" placeholder="Type a message..." />
+    <button class="send-btn">Send</button>
+  </div>
+</div>
+
+<style>
+  .chat-panel {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .chat-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #ffffff;
+    opacity: 0.9;
+  }
+  
+  .chat-count {
+    font-size: 0.875rem;
+    color: #4ecdc4;
+    font-weight: 600;
+  }
+  
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .message {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .username {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #ffffff;
+  }
+  
+  .username.moderator {
+    color: #ff6b6b;
+  }
+  
+  .username.subscriber {
+    color: #4ecdc4;
+  }
+  
+  .username.moderator::after {
+    content: " 🛡️";
+  }
+  
+  .username.subscriber::after {
+    content: " ⭐";
+  }
+  
+  .text {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.4;
+  }
+  
+  .chat-input {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .chat-input input {
+    flex: 1;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 0.875rem;
+  }
+  
+  .chat-input input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .chat-input input:focus {
+    outline: none;
+    border-color: #4ecdc4;
+    box-shadow: 0 0 0 2px rgba(78, 205, 196, 0.2);
+  }
+  
+  .send-btn {
+    padding: 0.75rem 1rem;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .send-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Custom scrollbar */
+  .chat-messages::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .chat-messages::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+  
+  .chat-messages::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+  }
+  
+  .chat-messages::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+</style>
+
+<script>
+  // Simulate new chat messages
+  const messages = [
+    { username: "StreamFan", text: "Great content! 👍", type: "normal" },
+    { username: "TechExplorer", text: "Love the UI design! 🎨", type: "normal" },
+    { username: "CodeMaster", text: "How long did this take to build?", type: "normal" },
+    { username: "DesignGuru", text: "The animations are smooth! ✨", type: "subscriber" },
+    { username: "WebDev101", text: "Astro is awesome for this! 🚀", type: "normal" }
+  ];
+  
+  function addRandomMessage() {
+    const chatMessages = document.getElementById('chatMessages');
+    if (chatMessages) {
+      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+      
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'message';
+      
+      const usernameSpan = document.createElement('span');
+      usernameSpan.className = `username ${randomMessage.type === 'subscriber' ? 'subscriber' : ''}`;
+      usernameSpan.textContent = randomMessage.username;
+      
+      const textSpan = document.createElement('span');
+      textSpan.className = 'text';
+      textSpan.textContent = randomMessage.text;
+      
+      messageDiv.appendChild(usernameSpan);
+      messageDiv.appendChild(textSpan);
+      
+      chatMessages.appendChild(messageDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      
+      // Remove old messages if too many
+      if (chatMessages.children.length > 10) {
+        const firstChild = chatMessages.firstChild;
+        if (firstChild) {
+          chatMessages.removeChild(firstChild);
+        }
+      }
+    }
+  }
+  
+  // Add new message every 8-15 seconds
+  setInterval(addRandomMessage, Math.random() * 7000 + 8000);
+</script>

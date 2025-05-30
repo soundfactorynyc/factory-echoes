@@ -1,0 +1,284 @@
+---
+// TipNotification - Live tip/donation alerts
+---
+
+<div class="tip-notification-container" id="tipContainer">
+  <div class="tip-preview">
+    <h4>💝 Recent Tips</h4>
+    <div class="tip-list">
+      <div class="tip-item">
+        <span class="tipper">StreamFan99</span>
+        <span class="amount">$5.00</span>
+        <span class="message">"Great stream! 🔥"</span>
+      </div>
+      <div class="tip-item">
+        <span class="tipper">TechLover</span>
+        <span class="amount">$10.00</span>
+        <span class="message">"Love the setup!"</span>
+      </div>
+      <div class="tip-item">
+        <span class="tipper">DevSupporter</span>
+        <span class="amount">$25.00</span>
+        <span class="message">"Amazing work! Keep it up! ⭐"</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tip Alert Overlay -->
+<div class="tip-alert-overlay" id="tipAlertOverlay">
+  <div class="tip-alert" id="tipAlert">
+    <div class="tip-alert-content">
+      <div class="tip-alert-icon">💰</div>
+      <div class="tip-alert-info">
+        <div class="tip-alert-amount" id="alertAmount">$0.00</div>
+        <div class="tip-alert-from">from <span id="alertTipper">Username</span></div>
+        <div class="tip-alert-message" id="alertMessage">Thank you!</div>
+      </div>
+    </div>
+    <div class="tip-alert-sparkles">
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .tip-notification-container {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .tip-preview h4 {
+    margin: 0 0 1rem 0;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .tip-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .tip-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border-left: 3px solid #ffd700;
+  }
+  
+  .tipper {
+    font-weight: 600;
+    color: #ffd700;
+    font-size: 0.875rem;
+  }
+  
+  .amount {
+    font-weight: 700;
+    color: #4ecdc4;
+    font-size: 1rem;
+  }
+  
+  .message {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-style: italic;
+  }
+  
+  /* Tip Alert Overlay */
+  .tip-alert-overlay {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.5s ease;
+  }
+  
+  .tip-alert-overlay.show {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  .tip-alert {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #1a1a1a;
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+    max-width: 300px;
+  }
+  
+  .tip-alert-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .tip-alert-icon {
+    font-size: 2rem;
+  }
+  
+  .tip-alert-info {
+    flex: 1;
+  }
+  
+  .tip-alert-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  
+  .tip-alert-from {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .tip-alert-message {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    font-style: italic;
+  }
+  
+  .tip-alert-sparkles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+  }
+  
+  .sparkle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    animation: sparkleFloat 2s ease-out infinite;
+  }
+  
+  .sparkle:nth-child(1) {
+    top: 20%;
+    left: 20%;
+    animation-delay: 0s;
+  }
+  
+  .sparkle:nth-child(2) {
+    top: 30%;
+    right: 20%;
+    animation-delay: 0.3s;
+  }
+  
+  .sparkle:nth-child(3) {
+    bottom: 30%;
+    left: 30%;
+    animation-delay: 0.6s;
+  }
+  
+  .sparkle:nth-child(4) {
+    bottom: 20%;
+    right: 30%;
+    animation-delay: 0.9s;
+  }
+  
+  @keyframes sparkleFloat {
+    0%, 100% {
+      opacity: 0;
+      transform: scale(0) rotate(0deg);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1) rotate(180deg);
+    }
+  }
+</style>
+
+<script>
+  const tippers = [
+    { name: "StreamSupporter", amounts: [5, 10, 15], messages: ["Great content! 👍", "Keep it up!", "Love the stream! 🔥"] },
+    { name: "TechFan", amounts: [10, 25, 50], messages: ["Amazing setup! ⭐", "You're awesome!", "This is incredible! 🚀"] },
+    { name: "DevLover", amounts: [5, 20, 100], messages: ["So helpful! 💯", "Thanks for sharing!", "Mind blown! 🤯"] },
+    { name: "CodeMaster", amounts: [15, 30, 75], messages: ["Brilliant work! ✨", "Educational!", "Professional quality! 🎯"] }
+  ];
+  
+  function showTipAlert(tipper: string, amount: number, message: string) {
+    const overlay = document.getElementById('tipAlertOverlay');
+    const tipperElement = document.getElementById('alertTipper');
+    const amountElement = document.getElementById('alertAmount');
+    const messageElement = document.getElementById('alertMessage');
+    
+    if (overlay && tipperElement && amountElement && messageElement) {
+      tipperElement.textContent = tipper;
+      amountElement.textContent = `$${amount.toFixed(2)}`;
+      messageElement.textContent = message;
+      
+      overlay.classList.add('show');
+      
+      // Hide after 4 seconds
+      setTimeout(() => {
+        overlay.classList.remove('show');
+      }, 4000);
+    }
+  }
+  
+  function simulateRandomTip() {
+    const randomTipper = tippers[Math.floor(Math.random() * tippers.length)];
+    const randomAmount = randomTipper.amounts[Math.floor(Math.random() * randomTipper.amounts.length)];
+    const randomMessage = randomTipper.messages[Math.floor(Math.random() * randomTipper.messages.length)];
+    
+    showTipAlert(randomTipper.name, randomAmount, randomMessage);
+    
+    // Add to tip list
+    addToTipList(randomTipper.name, randomAmount, randomMessage);
+  }
+  
+  function addToTipList(tipper: string, amount: number, message: string) {
+    const tipList = document.querySelector('.tip-list');
+    if (tipList) {
+      const newTip = document.createElement('div');
+      newTip.className = 'tip-item';
+      newTip.innerHTML = `
+        <span class="tipper">${tipper}</span>
+        <span class="amount">$${amount.toFixed(2)}</span>
+        <span class="message">"${message}"</span>
+      `;
+      
+      tipList.insertBefore(newTip, tipList.firstChild);
+      
+      // Keep only last 3 tips
+      while (tipList.children.length > 3) {
+        tipList.removeChild(tipList.lastChild as Node);
+      }
+    }
+  }
+  
+  // Simulate tips every 15-30 seconds
+  function scheduleRandomTip() {
+    const delay = Math.random() * 15000 + 15000; // 15-30 seconds
+    setTimeout(() => {
+      simulateRandomTip();
+      scheduleRandomTip();
+    }, delay);
+  }
+  
+  // Start simulation after page load
+  setTimeout(scheduleRandomTip, 5000);
+</script>

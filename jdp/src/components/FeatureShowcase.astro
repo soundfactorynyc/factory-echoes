@@ -1,0 +1,154 @@
+---
+// Feature showcase component for the livestream hub
+---
+
+<div class="feature-showcase">
+  <h2>🚀 Livestream Hub Features</h2>
+  
+  <div class="feature-grid">
+    <div class="feature-item">
+      <div class="feature-icon">📊</div>
+      <h3>Real-time Analytics</h3>
+      <p>Live viewer count, engagement metrics, and stream statistics</p>
+    </div>
+    
+    <div class="feature-item">
+      <div class="feature-icon">💬</div>
+      <h3>Interactive Chat</h3>
+      <p>Live chat with auto-scroll and simulated user interactions</p>
+    </div>
+    
+    <div class="feature-item">
+      <div class="feature-icon">🎛️</div>
+      <h3>Stream Controls</h3>
+      <p>Scene management, audio/video toggles, and quality settings</p>
+    </div>
+    
+    <div class="feature-item">
+      <div class="feature-icon">🎨</div>
+      <h3>Visual Effects</h3>
+      <p>Emoji reactions, audio visualizer, and overlay graphics</p>
+    </div>
+    
+    <div class="feature-item">
+      <div class="feature-icon">💰</div>
+      <h3>Monetization</h3>
+      <p>Tip notifications, donation alerts, and viewer support</p>
+    </div>
+    
+    <div class="feature-item">
+      <div class="feature-icon">📱</div>
+      <h3>Responsive Design</h3>
+      <p>Mobile-friendly interface with adaptive layouts</p>
+    </div>
+  </div>
+  
+  <div class="status-indicator">
+    <span class="live-dot"></span>
+    All systems operational - Ready to stream!
+  </div>
+</div>
+
+<style>
+  .feature-showcase {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 1rem 0;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .feature-showcase h2 {
+    text-align: center;
+    color: #2d3748;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+  
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .feature-item {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  }
+  
+  .feature-item:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+  }
+  
+  .feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  
+  .feature-item h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  
+  .feature-item p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+  
+  .status-indicator {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: #2d3748;
+    background: rgba(76, 175, 80, 0.1);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+  }
+  
+  .live-dot {
+    width: 12px;
+    height: 12px;
+    background: #4caf50;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .feature-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .feature-showcase {
+      padding: 1.5rem;
+    }
+  }
+</style>
