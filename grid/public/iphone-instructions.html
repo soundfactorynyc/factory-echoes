@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRID OS iPhone Access Instructions</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e);
+            color: #00ffff;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #00ffff;
+            text-align: center;
+        }
+        
+        h2 {
+            font-size: 1.4rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #00ffff;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+            padding-bottom: 5px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        .url {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            display: block;
+            margin: 15px 0;
+            word-break: break-all;
+            border: 1px solid #333;
+        }
+        
+        .note {
+            background: rgba(255, 255, 0, 0.1);
+            border-left: 4px solid rgba(255, 255, 0, 0.5);
+            padding: 10px 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .steps {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .steps ol {
+            margin-left: 20px;
+            padding-left: 0;
+        }
+        
+        .steps li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>GRID OS iPhone Access Instructions</h1>
+        
+        <div class="note">
+            <strong>Note:</strong> The server is currently running on port 5174. Make sure to use this port in all URLs.
+        </div>
+        
+        <h2>Quick Access URLs</h2>
+        
+        <p>Use these URLs to access different parts of GRID OS:</p>
+        
+        <div class="url">http://192.168.1.250:5174/main.html</div>
+        <p><strong>Main App:</strong> This is the main GRID OS interface with the grid visualization.</p>
+        
+        <div class="url">http://192.168.1.250:5174/redirect.html</div>
+        <p><strong>Navigation Page:</strong> This page provides easy navigation to all parts of GRID OS.</p>
+        
+        <div class="url">http://192.168.1.250:5174/mobile-test.html</div>
+        <p><strong>Mobile Test:</strong> A mobile-friendly interface for testing GRID OS features.</p>
+        
+        <h2>Step-by-Step Instructions</h2>
+        
+        <div class="steps">
+            <ol>
+                <li>Make sure your iPhone is connected to the same Wi-Fi network as the computer running the GRID OS server.</li>
+                <li>Open Safari on your iPhone.</li>
+                <li>Enter the URL for the Navigation Page: <strong>http://192.168.1.250:5174/redirect.html</strong></li>
+                <li>From the Navigation Page, you can easily access all parts of GRID OS.</li>
+                <li>To go directly to the main app, use: <strong>http://192.168.1.250:5174/main.html</strong></li>
+                <li>Or use the navigation page to easily access all parts of GRID OS.</li>
+            </ol>
+        </div>
+        
+        <h2>Troubleshooting</h2>
+        
+        <p>If you're having trouble accessing GRID OS:</p>
+        
+        <ul>
+            <li>Ensure your iPhone is connected to the same Wi-Fi network as the computer running the server.</li>
+            <li>Try using the IP address directly: 192.168.1.250:5174</li>
+            <li>If the page doesn't load, check if the server is still running on the computer.</li>
+            <li>Try clearing your browser cache or using a private/incognito browsing window.</li>
+        </ul>
+    </div>
+</body>
+</html>

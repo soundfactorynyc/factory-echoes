@@ -1,0 +1,111 @@
+.owncast-tip-display {
+  background: linear-gradient(135deg, #2c3e50 0%, #4a69bd 100%);
+  border-radius: 12px;
+  padding: 20px;
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.tip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.tip-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #f8f9fa;
+}
+
+.tip-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.tip-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.tip-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.tip-button.simulate {
+  background: rgba(46, 204, 113, 0.2);
+}
+
+.tip-button.simulate:hover {
+  background: rgba(46, 204, 113, 0.3);
+}
+
+.tip-button.reset {
+  background: rgba(231, 76, 60, 0.2);
+}
+
+.tip-button.reset:hover {
+  background: rgba(231, 76, 60, 0.3);
+}
+
+.tip-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.tip-stat {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.tip-goal {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.goal-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+
+.goal-progress-bar {
+  height: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.goal-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4ecdc4, #2ecc71);
+  border-radius: 5px;
+  transition: width 0.5s ease;
+}

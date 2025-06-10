@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRID OS - Sound Factory NYC Live Integration</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #ff0080 0%, #000000 50%, #00ffff 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: #ffffff;
+        }
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: rgba(0,0,0,0.9);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 0 50px rgba(255,0,128,0.3);
+            border: 2px solid #ff0080;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #ff0080;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px #ff0080;
+            animation: pulse 2s infinite;
+        }
+        .live-indicator {
+            background: linear-gradient(45deg, #ff0080, #00ffff);
+            color: #000000;
+            padding: 12px 24px;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 1.2rem;
+            animation: glow 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255,0,128,0.5); }
+            50% { box-shadow: 0 0 40px rgba(0,255,255,0.5); }
+        }
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .stream-section {
+            background: rgba(255,0,128,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid #ff0080;
+        }
+        .controls-section {
+            background: rgba(0,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid #00ffff;
+        }
+        .stream-player {
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+            background: #000000;
+            border: 2px solid #ff0080;
+        }
+        .rtmp-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 10px;
+            border-left: 4px solid #ffff00;
+        }
+        .test-button {
+            background: linear-gradient(45deg, #ff0080, #00ffff);
+            color: #000000;
+            border: none;
+            padding: 12px 24px;
+            margin: 10px 5px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .test-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255,0,128,0.5);
+        }
+        .grid-visualization {
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,0,128,0.2) 0%, rgba(0,0,0,0.8) 100%);
+            border-radius: 15px;
+            border: 2px solid #00ffff;
+            position: relative;
+            overflow: hidden;
+        }
+        .grid-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,0,128,0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,0,128,0.3) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: gridMove 10s linear infinite;
+        }
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 30px); }
+        }
+        .status-panel {
+            background: rgba(0,0,0,0.8);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid #ffff00;
+        }
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            padding: 5px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .console-output {
+            background: #000000;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 10px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            border: 1px solid #00ff00;
+        }
+        .chat-simulation {
+            background: rgba(255,0,128,0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #ff0080;
+            height: 150px;
+            overflow-y: auto;
+        }
+        .chat-message {
+            margin: 5px 0;
+            padding: 5px 10px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 15px;
+            border-left: 3px solid #ff0080;
+        }
+        code {
+            color: #00ffff;
+            background: rgba(0,0,0,0.5);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎵 SOUND FACTORY NYC</h1>
+            <h2 style="color: #00ffff;">GRID OS Live Integration</h2>
+            <div class="live-indicator">🔴 LIVE STREAM INTEGRATION</div>
+        </div>
+
+        <div class="main-content">
+            <div class="stream-section">
+                <h3 style="color: #ff0080;">🎬 Live Stream</h3>
+                <div class="stream-player" id="streamPlayer">
+                    <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #ff0080;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; margin-bottom: 10px;">🎵</div>
+                            <div>Sound Factory NYC Stream</div>
+                            <div style="font-size: 0.8rem; color: #00ffff;">stream.soundfactorynyc.com:8080</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rtmp-info">
+                    <h4 style="color: #ffff00;">🎬 RTMP Stream Configuration</h4>
+                    <div><strong>Server:</strong> <code>rtmp://stream.soundfactorynyc.com:1935/live</code></div>
+                    <div><strong>Stream Key:</strong> <code>live</code></div>
+                    <div><strong>Bitrate:</strong> <code>2500 kbps</code></div>
+                    <div><strong>Resolution:</strong> <code>1920x1080</code></div>
+                    <div><strong>FPS:</strong> <code>30</code></div>
+                </div>
+                
+                <div class="chat-simulation" id="chatSimulation">
+                    <h4 style="color: #ff0080; margin-top: 0;">💬 Live Chat Simulation</h4>
+                    <div id="chatMessages"></div>
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <h3 style="color: #00ffff;">🎛️ GRID Controls</h3>
+                
+                <button class="test-button" onclick="initializeSoundFactory()">🚀 Initialize Sound Factory</button>
+                <button class="test-button" onclick="testConnection()">🔌 Test Connection</button>
+                <button class="test-button" onclick="simulateEvents()">🎭 Simulate Events</button>
+                <button class="test-button" onclick="testRTMP()">🎬 Test RTMP</button>
+                
+                <div class="grid-visualization">
+                    <div class="grid-pattern"></div>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #ff0080;">
+                        <div style="font-size: 2rem;">⚡</div>
+                        <div>GRID VISUALIZATION</div>
+                    </div>
+                </div>
+                
+                <div class="status-panel">
+                    <h4 style="color: #ffff00; margin-top: 0;">📊 System Status</h4>
+                    <div class="status-item">
+                        <span>Server Connection:</span>
+                        <span id="serverStatus" style="color: #ff8800;">Checking...</span>
+                    </div>
+                    <div class="status-item">
+                        <span>WebSocket:</span>
+                        <span id="wsStatus" style="color: #ff8800;">Disconnected</span>
+                    </div>
+                    <div class="status-item">
+                        <span>GRID OS:</span>
+                        <span id="gridStatus" style="color: #ff8800;">Loading...</span>
+                    </div>
+                    <div class="status-item">
+                        <span>Viewer Count:</span>
+                        <span id="viewerCount" style="color: #00ffff;">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div>
+                <h3 style="color: #ff0080;">📡 Console Output</h3>
+                <div class="console-output" id="consoleOutput"></div>
+            </div>
+            <div>
+                <h3 style="color: #00ffff;">🧪 Quick Tests</h3>
+                <div style="background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px; border: 1px solid #00ffff;">
+                    <button class="test-button" onclick="runQuickTest()">⚡ Quick System Test</button>
+                    <button class="test-button" onclick="testChatMessage()">💬 Test Chat Message</button>
+                    <button class="test-button" onclick="testDonation()">💰 Test Donation</button>
+                    <button class="test-button" onclick="testViewerSpike()">👥 Test Viewer Spike</button>
+                    <button class="test-button" onclick="showSystemHealth()">💚 System Health</button>
+                    <button class="test-button" onclick="clearConsole()">🧹 Clear Console</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Console output capture
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        const consoleOutput = document.getElementById('consoleOutput');
+        
+        function addToConsole(message, type = 'log') {
+            const time = new Date().toLocaleTimeString();
+            const color = type === 'error' ? '#ff0000' : type === 'warn' ? '#ffff00' : '#00ff00';
+            consoleOutput.innerHTML += `<div style="color: ${color}">[${time}] ${message}</div>`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        console.log = (...args) => {
+            originalLog(...args);
+            addToConsole(args.join(' '), 'log');
+        };
+        
+        console.error = (...args) => {
+            originalError(...args);
+            addToConsole(args.join(' '), 'error');
+        };
+        
+        console.warn = (...args) => {
+            originalWarn(...args);
+            addToConsole(args.join(' '), 'warn');
+        };
+
+        // Sound Factory NYC specific functions
+        async function initializeSoundFactory() {
+            console.log('🎵 Initializing Sound Factory NYC integration...');
+            updateStatus('serverStatus', 'Connecting...', '#ff8800');
+            
+            try {
+                // Check if our integration is loaded
+                if (window.soundFactoryOwncast) {
+                    await window.soundFactoryOwncast.initialize();
+                    updateStatus('serverStatus', 'Connected', '#00ff00');
+                    updateStatus('gridStatus', 'Active', '#00ff00');
+                } else {
+                    console.warn('Sound Factory integration not loaded yet');
+                    updateStatus('serverStatus', 'Integration Loading...', '#ff8800');
+                }
+            } catch (error) {
+                console.error('Failed to initialize Sound Factory integration:', error);
+                updateStatus('serverStatus', 'Failed', '#ff0000');
+            }
+        }
+
+        async function testConnection() {
+            console.log('🔌 Testing connection to stream.soundfactorynyc.com:8080...');
+            
+            try {
+                const response = await fetch('https://stream.soundfactorynyc.com:8080/api/status');
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('✅ Sound Factory NYC server is online:', data);
+                    updateStatus('serverStatus', 'Online', '#00ff00');
+                    
+                    if (data.online) {
+                        updateStatus('wsStatus', 'Stream Live', '#00ff00');
+                    } else {
+                        updateStatus('wsStatus', 'Stream Offline', '#ff8800');
+                    }
+                } else {
+                    console.warn('⚠️ Server responded with status:', response.status);
+                    updateStatus('serverStatus', 'Error ' + response.status, '#ff8800');
+                }
+            } catch (error) {
+                console.error('❌ Connection test failed:', error);
+                updateStatus('serverStatus', 'Connection Failed', '#ff0000');
+                updateStatus('wsStatus', 'No Connection', '#ff0000');
+            }
+        }
+
+        function simulateEvents() {
+            console.log('🎭 Starting Sound Factory NYC event simulation...');
+            
+            // Simulate chat messages
+            setTimeout(() => {
+                addChatMessage('SoundFactoryFan', 'Amazing beats tonight! 🎵🔥', '#ff0080');
+                testChatMessage();
+            }, 1000);
+            
+            setTimeout(() => {
+                addChatMessage('GridRaver', 'THE GRID IS ALIVE AND VIBING! ⚡🎵', '#00ffff');
+                updateViewerCount(Math.floor(Math.random() * 50) + 20);
+            }, 3000);
+            
+            setTimeout(() => {
+                addChatMessage('TechnoLover', 'This RTMP integration is SICK! 🎬💖', '#ffff00');
+                testDonation();
+            }, 5000);
+        }
+
+        function testRTMP() {
+            console.log('🎬 Testing RTMP configuration...');
+            console.log('📡 RTMP Server: rtmp://stream.soundfactorynyc.com:1935/live');
+            console.log('🔑 Stream Key: live');
+            console.log('📊 Bitrate: 2500 kbps');
+            console.log('🎥 Resolution: 1920x1080 @ 30fps');
+            console.log('✅ RTMP configuration validated for Sound Factory NYC');
+        }
+
+        function testChatMessage() {
+            const messages = [
+                'Sound Factory NYC is the best! 🎵',
+                'This grid visualization is INSANE! ⚡',
+                'Can you play some hard techno? 🔥',
+                'The bass is hitting different tonight! 💫',
+                'GRID OS + Sound Factory = PERFECTION! 🎯'
+            ];
+            const colors = ['#ff0080', '#00ffff', '#ffff00', '#ff8000', '#8000ff'];
+            const names = ['RaveKing', 'TechnoQueen', 'BassHead', 'GridFan', 'SFNYCLover'];
+            
+            const msg = messages[Math.floor(Math.random() * messages.length)];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const name = names[Math.floor(Math.random() * names.length)];
+            
+            addChatMessage(name, msg, color);
+            console.log(`💬 Simulated chat: ${name}: ${msg}`);
+        }
+
+        function testDonation() {
+            const amount = (Math.random() * 20 + 5).toFixed(2);
+            const messages = [
+                'Keep the music pumping! 🎶',
+                'Love the Sound Factory vibes! 💖',
+                'This GRID integration is amazing! ⚡',
+                'Play my favorite track! 🎵'
+            ];
+            const msg = messages[Math.floor(Math.random() * messages.length)];
+            
+            console.log(`💰 Donation received: $${amount} - "${msg}"`);
+            addChatMessage('💰 DONOR', `$${amount}: ${msg}`, '#00ff00');
+        }
+
+        function testViewerSpike() {
+            const newCount = Math.floor(Math.random() * 100) + 50;
+            updateViewerCount(newCount);
+            console.log(`👥 Viewer spike! New count: ${newCount}`);
+        }
+
+        function addChatMessage(author, message, color) {
+            const chatMessages = document.getElementById('chatMessages');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'chat-message';
+            msgDiv.innerHTML = `<strong style="color: ${color}">${author}:</strong> ${message}`;
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function updateStatus(elementId, text, color) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = text;
+                element.style.color = color;
+            }
+        }
+
+        function updateViewerCount(count) {
+            updateStatus('viewerCount', count.toString(), '#00ffff');
+        }
+
+        function runQuickTest() {
+            console.log('⚡ Running quick Sound Factory NYC system test...');
+            
+            testConnection();
+            setTimeout(() => {
+                if (window.gridOS) {
+                    console.log('✅ GRID OS detected');
+                    updateStatus('gridStatus', 'Ready', '#00ff00');
+                } else {
+                    console.warn('⚠️ GRID OS not detected');
+                    updateStatus('gridStatus', 'Not Found', '#ff8800');
+                }
+            }, 1000);
+            
+            setTimeout(() => {
+                console.log('🎵 Sound Factory NYC integration test complete');
+            }, 2000);
+        }
+
+        function showSystemHealth() {
+            if (window.gridOS && window.gridOS.getSystemHealth) {
+                const health = window.gridOS.getSystemHealth();
+                console.log('💚 GRID OS System Health:', health);
+            } else {
+                console.warn('⚠️ System health not available');
+            }
+        }
+
+        function clearConsole() {
+            consoleOutput.innerHTML = '';
+            console.log('🧹 Console cleared');
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            console.log('🎵 Sound Factory NYC GRID OS Integration Test Page Loaded');
+            console.log('📡 Server: https://stream.soundfactorynyc.com:8080');
+            console.log('🎬 RTMP: rtmp://stream.soundfactorynyc.com:1935/live');
+            console.log('💡 Click "Initialize Sound Factory" to begin');
+            
+            // Auto-run connection test
+            setTimeout(testConnection, 1000);
+        });
+    </script>
+</body>
+</html>

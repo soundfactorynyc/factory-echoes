@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRID OS - Owncast Integration Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            color: #2d3748;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+        .test-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .status {
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .status.running {
+            background: #fef5e7;
+            border: 1px solid #fbbf24;
+        }
+        .status.success {
+            background: #f0fdf4;
+            border: 1px solid #10b981;
+        }
+        .status.error {
+            background: #fef2f2;
+            border: 1px solid #ef4444;
+        }
+        #owncast-test-results {
+            margin-top: 20px;
+        }
+        .simulation-panel {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .simulation-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .sim-btn {
+            background: #4299e1;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .sim-btn:hover {
+            background: #3182ce;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎬 GRID OS Owncast Integration Test</h1>
+            <p>Test suite for Owncast streaming platform integration with GRID OS</p>
+        </div>
+
+        <div class="status" id="test-status">
+            <strong>Ready to test Owncast integration</strong><br>
+            Click "Run Owncast Tests" to verify streaming integration functionality
+        </div>
+
+        <div class="test-controls">
+            <button class="btn" onclick="runOwncastTestSuite()" id="run-tests-btn">
+                Run Owncast Tests
+            </button>
+            <button class="btn" onclick="runSimulatedStream()" id="simulate-stream-btn">
+                Simulate Live Stream
+            </button>
+            <button class="btn" onclick="clearResults()" id="clear-btn">
+                Clear Results
+            </button>
+        </div>
+
+        <div class="simulation-panel">
+            <h3>🎮 Stream Event Simulation</h3>
+            <p>Simulate various Owncast events to test GRID OS integration:</p>
+            <div class="simulation-controls">
+                <button class="sim-btn" onclick="simulateChatMessage()">💬 Chat Message</button>
+                <button class="sim-btn" onclick="simulateSmallDonation()">💰 Small Tip ($5)</button>
+                <button class="sim-btn" onclick="simulateBigDonation()">🎉 Big Tip ($100)</button>
+                <button class="sim-btn" onclick="simulateViewerJoin()">👥 Viewer Join</button>
+                <button class="sim-btn" onclick="simulateStreamStart()">▶️ Stream Start</button>
+                <button class="sim-btn" onclick="simulateStreamEnd()">⏹️ Stream End</button>
+            </div>
+        </div>
+
+        <div id="owncast-test-results"></div>
+    </div>
+
+    <script type="module">
+        // Import the test functions
+        import { runOwncastTests, displayOwncastTestResults } from '/src/integration/owncastTest.ts';
+        import { gridOS } from '/src/integration/gridOSBackend.ts';
+        import { initializeOwncast } from '/src/integration/setupOwncast.tsx';
+
+        // Global variables for testing
+        let testRunning = false;
+        let streamOnline = false;
+        let viewerCount = 10;
+
+        // Make functions available globally
+        window.runOwncastTestSuite = async function() {
+            if (testRunning) return;
+            
+            testRunning = true;
+            const statusEl = document.getElementById('test-status');
+            const runBtn = document.getElementById('run-tests-btn');
+            
+            statusEl.className = 'status running';
+            statusEl.innerHTML = '<strong>🔄 Running Owncast integration tests...</strong><br>Please wait while we verify all functionality';
+            runBtn.disabled = true;
+
+            try {
+                // Initialize systems
+                await gridOS.initialize();
+                initializeOwncast();
+                
+                // Run the tests
+                const results = await runOwncastTests();
+                
+                // Display results
+                displayOwncastTestResults(results);
+                
+                const passedCount = results.filter(r => r.passed).length;
+                const totalCount = results.length;
+                
+                if (passedCount === totalCount) {
+                    statusEl.className = 'status success';
+                    statusEl.innerHTML = `<strong>✅ All tests passed! (${passedCount}/${totalCount})</strong><br>Owncast integration is fully operational`;
+                } else {
+                    statusEl.className = 'status error';
+                    statusEl.innerHTML = `<strong>⚠️ Some tests failed (${passedCount}/${totalCount})</strong><br>Check results below for details`;
+                }
+            } catch (error) {
+                statusEl.className = 'status error';
+                statusEl.innerHTML = `<strong>❌ Test suite failed</strong><br>Error: ${error.message}`;
+                console.error('Test error:', error);
+            } finally {
+                testRunning = false;
+                runBtn.disabled = false;
+            }
+        };
+
+        window.runSimulatedStream = function() {
+            const statusEl = document.getElementById('test-status');
+            statusEl.className = 'status running';
+            statusEl.innerHTML = '<strong>🎬 Running simulated stream...</strong><br>Watch the console for events';
+
+            // Simulate a full streaming session
+            setTimeout(() => simulateStreamStart(), 500);
+            setTimeout(() => simulateChatMessage(), 2000);
+            setTimeout(() => simulateViewerJoin(), 4000);
+            setTimeout(() => simulateChatMessage(), 6000);
+            setTimeout(() => simulateSmallDonation(), 8000);
+            setTimeout(() => simulateChatMessage(), 10000);
+            setTimeout(() => simulateBigDonation(), 12000);
+            setTimeout(() => simulateViewerJoin(), 14000);
+            setTimeout(() => {
+                statusEl.className = 'status success';
+                statusEl.innerHTML = '<strong>✅ Simulated stream complete</strong><br>Check console logs and grid reactions';
+            }, 16000);
+        };
+
+        window.clearResults = function() {
+            const resultsEl = document.getElementById('owncast-test-results');
+            const statusEl = document.getElementById('test-status');
+            
+            resultsEl.innerHTML = '';
+            statusEl.className = 'status';
+            statusEl.innerHTML = '<strong>Ready to test Owncast integration</strong><br>Click "Run Owncast Tests" to verify streaming integration functionality';
+        };
+
+        // Simulation functions
+        window.simulateChatMessage = function() {
+            const messages = [
+                'Hello everyone! 👋',
+                'This GRID OS looks amazing!',
+                'Can you explain how this works?',
+                'The visuals are incredible! ✨',
+                'Love the real-time effects!'
+            ];
+            
+            const message = messages[Math.floor(Math.random() * messages.length)];
+            const event = {
+                type: 'owncast-chat-message',
+                data: {
+                    id: `msg-${Date.now()}`,
+                    author: {
+                        id: `user-${Math.floor(Math.random() * 1000)}`,
+                        displayName: `Viewer${Math.floor(Math.random() * 100)}`,
+                        displayColor: `#${Math.floor(Math.random()*16777215).toString(16)}`
+                    },
+                    body: message,
+                    timestamp: Date.now()
+                }
+            };
+            
+            window.dispatchEvent(new MessageEvent('message', { data: event }));
+            console.log('💬 Simulated chat:', message);
+        };
+
+        window.simulateSmallDonation = function() {
+            const amount = Math.floor(Math.random() * 20) + 5; // $5-25
+            const event = {
+                type: 'owncast-donation',
+                data: {
+                    id: `tip-${Date.now()}`,
+                    userId: `donor-${Math.floor(Math.random() * 1000)}`,
+                    amount: amount,
+                    currency: 'USD',
+                    message: `Thanks for the great stream! $${amount}`,
+                    timestamp: Date.now()
+                }
+            };
+            
+            window.dispatchEvent(new MessageEvent('message', { data: event }));
+            console.log(`💰 Simulated small donation: $${amount}`);
+        };
+
+        window.simulateBigDonation = function() {
+            const amount = Math.floor(Math.random() * 200) + 100; // $100-300
+            const event = {
+                type: 'owncast-donation',
+                data: {
+                    id: `big-tip-${Date.now()}`,
+                    userId: `whale-${Math.floor(Math.random() * 100)}`,
+                    amount: amount,
+                    currency: 'USD',
+                    message: `Amazing work! Here's $${amount} to support you! 🎉`,
+                    timestamp: Date.now()
+                }
+            };
+            
+            window.dispatchEvent(new MessageEvent('message', { data: event }));
+            console.log(`🎉 Simulated big donation: $${amount}`);
+        };
+
+        window.simulateViewerJoin = function() {
+            viewerCount += Math.floor(Math.random() * 5) + 1;
+            const event = {
+                type: 'owncast-viewer-count',
+                data: {
+                    count: viewerCount,
+                    timestamp: Date.now()
+                }
+            };
+            
+            window.dispatchEvent(new MessageEvent('message', { data: event }));
+            console.log(`👥 Viewer count updated: ${viewerCount}`);
+        };
+
+        window.simulateStreamStart = function() {
+            streamOnline = true;
+            const event = {
+                type: 'owncast-stream-status',
+                data: {
+                    online: true,
+                    started: Date.now()
+                }
+            };
+            
+            window.dispatchEvent(new MessageEvent('message', { data: event }));
+            console.log('▶️ Stream started');
+        };
+
+        window.simulateStreamEnd = function() {
+            streamOnline = false;
+            const event = {
+                type: 'owncast-stream-status',
+                data: {
+                    online: false
+                }
+            };
+            
+            window.dispatchEvent(new MessageEvent('message', { data: event }));
+            console.log('⏹️ Stream ended');
+        };
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🎬 Owncast test page loaded');
+            console.log('Ready to test Owncast integration with GRID OS');
+        });
+    </script>
+</body>
+</html>

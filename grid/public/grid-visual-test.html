@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grid Visual Test</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #1a1a1a;
+      color: #f0f0f0;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #2a2a2a;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    h1 {
+      color: #4fc3f7;
+      border-bottom: 1px solid #4fc3f7;
+      padding-bottom: 10px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 8px;
+      padding: 16px;
+    }
+    .tile {
+      width: 48px;
+      height: 48px;
+      border-radius: 4px;
+      background-color: #333;
+      transition: all 0.3s ease;
+    }
+    .tile.active {
+      background-color: #4fc3f7;
+    }
+    .section {
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: #333;
+      border-radius: 4px;
+    }
+    .section h2 {
+      margin-top: 0;
+      color: #81c784;
+    }
+    button {
+      background-color: #4fc3f7;
+      color: #000;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #81d4fa;
+    }
+    pre {
+      background-color: #222;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+    .output {
+      min-height: 100px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .success {
+      color: #81c784;
+    }
+    .error {
+      color: #e57373;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Grid Visual Test</h1>
+    
+    <div class="section">
+      <h2>Grid Visualization</h2>
+      <div id="grid" class="grid">
+        <!-- Grid tiles will be generated here -->
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>System Health</h2>
+      <button id="checkHealth">Check System Health</button>
+      <pre id="healthOutput" class="output"></pre>
+    </div>
+    
+    <div class="section">
+      <h2>System Tests</h2>
+      <button id="runTests">Run All Tests</button>
+      <pre id="testsOutput" class="output"></pre>
+    </div>
+    
+    <div class="section">
+      <h2>System Initialization</h2>
+      <button id="initSystem">Initialize System</button>
+      <pre id="initOutput" class="output"></pre>
+    </div>
+    
+    <div class="section">
+      <h2>Console Output</h2>
+      <pre id="consoleOutput" class="output"></pre>
+    </div>
+  </div>
+
+  <script type="module">
+    // Import the main entry point
+    import '../../src/index.js';
+    
+    // Override console.log to capture output
+    const originalConsoleLog = console.log;
+    const originalConsoleError = console.error;
+    const consoleOutput = document.getElementById('consoleOutput');
+    
+    console.log = function(...args) {
+      originalConsoleLog.apply(console, args);
+      const message = args.map(arg => 
+        typeof arg === 'object' ? JSON.stringify(arg, null, 2) : arg
+      ).join(' ');
+      consoleOutput.innerHTML += `<span>${message}</span>\n`;
+    };
+    
+    console.error = function(...args) {
+      originalConsoleError.apply(console, args);
+      const message = args.map(arg => 
+        typeof arg === 'object' ? JSON.stringify(arg, null, 2) : arg
+      ).join(' ');
+      consoleOutput.innerHTML += `<span class="error">${message}</span>\n`;
+    };
+    
+    // Generate grid tiles
+    const grid = document.getElementById('grid');
+    const tiles = [];
+    
+    for (let i = 0; i < 64; i++) {
+      const tile = document.createElement('div');
+      tile.className = 'tile';
+      tile.dataset.id = i;
+      grid.appendChild(tile);
+      tiles.push({
+        element: tile,
+        active: false,
+        intensity: 0
+      });
+    }
+    
+    // Randomly activate tiles
+    function updateTiles() {
+      tiles.forEach(tile => {
+        // Random chance to change state
+        if (Math.random() < 0.05) {
+          tile.active = !tile.active;
+        }
+        
+        // Update intensity
+        if (tile.active) {
+          tile.intensity = Math.min(1, tile.intensity + 0.1);
+        } else {
+          tile.intensity = Math.max(0, tile.intensity - 0.1);
+        }
+        
+        // Update visual
+        tile.element.className = `tile ${tile.active ? 'active' : ''}`;
+        tile.element.style.transform = `scale(${1 + tile.intensity * 0.2})`;
+        tile.element.style.opacity = 0.3 + tile.intensity * 0.7;
+      });
+    }
+    
+    // Update tiles periodically
+    setInterval(updateTiles, 200);
+    
+    // Check if gridOS is available
+    setTimeout(() => {
+      if (window.gridOS) {
+        console.log('Grid OS is available on window object');
+      } else {
+        console.error('Grid OS is not available on window object');
+      }
+      
+      if (window.gridSystemTest) {
+        console.log('Grid System Test is available on window object');
+      } else {
+        console.error('Grid System Test is not available on window object');
+      }
+    }, 500);
+    
+    // Button event handlers
+    document.getElementById('checkHealth').addEventListener('click', () => {
+      const healthOutput = document.getElementById('healthOutput');
+      try {
+        if (window.gridOS && window.gridOS.getSystemHealth) {
+          const health = window.gridOS.getSystemHealth();
+          healthOutput.innerHTML = `<span class="success">✅ System Health Check Successful</span>\n${JSON.stringify(health, null, 2)}`;
+        } else {
+          healthOutput.innerHTML = `<span class="error">❌ gridOS.getSystemHealth is not available</span>`;
+        }
+      } catch (error) {
+        healthOutput.innerHTML = `<span class="error">❌ Error: ${error.message}</span>`;
+      }
+    });
+    
+    document.getElementById('runTests').addEventListener('click', () => {
+      const testsOutput = document.getElementById('testsOutput');
+      try {
+        if (window.gridSystemTest && window.gridSystemTest.runAllTests) {
+          testsOutput.innerHTML = '<span class="success">✅ Running tests...</span>\n';
+          window.gridSystemTest.runAllTests();
+          testsOutput.innerHTML += '<span class="success">✅ Tests completed</span>';
+        } else {
+          testsOutput.innerHTML = `<span class="error">❌ gridSystemTest.runAllTests is not available</span>`;
+        }
+      } catch (error) {
+        testsOutput.innerHTML = `<span class="error">❌ Error: ${error.message}</span>`;
+      }
+    });
+    
+    document.getElementById('initSystem').addEventListener('click', () => {
+      const initOutput = document.getElementById('initOutput');
+      try {
+        if (window.gridOS && window.gridOS.initialize) {
+          initOutput.innerHTML = '<span>Initializing Grid OS...</span>\n';
+          window.gridOS.initialize()
+            .then(() => {
+              initOutput.innerHTML += '<span class="success">✅ Grid OS initialized successfully</span>';
+            })
+            .catch(error => {
+              initOutput.innerHTML += `<span class="error">❌ Initialization error: ${error.message}</span>`;
+            });
+        } else {
+          initOutput.innerHTML = `<span class="error">❌ gridOS.initialize is not available</span>`;
+        }
+      } catch (error) {
+        initOutput.innerHTML = `<span class="error">❌ Error: ${error.message}</span>`;
+      }
+    });
+    
+    // Initialize Grid OS when page loads
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.gridOS && window.gridOS.initialize) {
+        window.gridOS.initialize()
+          .then(() => {
+            console.log('Grid OS initialized automatically on page load');
+          })
+          .catch(error => {
+            console.error('Error initializing Grid OS:', error);
+          });
+      }
+    });
+  </script>
+</body>
+</html>

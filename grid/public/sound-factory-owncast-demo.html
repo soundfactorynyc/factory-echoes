@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sound Factory Owncast Demo</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .status-indicator {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+            margin: 0 10px;
+        }
+        .status-indicator.active {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+        }
+        .section h3 {
+            margin-top: 0;
+            color: #4ecdc4;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .btn.danger {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+        }
+        .btn.success {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+        }
+        .console-output {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 6px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 12px;
+            height: 200px;
+            overflow-y: auto;
+            border: 1px solid #333;
+            margin: 10px 0;
+        }
+        .log-item {
+            margin: 2px 0;
+            padding: 2px 0;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+        .tip-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .tip-stat {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .tip-goal {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        .goal-progress-bar {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .goal-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ecdc4, #2ecc71);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+        .demo-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎛️ Sound Factory Owncast Demo</h1>
+            <div>
+                <span class="status-indicator" id="platformStatus">INITIALIZING</span>
+            </div>
+            <p>Integration between Sound Factory Platform and Owncast tip handler</p>
+        </div>
+
+        <!-- Tip Stats Section -->
+        <div class="section">
+            <h3>💰 Tip Statistics</h3>
+            <div id="tip-stats" class="tip-stats">
+                <!-- Tip stats will be rendered here -->
+            </div>
+        </div>
+
+        <!-- Tip Controls Section -->
+        <div class="section">
+            <h3>🎮 Tip Controls</h3>
+            <div class="form-group">
+                <label for="tip-amount">Tip Amount ($)</label>
+                <input type="number" id="tip-amount" min="1" max="1000" value="25">
+            </div>
+            <div class="form-group">
+                <label for="tip-username">Username</label>
+                <input type="text" id="tip-username" value="DemoUser">
+            </div>
+            <div class="form-group">
+                <label for="tip-message">Message (optional)</label>
+                <input type="text" id="tip-message" value="Great stream!">
+            </div>
+            <div class="controls">
+                <button class="btn success" id="send-tip-button">💸 Send Tip</button>
+                <button class="btn" id="random-tip-button">🎲 Random Tip</button>
+                <button class="btn danger" id="reset-tips-button">🔄 Reset Tips</button>
+            </div>
+        </div>
+
+        <!-- System Controls Section -->
+        <div class="section">
+            <h3>🎛️ System Controls</h3>
+            <div class="form-group">
+                <label for="reaction-type">Reaction Type</label>
+                <select id="reaction-type">
+                    <option value="fire">🔥 Fire</option>
+                    <option value="water">💧 Water</option>
+                    <option value="earth">🌍 Earth</option>
+                    <option value="air">💨 Air</option>
+                    <option value="party">🎉 Party</option>
+                    <option value="chill">❄️ Chill</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="reaction-intensity">Intensity</label>
+                <input type="range" id="reaction-intensity" min="0" max="1" step="0.1" value="0.8">
+            </div>
+            <div class="controls">
+                <button class="btn" id="trigger-reaction-button">🎭 Trigger Reaction</button>
+            </div>
+
+            <div class="form-group" style="margin-top: 20px;">
+                <label for="mood-type">Mood</label>
+                <select id="mood-type">
+                    <option value="party">🎉 Party</option>
+                    <option value="chill">❄️ Chill</option>
+                    <option value="euphoric">✨ Euphoric</option>
+                    <option value="intense">⚡ Intense</option>
+                </select>
+            </div>
+            <div class="controls">
+                <button class="btn" id="change-mood-button">🎭 Change Mood</button>
+            </div>
+
+            <div class="form-group" style="margin-top: 20px;">
+                <label for="drink-type">Drink Type</label>
+                <select id="drink-type">
+                    <option value="standard">🥤 Standard</option>
+                    <option value="premium">🍹 Premium</option>
+                    <option value="legendary">🍾 Legendary</option>
+                </select>
+            </div>
+            <div class="controls">
+                <button class="btn" id="create-drink-button">🍹 Create Drink</button>
+            </div>
+        </div>
+
+        <!-- Console Output Section -->
+        <div class="section">
+            <h3>📝 Console Output</h3>
+            <div id="console-output" class="console-output">
+                <div class="log-item">🎛️ Sound Factory Owncast Demo Console</div>
+                <div class="log-item">⚡ Initializing systems...</div>
+            </div>
+        </div>
+
+        <!-- Demo Controls -->
+        <div class="demo-controls">
+            <button class="btn" id="start-demo-button">▶️ Start Demo Sequence</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { soundFactoryPlatform } from '/src/integration/soundFactoryPlatform.js';
+        import '/src/integration/soundFactoryOwncastDemo.js';
+
+        // Initialize additional event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Update platform status when initialized
+            const checkInitialization = setInterval(() => {
+                if (soundFactoryPlatform.initialized) {
+                    document.getElementById('platformStatus').textContent = 'ACTIVE';
+                    document.getElementById('platformStatus').classList.add('active');
+                    clearInterval(checkInitialization);
+                }
+            }, 500);
+
+            // Set up additional button listeners
+            document.getElementById('trigger-reaction-button')?.addEventListener('click', () => {
+                const type = document.getElementById('reaction-type').value;
+                const intensity = parseFloat(document.getElementById('reaction-intensity').value);
+                window.soundFactoryOwncastDemo.triggerReaction(type, intensity);
+            });
+
+            document.getElementById('change-mood-button')?.addEventListener('click', () => {
+                const mood = document.getElementById('mood-type').value;
+                window.soundFactoryOwncastDemo.changeMood(mood);
+            });
+
+            document.getElementById('create-drink-button')?.addEventListener('click', () => {
+                const type = document.getElementById('drink-type').value;
+                window.soundFactoryOwncastDemo.createDrink(type);
+            });
+
+            document.getElementById('start-demo-button')?.addEventListener('click', () => {
+                // Redirect to the same page with demo parameter
+                window.location.href = window.location.pathname + '?demo=true';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRID OS: Claude Integration Test</title>
+    <style>
+        body {
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+        }
+        
+        .header p {
+            color: #888;
+            font-size: 1.1rem;
+            margin: 10px 0 0 0;
+        }
+        
+        .test-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .test-section h2 {
+            color: #00ffff;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .test-button {
+            background: linear-gradient(45deg, #00ffff, #0080ff);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px 10px 10px 0;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 255, 0.3);
+        }
+        
+        .test-button:active {
+            transform: translateY(0);
+        }
+        
+        .console-output {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+            font-size: 0.9rem;
+            height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-success { background: #00ff00; }
+        .status-error { background: #ff0000; }
+        .status-warning { background: #ffaa00; }
+        .status-info { background: #00ffff; }
+        
+        .grid-preview {
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 255, 255, 0.05);
+        }
+        
+        .chat-simulator {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            align-items: center;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .chat-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 GRID OS: Claude Integration Test</h1>
+            <p>Testing real Claude API integration with the GRID OS system</p>
+        </div>
+        
+        <div class="test-section">
+            <h2>
+                <span class="status-indicator status-info"></span>
+                System Status
+            </h2>
+            <div id="systemStatus">
+                <p>Loading system components...</p>
+            </div>
+            <button class="test-button" onclick="checkSystemStatus()">Check System Status</button>
+            <button class="test-button" onclick="initializeSystem()">Initialize System</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>
+                <span class="status-indicator status-warning"></span>
+                Claude Network Test
+            </h2>
+            <p>Test the Claude AI agents and network functionality</p>
+            <button class="test-button" onclick="testClaudeNetwork()">Test Claude Network</button>
+            <button class="test-button" onclick="testConversationalist()">Test Conversationalist</button>
+            <button class="test-button" onclick="testMoodAnalyzer()">Test Mood Analyzer</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>
+                <span class="status-indicator status-warning"></span>
+                Chat Message Simulation
+            </h2>
+            <p>Simulate chat messages and see Claude's enhanced responses</p>
+            <div class="chat-simulator">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Type a message to test Claude processing..." />
+                <button class="test-button" onclick="processChatMessage()">Process with Claude</button>
+            </div>
+            <button class="test-button" onclick="simulateExcitedMessage()">Simulate Excited Message</button>
+            <button class="test-button" onclick="simulateQuestionMessage()">Simulate Question</button>
+            <button class="test-button" onclick="simulateComplimentMessage()">Simulate Compliment</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>
+                <span class="status-indicator status-warning"></span>
+                Owncast Integration Test
+            </h2>
+            <p>Test the integration between Owncast and Claude processing</p>
+            <button class="test-button" onclick="testOwncastIntegration()">Test Owncast Integration</button>
+            <button class="test-button" onclick="simulateOwncastChat()">Simulate Owncast Chat</button>
+            <div class="grid-preview" id="gridPreview">
+                Grid visualization effects will appear here
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>
+                <span class="status-indicator status-info"></span>
+                Console Output
+            </h2>
+            <div class="console-output" id="consoleOutput">
+                <div style="color: #00ffff;">🤖 GRID OS Claude Integration Test Console</div>
+                <div style="color: #888;">Waiting for test execution...</div>
+            </div>
+            <button class="test-button" onclick="clearConsole()">Clear Console</button>
+        </div>
+    </div>
+
+    <script type="module">
+        // Global variables for testing
+        let gridOS = null;
+        let claudeTestModule = null;
+        
+        // Console output management
+        const consoleDiv = document.getElementById('consoleOutput');
+        
+        function logToConsole(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const colors = {
+                info: '#00ffff',
+                success: '#00ff00',
+                error: '#ff0000',
+                warning: '#ffaa00'
+            };
+            
+            const div = document.createElement('div');
+            div.style.color = colors[type];
+            div.innerHTML = `[${timestamp}] ${message}`;
+            consoleDiv.appendChild(div);
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+        
+        // Override console methods to capture output
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        console.log = (...args) => {
+            originalLog(...args);
+            logToConsole(args.join(' '), 'info');
+        };
+        
+        console.error = (...args) => {
+            originalError(...args);
+            logToConsole(args.join(' '), 'error');
+        };
+        
+        console.warn = (...args) => {
+            originalWarn(...args);
+            logToConsole(args.join(' '), 'warning');
+        };
+        
+        // Global test functions
+        window.clearConsole = function() {
+            consoleDiv.innerHTML = '<div style="color: #00ffff;">🤖 Console cleared</div>';
+        };
+        
+        window.checkSystemStatus = async function() {
+            console.log('🔍 Checking system status...');
+            
+            try {
+                // Import gridOS
+                const { gridOS: gridOSInstance } = await import('./src/integration/gridOSBackend.js');
+                gridOS = gridOSInstance;
+                
+                const statusDiv = document.getElementById('systemStatus');
+                
+                let status = '<div>';
+                status += '<p>✅ GridOS Backend: Available</p>';
+                status += `<p>${gridOS.claude ? '✅' : '❌'} Claude Network: ${gridOS.claude ? 'Available' : 'Not Available'}</p>`;
+                status += `<p>✅ Event Bus: Available</p>`;
+                status += `<p>✅ Shader System: Available</p>`;
+                status += `<p>✅ Trigger System: Available</p>`;
+                status += '</div>';
+                
+                statusDiv.innerHTML = status;
+                console.log('✅ System status check completed');
+                
+            } catch (error) {
+                console.error('❌ System status check failed:', error);
+                document.getElementById('systemStatus').innerHTML = 
+                    `<p style="color: #ff0000;">❌ System check failed: ${error.message}</p>`;
+            }
+        };
+        
+        window.initializeSystem = async function() {
+            console.log('🚀 Initializing GRID OS system...');
+            
+            try {
+                if (!gridOS) {
+                    const { gridOS: gridOSInstance } = await import('./src/integration/gridOSBackend.js');
+                    gridOS = gridOSInstance;
+                }
+                
+                await gridOS.initialize();
+                console.log('✅ GRID OS system initialized successfully');
+                
+                // Update status
+                checkSystemStatus();
+                
+            } catch (error) {
+                console.error('❌ System initialization failed:', error);
+            }
+        };
+        
+        window.testClaudeNetwork = async function() {
+            console.log('🧪 Testing Claude Network...');
+            
+            try {
+                claudeTestModule = await import('./src/claudeIntegrationTest.js');
+                await claudeTestModule.testClaudeIntegration();
+                console.log('✅ Claude Network test completed');
+                
+            } catch (error) {
+                console.error('❌ Claude Network test failed:', error);
+            }
+        };
+        
+        window.testConversationalist = async function() {
+            console.log('💬 Testing Conversationalist agent...');
+            
+            try {
+                if (!gridOS?.claude?.agents?.conversationalist) {
+                    throw new Error('Conversationalist agent not available');
+                }
+                
+                const response = await gridOS.claude.agents.conversationalist.processChatMessage(
+                    "Hello! This grid looks amazing!",
+                    ["Previous message context"],
+                    "excited"
+                );
+                
+                console.log('🎉 Conversationalist response:', response);
+                
+            } catch (error) {
+                console.error('❌ Conversationalist test failed:', error);
+            }
+        };
+        
+        window.testMoodAnalyzer = async function() {
+            console.log('🎭 Testing Mood Analyzer agent...');
+            
+            try {
+                if (!gridOS?.claude?.agents?.moodAnalyzer) {
+                    throw new Error('Mood Analyzer agent not available');
+                }
+                
+                const result = await gridOS.claude.agents.moodAnalyzer.process({
+                    text: "I'm so excited about this technology!",
+                    context: "Stream chat"
+                });
+                
+                console.log('🎭 Mood analysis result:', result);
+                
+            } catch (error) {
+                console.error('❌ Mood Analyzer test failed:', error);
+            }
+        };
+        
+        window.processChatMessage = async function() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) {
+                console.warn('⚠️ Please enter a message to process');
+                return;
+            }
+            
+            console.log(`💬 Processing message: "${message}"`);
+            
+            try {
+                if (!gridOS?.claude?.agents?.conversationalist) {
+                    throw new Error('Conversationalist agent not available');
+                }
+                
+                const response = await gridOS.claude.agents.conversationalist.processChatMessage(
+                    message,
+                    ["Previous conversation context"],
+                    "neutral"
+                );
+                
+                console.log('🤖 Claude response:', response);
+                
+                // Clear input
+                input.value = '';
+                
+                // Update grid preview
+                updateGridPreview(response);
+                
+            } catch (error) {
+                console.error('❌ Message processing failed:', error);
+            }
+        };
+        
+        window.simulateExcitedMessage = function() {
+            document.getElementById('chatInput').value = "This is absolutely incredible! The effects are mind-blowing! 🤩";
+            processChatMessage();
+        };
+        
+        window.simulateQuestionMessage = function() {
+            document.getElementById('chatInput').value = "How does this grid visualization work? Can you explain the technology?";
+            processChatMessage();
+        };
+        
+        window.simulateComplimentMessage = function() {
+            document.getElementById('chatInput').value = "Amazing work! This is the future of interactive streaming! 🚀";
+            processChatMessage();
+        };
+        
+        window.testOwncastIntegration = async function() {
+            console.log('🎬 Testing Owncast integration...');
+            
+            try {
+                if (!claudeTestModule) {
+                    claudeTestModule = await import('./src/claudeIntegrationTest.js');
+                }
+                
+                await claudeTestModule.testOwncastClaudeIntegration();
+                console.log('✅ Owncast integration test completed');
+                
+            } catch (error) {
+                console.error('❌ Owncast integration test failed:', error);
+            }
+        };
+        
+        window.simulateOwncastChat = async function() {
+            console.log('🎬 Simulating Owncast chat message...');
+            
+            const simulatedMessage = {
+                id: `msg-${Date.now()}`,
+                author: {
+                    id: 'test-viewer-001',
+                    displayName: 'TestViewer',
+                    displayColor: '#ff6b6b'
+                },
+                body: 'This grid is absolutely insane! Love the real-time effects! 🔥',
+                timestamp: Date.now()
+            };
+            
+            console.log('💬 Simulated message:', simulatedMessage);
+            
+            // Process through Claude if available
+            if (gridOS?.claude?.agents?.conversationalist) {
+                try {
+                    const response = await gridOS.claude.agents.conversationalist.processChatMessage(
+                        simulatedMessage.body,
+                        ["Previous chat context"],
+                        "excited"
+                    );
+                    
+                    console.log('🤖 Claude enhanced response:', response);
+                    updateGridPreview(response);
+                    
+                } catch (error) {
+                    console.error('❌ Claude processing failed:', error);
+                }
+            }
+        };
+        
+        function updateGridPreview(response) {
+            const preview = document.getElementById('gridPreview');
+            
+            if (!response) return;
+            
+            const sentimentColor = {
+                'positive': '#00ff00',
+                'negative': '#ff0000',
+                'neutral': '#ffff00',
+                'excited': '#ff00ff'
+            };
+            
+            const color = sentimentColor[response.sentiment?.type] || '#00ffff';
+            
+            preview.innerHTML = `
+                <div>
+                    <div style="color: ${color}; font-size: 1.2rem; margin-bottom: 10px;">
+                        🎭 Sentiment: ${response.sentiment?.type || 'unknown'} (${response.sentiment?.score || 0})
+                    </div>
+                    <div style="color: #888;">
+                        💡 Intent: ${response.intent?.type || 'unknown'} (${Math.round((response.intent?.confidence || 0) * 100)}%)
+                    </div>
+                </div>
+            `;
+            
+            // Add some visual flair
+            preview.style.borderColor = color;
+            preview.style.background = `rgba(${color.slice(1, 3)}, ${color.slice(3, 5)}, ${color.slice(5, 7)}, 0.1)`;
+        }
+        
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            console.log('🚀 GRID OS Claude Integration Test page loaded');
+            console.log('🔧 Run checkSystemStatus() to begin');
+            
+            // Allow Enter key to process chat messages
+            document.getElementById('chatInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    processChatMessage();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

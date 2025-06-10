@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRID OS - Live Owncast Integration</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #2d3748;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .live-indicator {
+            background: #ef4444;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .stream-section {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .grid-section {
+            background: #1a202c;
+            border-radius: 12px;
+            padding: 20px;
+            color: white;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .stream-embed {
+            width: 100%;
+            height: 400px;
+            border-radius: 8px;
+            border: none;
+            background: #000;
+        }
+        .connection-status {
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid #4299e1;
+        }
+        .connection-status.connected {
+            border-left-color: #10b981;
+            background: #f0fdf4;
+        }
+        .connection-status.error {
+            border-left-color: #ef4444;
+            background: #fef2f2;
+        }
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .events-log {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .event-item {
+            padding: 5px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .event-item:last-child {
+            border-bottom: none;
+        }
+        .timestamp {
+            color: #718096;
+            margin-right: 10px;
+        }
+        .grid-tile {
+            width: 40px;
+            height: 40px;
+            background: #4a5568;
+            border-radius: 4px;
+            margin: 2px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .grid-tile.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.6);
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(8, 40px);
+            gap: 2px;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎬 GRID OS Live Owncast Integration</h1>
+            <div class="live-indicator">🔴 LIVE SERVER</div>
+            <p>Connected to: <strong>209.97.158.117:8080</strong></p>
+        </div>
+
+        <div class="connection-status" id="connection-status">
+            <strong>🔄 Connecting to Owncast server...</strong><br>
+            Attempting WebSocket connection to real Owncast instance
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="connectToOwncast()" id="connect-btn">
+                🔌 Connect to Live Stream
+            </button>
+            <button class="btn" onclick="testGridResponse()" id="test-btn">
+                ⚡ Test Grid Response
+            </button>
+            <button class="btn" onclick="clearEventLog()" id="clear-btn">
+                🗑️ Clear Event Log
+            </button>
+        </div>
+
+        <div class="main-content">
+            <div class="stream-section">
+                <h3>🎥 Live Stream</h3>
+                <iframe 
+                    class="stream-embed"
+                    src="http://209.97.158.117:8080/embed/video"
+                    allow="autoplay; fullscreen"
+                    allowfullscreen
+                    title="Live Owncast Stream">
+                </iframe>
+            </div>
+
+            <div class="grid-section">
+                <h3>⚡ GRID OS Visualization</h3>
+                <div class="grid-container" id="grid-container">
+                    <!-- Grid tiles will be generated by JavaScript -->
+                </div>
+                <p style="margin-top: 20px; text-align: center; opacity: 0.8;">
+                    Watch the grid react to live stream events!
+                </p>
+            </div>
+        </div>
+
+        <div class="events-log" id="events-log">
+            <strong>📨 Live Event Log:</strong><br>
+            <div id="event-items">
+                <div class="event-item">
+                    <span class="timestamp">[System]</span>
+                    GRID OS Live Integration initialized
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // GRID OS Live Integration
+        let ws = null;
+        let connected = false;
+        let gridTiles = [];
+        
+        // Initialize grid tiles
+        function initializeGrid() {
+            const container = document.getElementById('grid-container');
+            for (let i = 0; i < 64; i++) {
+                const tile = document.createElement('div');
+                tile.className = 'grid-tile';
+                tile.id = `tile-${i}`;
+                container.appendChild(tile);
+                gridTiles.push(tile);
+            }
+        }
+
+        // Activate grid tiles
+        function activateGridTiles(count = 5, duration = 2000) {
+            // Randomly select tiles to activate
+            const activeIndices = [];
+            while (activeIndices.length < count) {
+                const index = Math.floor(Math.random() * 64);
+                if (!activeIndices.includes(index)) {
+                    activeIndices.push(index);
+                }
+            }
+
+            // Activate tiles
+            activeIndices.forEach(index => {
+                gridTiles[index].classList.add('active');
+            });
+
+            // Deactivate after duration
+            setTimeout(() => {
+                activeIndices.forEach(index => {
+                    gridTiles[index].classList.remove('active');
+                });
+            }, duration);
+        }
+
+        // Log events
+        function logEvent(type, message) {
+            const eventItems = document.getElementById('event-items');
+            const timestamp = new Date().toLocaleTimeString();
+            const eventItem = document.createElement('div');
+            eventItem.className = 'event-item';
+            eventItem.innerHTML = `
+                <span class="timestamp">[${timestamp}]</span>
+                <strong>${type}:</strong> ${message}
+            `;
+            eventItems.appendChild(eventItem);
+            
+            // Auto-scroll to bottom
+            document.getElementById('events-log').scrollTop = 
+                document.getElementById('events-log').scrollHeight;
+        }
+
+        // Update connection status
+        function updateConnectionStatus(status, message, type = 'info') {
+            const statusEl = document.getElementById('connection-status');
+            statusEl.className = `connection-status ${type}`;
+            statusEl.innerHTML = `<strong>${status}</strong><br>${message}`;
+        }
+
+        // Connect to Owncast WebSocket
+        window.connectToOwncast = function() {
+            if (connected) {
+                logEvent('System', 'Already connected to Owncast');
+                return;
+            }
+
+            updateConnectionStatus('🔄 Connecting...', 'Attempting WebSocket connection');
+            
+            try {
+                ws = new WebSocket('ws://209.97.158.117:8080/ws');
+                
+                ws.onopen = () => {
+                    connected = true;
+                    updateConnectionStatus('✅ Connected', 'Live connection to Owncast WebSocket', 'connected');
+                    logEvent('WebSocket', 'Connected to live Owncast server');
+                    document.getElementById('connect-btn').textContent = '🔌 Connected';
+                    document.getElementById('connect-btn').disabled = true;
+                };
+                
+                ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        handleOwncastMessage(data);
+                    } catch (error) {
+                        logEvent('Error', `Failed to parse message: ${error.message}`);
+                    }
+                };
+                
+                ws.onclose = () => {
+                    connected = false;
+                    updateConnectionStatus('🔌 Disconnected', 'Connection to Owncast lost', 'error');
+                    logEvent('WebSocket', 'Disconnected from Owncast');
+                    document.getElementById('connect-btn').textContent = '🔄 Reconnect';
+                    document.getElementById('connect-btn').disabled = false;
+                    
+                    // Auto-reconnect after 5 seconds
+                    setTimeout(() => {
+                        if (!connected) {
+                            logEvent('System', 'Attempting auto-reconnect...');
+                            connectToOwncast();
+                        }
+                    }, 5000);
+                };
+                
+                ws.onerror = (error) => {
+                    updateConnectionStatus('❌ Connection Error', 'Failed to connect to Owncast WebSocket', 'error');
+                    logEvent('Error', 'WebSocket connection failed');
+                    console.error('WebSocket error:', error);
+                };
+                
+            } catch (error) {
+                updateConnectionStatus('❌ Error', `Connection failed: ${error.message}`, 'error');
+                logEvent('Error', `Connection error: ${error.message}`);
+            }
+        };
+
+        // Handle Owncast messages
+        function handleOwncastMessage(data) {
+            console.log('Owncast message:', data);
+            
+            switch (data.type) {
+                case 'CHAT':
+                    if (data.body) {
+                        logEvent('Chat', `${data.user?.displayName || 'Anonymous'}: ${data.body}`);
+                        // Activate grid based on message length
+                        const tileCount = Math.min(Math.floor(data.body.length / 3), 16);
+                        activateGridTiles(tileCount, 3000);
+                    }
+                    break;
+                    
+                case 'USER_JOINED':
+                    logEvent('User', `${data.user?.displayName || 'Someone'} joined the stream`);
+                    activateGridTiles(3, 1500);
+                    break;
+                    
+                case 'STREAM_STATUS_UPDATE':
+                    logEvent('Stream', `Status: ${data.online ? 'Online' : 'Offline'}`);
+                    if (data.online) {
+                        activateGridTiles(8, 5000);
+                    }
+                    break;
+                    
+                case 'VIEWER_COUNT':
+                    logEvent('Viewers', `Current viewers: ${data.count || 0}`);
+                    break;
+                    
+                default:
+                    logEvent('Unknown', `Type: ${data.type}`);
+            }
+        }
+
+        // Test grid response
+        window.testGridResponse = function() {
+            logEvent('Test', 'Manual grid activation test');
+            activateGridTiles(12, 3000);
+        };
+
+        // Clear event log
+        window.clearEventLog = function() {
+            document.getElementById('event-items').innerHTML = `
+                <div class="event-item">
+                    <span class="timestamp">[System]</span>
+                    Event log cleared
+                </div>
+            `;
+        };
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeGrid();
+            logEvent('System', 'GRID OS Live Integration ready');
+            logEvent('System', 'Click "Connect to Live Stream" to start receiving events');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid OS System Diagnostics</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #00ff00;
+            padding: 20px;
+            margin: 0;
+        }
+        .diagnostic-panel {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        .status-healthy { color: #00ff00; }
+        .status-warning { color: #ffaa00; }
+        .status-critical { color: #ff0000; }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .passed { border-left: 4px solid #00ff00; }
+        .failed { border-left: 4px solid #ff0000; }
+        button {
+            background: #333;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #555;
+        }
+        .log-output {
+            background: #000;
+            color: #ccc;
+            padding: 15px;
+            height: 300px;
+            overflow-y: auto;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Grid OS System Diagnostics</h1>
+    
+    <div class="diagnostic-panel">
+        <h2>System Framework Information</h2>
+        <div id="framework-info">Loading...</div>
+    </div>
+
+    <div class="diagnostic-panel">
+        <h2>Environment Status</h2>
+        <div id="environment-status">Loading...</div>
+    </div>
+
+    <div class="diagnostic-panel">
+        <h2>Grid OS Backend Status</h2>
+        <div id="backend-status">Loading...</div>
+    </div>
+
+    <div class="diagnostic-panel">
+        <h2>System Tests</h2>
+        <button onclick="runAllTests()">Run All Tests</button>
+        <button onclick="runShaderTest()">Test Shader System</button>
+        <button onclick="runEventBusTest()">Test Event Bus</button>
+        <div id="test-results"></div>
+    </div>
+
+    <div class="diagnostic-panel">
+        <h2>Real-time Logs</h2>
+        <button onclick="clearLogs()">Clear Logs</button>
+        <div id="log-output" class="log-output"></div>
+    </div>
+
+    <script>
+        let originalConsoleLog, originalConsoleWarn, originalConsoleError;
+        
+        // Capture console output
+        function captureConsole() {
+            originalConsoleLog = console.log;
+            originalConsoleWarn = console.warn;
+            originalConsoleError = console.error;
+            
+            const logOutput = document.getElementById('log-output');
+            
+            console.log = function(...args) {
+                logOutput.textContent += '[LOG] ' + args.join(' ') + '\n';
+                logOutput.scrollTop = logOutput.scrollHeight;
+                originalConsoleLog.apply(console, args);
+            };
+            
+            console.warn = function(...args) {
+                logOutput.textContent += '[WARN] ' + args.join(' ') + '\n';
+                logOutput.scrollTop = logOutput.scrollHeight;
+                originalConsoleWarn.apply(console, args);
+            };
+            
+            console.error = function(...args) {
+                logOutput.textContent += '[ERROR] ' + args.join(' ') + '\n';
+                logOutput.scrollTop = logOutput.scrollHeight;
+                originalConsoleError.apply(console, args);
+            };
+        }
+        
+        function clearLogs() {
+            document.getElementById('log-output').textContent = '';
+        }
+        
+        function updateFrameworkInfo() {
+            const info = document.getElementById('framework-info');
+            const frameworkData = {
+                'Frontend Framework': 'Astro v5.9.1 with React Integration',
+                'UI Library': 'React with TypeScript',
+                '3D Graphics': 'Three.js v0.177.0',
+                'State Management': 'RxJS v7.8.2',
+                'Build Tool': 'Vite (via Astro)',
+                'Node Version': navigator.userAgent.includes('Node') ? 'Server-side' : 'Browser Environment',
+                'WebGL Support': !!window.WebGLRenderingContext ? 'Available' : 'Not Available',
+                'Module System': 'ES Modules'
+            };
+            
+            info.innerHTML = Object.entries(frameworkData)
+                .map(([key, value]) => `<div><strong>${key}:</strong> ${value}</div>`)
+                .join('');
+        }
+        
+        function updateEnvironmentStatus() {
+            const status = document.getElementById('environment-status');
+            const envData = {
+                'Window Object': typeof window !== 'undefined' ? '✅ Available' : '❌ Not Available',
+                'WebGL Context': (() => {
+                    try {
+                        const canvas = document.createElement('canvas');
+                        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                        return gl ? '✅ WebGL Available' : '❌ WebGL Not Available';
+                    } catch (e) {
+                        return '❌ WebGL Error: ' + e.message;
+                    }
+                })(),
+                'Local Storage': (() => {
+                    try {
+                        localStorage.setItem('test', 'test');
+                        localStorage.removeItem('test');
+                        return '✅ Available';
+                    } catch (e) {
+                        return '❌ Not Available';
+                    }
+                })(),
+                'Performance API': typeof performance !== 'undefined' ? '✅ Available' : '❌ Not Available',
+                'RequestAnimationFrame': typeof requestAnimationFrame !== 'undefined' ? '✅ Available' : '❌ Not Available'
+            };
+            
+            status.innerHTML = Object.entries(envData)
+                .map(([key, value]) => `<div><strong>${key}:</strong> ${value}</div>`)
+                .join('');
+        }
+        
+        function updateBackendStatus() {
+            const status = document.getElementById('backend-status');
+            
+            console.log('🔍 Checking Grid OS Backend Status...');
+            
+            const checks = {
+                'Grid OS Object': typeof window.gridOS !== 'undefined',
+                'Grid System Test': typeof window.gridSystemTest !== 'undefined',
+                'Event Bus': window.gridOS && typeof window.gridOS.eventBus !== 'undefined',
+                'Shader System': window.gridOS && typeof window.gridOS.shaderSystem !== 'undefined',
+                'Trigger System': window.gridOS && typeof window.gridOS.triggerSystem !== 'undefined',
+                'Initialization Status': window.gridOSInitialized === true
+            };
+            
+            const statusHtml = Object.entries(checks)
+                .map(([key, passed]) => {
+                    const icon = passed ? '✅' : '❌';
+                    const className = passed ? 'status-healthy' : 'status-critical';
+                    return `<div class="${className}"><strong>${key}:</strong> ${icon} ${passed ? 'OK' : 'Failed'}</div>`;
+                })
+                .join('');
+            
+            // Try to get system health if available
+            let healthInfo = '';
+            if (window.gridOS && typeof window.gridOS.getSystemHealth === 'function') {
+                try {
+                    const health = window.gridOS.getSystemHealth();
+                    healthInfo = `<div><strong>System Health:</strong> ${health.status}</div>`;
+                    if (health.subsystems) {
+                        Object.entries(health.subsystems).forEach(([name, subsystem]) => {
+                            const className = subsystem.status === 'healthy' ? 'status-healthy' : 
+                                           subsystem.status === 'degraded' ? 'status-warning' : 'status-critical';
+                            healthInfo += `<div class="${className}"><strong>${name}:</strong> ${subsystem.status}</div>`;
+                        });
+                    }
+                } catch (e) {
+                    healthInfo = `<div class="status-critical"><strong>Health Check Error:</strong> ${e.message}</div>`;
+                }
+            }
+            
+            status.innerHTML = statusHtml + healthInfo;
+        }
+        
+        function runAllTests() {
+            console.log('🧪 Running all Grid OS tests...');
+            const results = document.getElementById('test-results');
+            results.innerHTML = '<div>Running tests...</div>';
+            
+            const tests = [];
+            
+            // Test 1: Window exports
+            try {
+                if (typeof window.gridOS !== 'undefined') {
+                    tests.push({ name: 'Window Exports', passed: true, message: 'Grid OS is available on window object' });
+                } else {
+                    tests.push({ name: 'Window Exports', passed: false, message: 'Grid OS not found on window object' });
+                }
+            } catch (e) {
+                tests.push({ name: 'Window Exports', passed: false, message: 'Error: ' + e.message });
+            }
+            
+            // Test 2: System health
+            try {
+                if (window.gridOS && typeof window.gridOS.getSystemHealth === 'function') {
+                    const health = window.gridOS.getSystemHealth();
+                    const passed = health && health.status !== 'critical';
+                    tests.push({ name: 'System Health', passed, message: `Status: ${health.status}` });
+                } else {
+                    tests.push({ name: 'System Health', passed: false, message: 'getSystemHealth method not available' });
+                }
+            } catch (e) {
+                tests.push({ name: 'System Health', passed: false, message: 'Error: ' + e.message });
+            }
+            
+            // Test 3: Shader system
+            try {
+                if (window.gridOS && window.gridOS.shaderSystem) {
+                    const isReady = window.gridOS.shaderSystem.isReady && window.gridOS.shaderSystem.isReady();
+                    tests.push({ name: 'Shader System', passed: isReady, message: isReady ? 'Shader system is ready' : 'Shader system not ready' });
+                } else {
+                    tests.push({ name: 'Shader System', passed: false, message: 'Shader system not available' });
+                }
+            } catch (e) {
+                tests.push({ name: 'Shader System', passed: false, message: 'Error: ' + e.message });
+            }
+            
+            // Test 4: Event bus
+            try {
+                if (window.gridOS && window.gridOS.eventBus) {
+                    tests.push({ name: 'Event Bus', passed: true, message: 'Event bus is available' });
+                } else {
+                    tests.push({ name: 'Event Bus', passed: false, message: 'Event bus not available' });
+                }
+            } catch (e) {
+                tests.push({ name: 'Event Bus', passed: false, message: 'Error: ' + e.message });
+            }
+            
+            // Display results
+            const passed = tests.filter(t => t.passed).length;
+            const total = tests.length;
+            
+            const resultsHtml = `
+                <div><strong>Test Results: ${passed}/${total} passed</strong></div>
+                ${tests.map(test => `
+                    <div class="test-result ${test.passed ? 'passed' : 'failed'}">
+                        <strong>${test.name}:</strong> ${test.passed ? '✅ PASS' : '❌ FAIL'} - ${test.message}
+                    </div>
+                `).join('')}
+            `;
+            
+            results.innerHTML = resultsHtml;
+            console.log(`Test Results: ${passed}/${total} tests passed`);
+        }
+        
+        function runShaderTest() {
+            console.log('🎨 Testing Shader System specifically...');
+            if (window.gridOS && window.gridOS.shaderSystem) {
+                try {
+                    const shaderSystem = window.gridOS.shaderSystem;
+                    console.log('Shader System Details:', {
+                        isReady: shaderSystem.isReady ? shaderSystem.isReady() : 'method not available',
+                        getDimensions: shaderSystem.getDimensions ? shaderSystem.getDimensions() : 'method not available',
+                        activeShaders: shaderSystem.activeShaders ? Array.from(shaderSystem.activeShaders.keys()) : 'not available'
+                    });
+                } catch (e) {
+                    console.error('Shader system test error:', e);
+                }
+            } else {
+                console.warn('Shader system not available for testing');
+            }
+        }
+        
+        function runEventBusTest() {
+            console.log('📡 Testing Event Bus System...');
+            if (window.gridOS && window.gridOS.eventBus) {
+                try {
+                    const eventBus = window.gridOS.eventBus;
+                    console.log('Event Bus Details:', {
+                        hasSystemState: !!eventBus.systemState$,
+                        hasGridCommands: !!eventBus.gridCommands$,
+                        hasAudioCommands: !!eventBus.audioCommands$
+                    });
+                } catch (e) {
+                    console.error('Event bus test error:', e);
+                }
+            } else {
+                console.warn('Event bus not available for testing');
+            }
+        }
+        
+        // Initialize diagnostics
+        document.addEventListener('DOMContentLoaded', function() {
+            captureConsole();
+            updateFrameworkInfo();
+            updateEnvironmentStatus();
+            
+            // Wait a moment for Grid OS to initialize, then update backend status
+            setTimeout(() => {
+                updateBackendStatus();
+                // Auto-run tests after 2 seconds
+                setTimeout(runAllTests, 2000);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid OS System Test</title>
+    <style>
+        body {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background: #0a0a0a;
+            color: #00ff88;
+            padding: 20px;
+            margin: 0;
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-section {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00ff88;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+        .passed {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+        }
+        .failed {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff4444;
+        }
+        .warning {
+            background: rgba(255, 255, 0, 0.2);
+            color: #ffff00;
+        }
+        button {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #00cc66;
+        }
+        #console-output {
+            background: #000;
+            color: #00ff88;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #333;
+        }
+        .status-healthy { color: #00ff00; }
+        .status-degraded { color: #ffaa00; }
+        .status-critical { color: #ff4444; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔬 Grid OS System Test</h1>
+        
+        <div class="test-section">
+            <h2>🎛️ System Controls</h2>
+            <button onclick="runFullSystemTest()">Run Full System Test</button>
+            <button onclick="testShaderSystem()">Test Shader System</button>
+            <button onclick="testSystemHealth()">Check System Health</button>
+            <button onclick="clearConsole()">Clear Console</button>
+        </div>
+
+        <div class="test-section">
+            <h2>📊 System Status</h2>
+            <div id="system-status">Loading...</div>
+        </div>
+
+        <div class="test-section">
+            <h2>🧪 Test Results</h2>
+            <div id="test-results">No tests run yet.</div>
+        </div>
+
+        <div class="test-section">
+            <h2>📝 Console Output</h2>
+            <div id="console-output">System starting...\n</div>
+        </div>
+    </div>
+
+    <script>
+        // Redirect console to our output
+        const originalLog = console.log;
+        const originalWarn = console.warn;
+        const originalError = console.error;
+        
+        function appendToConsole(message, type = 'log') {
+            const output = document.getElementById('console-output');
+            const timestamp = new Date().toLocaleTimeString();
+            const prefix = type === 'error' ? '❌' : type === 'warn' ? '⚠️' : '📝';
+            output.textContent += `[${timestamp}] ${prefix} ${message}\n`;
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            appendToConsole(args.join(' '), 'log');
+        };
+        
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            appendToConsole(args.join(' '), 'warn');
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            appendToConsole(args.join(' '), 'error');
+        };
+
+        function clearConsole() {
+            document.getElementById('console-output').textContent = 'Console cleared.\n';
+        }
+
+        function updateSystemStatus() {
+            const statusDiv = document.getElementById('system-status');
+            
+            try {
+                if (window.gridOS) {
+                    const health = window.gridOS.getSystemHealth();
+                    
+                    let statusHtml = `
+                        <div class="test-result">
+                            <strong>Overall Status:</strong> 
+                            <span class="status-${health.status}">${health.status.toUpperCase()}</span>
+                        </div>
+                    `;
+                    
+                    if (health.subsystems) {
+                        statusHtml += '<div><strong>Subsystems:</strong></div>';
+                        for (const [name, subsystem] of Object.entries(health.subsystems)) {
+                            statusHtml += `
+                                <div class="test-result">
+                                    ${name}: <span class="status-${subsystem.status}">${subsystem.status}</span>
+                                    ${subsystem.diagnostics?.length ? ` - ${subsystem.diagnostics.join(', ')}` : ''}
+                                </div>
+                            `;
+                        }
+                    }
+                    
+                    statusDiv.innerHTML = statusHtml;
+                } else {
+                    statusDiv.innerHTML = '<div class="test-result failed">❌ window.gridOS not available</div>';
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `<div class="test-result failed">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        function runFullSystemTest() {
+            console.log('🚀 Starting full system test...');
+            
+            const results = [];
+            
+            // Test 1: Check if GridOS exists
+            try {
+                if (window.gridOS) {
+                    results.push({ name: 'GridOS Object', status: 'passed', message: 'window.gridOS exists' });
+                } else {
+                    results.push({ name: 'GridOS Object', status: 'failed', message: 'window.gridOS is undefined' });
+                }
+            } catch (error) {
+                results.push({ name: 'GridOS Object', status: 'failed', message: error.message });
+            }
+            
+            // Test 2: Check system health
+            try {
+                if (window.gridOS && window.gridOS.getSystemHealth) {
+                    const health = window.gridOS.getSystemHealth();
+                    results.push({ 
+                        name: 'System Health', 
+                        status: health.status === 'healthy' ? 'passed' : 'warning', 
+                        message: `Status: ${health.status}` 
+                    });
+                } else {
+                    results.push({ name: 'System Health', status: 'failed', message: 'getSystemHealth method not available' });
+                }
+            } catch (error) {
+                results.push({ name: 'System Health', status: 'failed', message: error.message });
+            }
+            
+            // Test 3: Check shader system
+            try {
+                if (window.gridOS && window.gridOS.getShaderSystem) {
+                    const shaderSystem = window.gridOS.getShaderSystem();
+                    const isReady = shaderSystem.isReady();
+                    results.push({ 
+                        name: 'Shader System', 
+                        status: isReady ? 'passed' : 'warning', 
+                        message: isReady ? 'Shader system is ready' : 'Shader system not ready' 
+                    });
+                } else {
+                    results.push({ name: 'Shader System', status: 'failed', message: 'getShaderSystem method not available' });
+                }
+            } catch (error) {
+                results.push({ name: 'Shader System', status: 'failed', message: error.message });
+            }
+            
+            // Test 4: Check Three.js renderer
+            try {
+                if (window.gridOS && window.gridOS.getShaderSystem) {
+                    const shaderSystem = window.gridOS.getShaderSystem();
+                    const dimensions = shaderSystem.getDimensions();
+                    results.push({ 
+                        name: 'Three.js Renderer', 
+                        status: dimensions.width > 0 ? 'passed' : 'warning', 
+                        message: `Dimensions: ${dimensions.width}x${dimensions.height}` 
+                    });
+                } else {
+                    results.push({ name: 'Three.js Renderer', status: 'failed', message: 'Cannot access shader system' });
+                }
+            } catch (error) {
+                results.push({ name: 'Three.js Renderer', status: 'failed', message: error.message });
+            }
+            
+            // Test 5: Run system tests if available
+            try {
+                if (window.gridSystemTest && window.gridSystemTest.runAllTests) {
+                    const testResults = window.gridSystemTest.runAllTests();
+                    const passedTests = testResults.filter(t => t.passed).length;
+                    results.push({ 
+                        name: 'System Tests', 
+                        status: passedTests > 0 ? 'passed' : 'failed', 
+                        message: `${passedTests}/${testResults.length} tests passed` 
+                    });
+                } else {
+                    results.push({ name: 'System Tests', status: 'warning', message: 'gridSystemTest not available' });
+                }
+            } catch (error) {
+                results.push({ name: 'System Tests', status: 'failed', message: error.message });
+            }
+            
+            // Display results
+            displayTestResults(results);
+            updateSystemStatus();
+            
+            console.log('✅ Full system test completed');
+        }
+
+        function testShaderSystem() {
+            console.log('🎨 Testing shader system specifically...');
+            
+            try {
+                if (!window.gridOS) {
+                    console.error('❌ window.gridOS not available');
+                    return;
+                }
+                
+                const shaderSystem = window.gridOS.getShaderSystem();
+                console.log('🔧 Shader system object:', shaderSystem);
+                console.log('🔧 Shader system ready:', shaderSystem.isReady());
+                console.log('🔧 Shader system dimensions:', shaderSystem.getDimensions());
+                console.log('🔧 Active shaders:', Array.from(shaderSystem.activeShaders.keys()));
+                
+                // Test shader operations
+                if (shaderSystem.isReady()) {
+                    console.log('✅ Testing shader operations...');
+                    try {
+                        shaderSystem.applyMaterial('test', 'cyanGlow');
+                        console.log('✅ Material application test passed');
+                    } catch (error) {
+                        console.error('❌ Material application failed:', error);
+                    }
+                    
+                    try {
+                        shaderSystem.setPostProcessing('bloom', true);
+                        console.log('✅ Post-processing test passed');
+                    } catch (error) {
+                        console.error('❌ Post-processing failed:', error);
+                    }
+                } else {
+                    console.warn('⚠️ Shader system not ready, skipping operations test');
+                }
+                
+            } catch (error) {
+                console.error('❌ Shader system test failed:', error);
+            }
+        }
+
+        function testSystemHealth() {
+            console.log('💊 Testing system health...');
+            
+            try {
+                if (!window.gridOS) {
+                    console.error('❌ window.gridOS not available');
+                    return;
+                }
+                
+                const health = window.gridOS.getSystemHealth();
+                console.log('💊 System health:', health);
+                
+                updateSystemStatus();
+                
+            } catch (error) {
+                console.error('❌ System health test failed:', error);
+            }
+        }
+
+        function displayTestResults(results) {
+            const resultsDiv = document.getElementById('test-results');
+            
+            let html = '';
+            results.forEach(result => {
+                const statusClass = result.status === 'passed' ? 'passed' : 
+                                   result.status === 'warning' ? 'warning' : 'failed';
+                html += `
+                    <div class="test-result ${statusClass}">
+                        <strong>${result.name}:</strong> ${result.message}
+                    </div>
+                `;
+            });
+            
+            resultsDiv.innerHTML = html;
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            console.log('🌟 Grid OS System Test page loaded');
+            
+            // Check if we're in the Grid OS environment
+            setTimeout(() => {
+                if (window.gridOS) {
+                    console.log('✅ Grid OS detected, running initial tests...');
+                    updateSystemStatus();
+                } else {
+                    console.warn('⚠️ Grid OS not detected - make sure this page is loaded in the Grid OS environment');
+                    console.log('💡 Try navigating to: http://localhost:3001/');
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
