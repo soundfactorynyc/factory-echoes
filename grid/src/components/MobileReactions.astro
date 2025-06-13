@@ -1,0 +1,270 @@
+---
+// Mobile-Optimized Reactions Component
+---
+
+<div class="reactions-section">
+  <!-- Reaction Buttons Bar -->
+  <div class="reactions-bar">
+    <div class="reactions-scroll">
+      <button class="reaction-btn" data-emoji="❤️" aria-label="Love">
+        <span class="emoji">❤️</span>
+        <span class="label">Love</span>
+      </button>
+      <button class="reaction-btn" data-emoji="🔥" aria-label="Fire">
+        <span class="emoji">🔥</span>
+        <span class="label">Fire</span>
+      </button>
+      <button class="reaction-btn" data-emoji="😂" aria-label="Laugh">
+        <span class="emoji">😂</span>
+        <span class="label">Laugh</span>
+      </button>
+      <button class="reaction-btn" data-emoji="🎉" aria-label="Party">
+        <span class="emoji">🎉</span>
+        <span class="label">Party</span>
+      </button>
+      <button class="reaction-btn" data-emoji="✨" aria-label="Sparkle">
+        <span class="emoji">✨</span>
+        <span class="label">Magic</span>
+      </button>
+      <button class="reaction-btn" data-emoji="🚀" aria-label="Rocket">
+        <span class="emoji">🚀</span>
+        <span class="label">Rocket</span>
+      </button>
+      <button class="reaction-btn" data-emoji="💎" aria-label="Diamond">
+        <span class="emoji">💎</span>
+        <span class="label">Diamond</span>
+      </button>
+      <button class="reaction-btn" data-emoji="⚡" aria-label="Lightning">
+        <span class="emoji">⚡</span>
+        <span class="label">Energy</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Floating Reactions Display -->
+  <div class="floating-reactions" id="floating-reactions"></div>
+</div>
+
+<style>
+  .reactions-section {
+    position: relative;
+    z-index: 15;
+  }
+
+  .reactions-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.8) 30%, rgba(0,0,0,0.95) 100%);
+    backdrop-filter: blur(10px);
+    padding: 10px 0 max(10px, env(safe-area-inset-bottom));
+    border-top: 1px solid rgba(255,255,255,0.1);
+    z-index: 100;
+  }
+
+  .reactions-scroll {
+    display: flex;
+    gap: 8px;
+    padding: 0 15px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .reactions-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .reaction-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+    height: 60px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .reaction-btn:hover,
+  .reaction-btn:active {
+    background: rgba(255,255,255,0.2);
+    border-color: rgba(255,255,255,0.4);
+    transform: scale(1.05);
+  }
+
+  .reaction-btn:active {
+    transform: scale(0.95);
+  }
+
+  .reaction-btn .emoji {
+    font-size: 24px;
+    line-height: 1;
+    margin-bottom: 2px;
+    display: block;
+  }
+
+  .reaction-btn .label {
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.8;
+    line-height: 1;
+  }
+
+  .floating-reactions {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 50;
+    overflow: hidden;
+  }
+
+  .floating-reaction {
+    position: absolute;
+    font-size: 32px;
+    pointer-events: none;
+    user-select: none;
+    animation: floatUp 3s ease-out forwards;
+    z-index: 50;
+  }
+
+  @keyframes floatUp {
+    0% {
+      opacity: 1;
+      transform: translateY(0) scale(0.5) rotate(0deg);
+    }
+    20% {
+      opacity: 1;
+      transform: translateY(-20vh) scale(1) rotate(10deg);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-100vh) scale(0.8) rotate(30deg);
+    }
+  }
+
+  /* Pulse effect when clicked */
+  .reaction-btn.clicked {
+    animation: reactionPulse 0.3s ease-out;
+  }
+
+  @keyframes reactionPulse {
+    0% {
+      transform: scale(1);
+      background: rgba(255,255,255,0.1);
+    }
+    50% {
+      transform: scale(1.1);
+      background: rgba(255,255,255,0.3);
+    }
+    100% {
+      transform: scale(1);
+      background: rgba(255,255,255,0.2);
+    }
+  }
+
+  /* Mobile responsiveness */
+  @media (max-width: 480px) {
+    .reaction-btn {
+      min-width: 55px;
+      height: 55px;
+    }
+    
+    .reaction-btn .emoji {
+      font-size: 20px;
+    }
+    
+    .reaction-btn .label {
+      font-size: 9px;
+    }
+    
+    .reactions-scroll {
+      gap: 6px;
+      padding: 0 10px;
+    }
+  }
+</style>
+
+<script>
+  // Mobile-optimized reactions system
+  class MobileReactions {
+    private floatingContainer: HTMLElement;
+    private reactionButtons: NodeListOf<HTMLButtonElement>;
+    
+    constructor() {
+      this.floatingContainer = document.getElementById('floating-reactions') as HTMLElement;
+      this.reactionButtons = document.querySelectorAll('.reaction-btn');
+      this.init();
+    }
+    
+    init() {
+      this.reactionButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => this.handleReactionClick(e));
+        // Add touch events for better mobile experience
+        btn.addEventListener('touchstart', (e) => e.preventDefault());
+      });
+    }
+    
+    handleReactionClick(event: Event) {
+      const btn = event.currentTarget as HTMLButtonElement;
+      const emoji = btn.getAttribute('data-emoji') || '❤️';
+      
+      // Add clicked animation
+      btn.classList.add('clicked');
+      setTimeout(() => btn.classList.remove('clicked'), 300);
+      
+      // Create floating reaction
+      this.createFloatingReaction(emoji, event);
+      
+      // Add haptic feedback on mobile
+      if ('vibrate' in navigator) {
+        navigator.vibrate(50);
+      }
+      
+      // Dispatch custom event for other components
+      window.dispatchEvent(new CustomEvent('reaction', {
+        detail: { emoji, timestamp: Date.now() }
+      }));
+    }
+    
+    createFloatingReaction(emoji: string, event: Event) {
+      const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+      const reaction = document.createElement('div');
+      reaction.className = 'floating-reaction';
+      reaction.textContent = emoji;
+      
+      // Random horizontal movement
+      const randomX = Math.random() * 100 - 50;
+      reaction.style.left = `${rect.left + rect.width/2 + randomX}px`;
+      reaction.style.bottom = `${window.innerHeight - rect.top}px`;
+      
+      this.floatingContainer.appendChild(reaction);
+      
+      // Remove after animation
+      setTimeout(() => {
+        if (reaction.parentNode) {
+          reaction.parentNode.removeChild(reaction);
+        }
+      }, 3000);
+    }
+  }
+  
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => new MobileReactions());
+  } else {
+    new MobileReactions();
+  }
+</script>

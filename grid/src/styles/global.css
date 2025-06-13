@@ -58,6 +58,8 @@ body {
   position: relative;
   min-height: 100vh;
   touch-action: manipulation;
+  background: var(--color-bg, #0a0a0a);
+  color: var(--color-text, #ffffff);
 }
 
 /* WebGL Background Canvas */
@@ -69,6 +71,18 @@ body {
   height: 100%;
   z-index: -1;
   pointer-events: none;
+}
+
+/* Mobile App Container */
+#mobile-app {
+  position: relative;
+  z-index: 1;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
 }
 
 /* App Root */
@@ -196,6 +210,15 @@ input, textarea {
   z-index: 1000;
   animation: notificationSlide 3s ease-out forwards;
   box-shadow: var(--shadow-md);
+}
+
+/* App Content */
+.app-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
 }
 
 /* Utilities */

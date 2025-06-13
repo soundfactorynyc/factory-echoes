@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Components</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+        .status-bar {
+            background: #111;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .live-stream {
+            background: #222;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chat {
+            background: #333;
+            height: 150px;
+            padding: 10px;
+        }
+        .reactions {
+            background: #444;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Component Test</h1>
+    
+    <div class="test-section">
+        <h2>Status Bar</h2>
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>📶📶🔋</span>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Live Stream</h2>
+        <div class="live-stream">
+            <p>LIVE STREAM AREA</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Chat</h2>
+        <div class="chat">
+            <p>Chat messages would go here...</p>
+            <input type="text" placeholder="Type a message..." style="width: 100%; background: #555; border: none; color: #fff; padding: 8px;">
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Reactions</h2>
+        <div class="reactions">
+            <button style="background: none; border: 1px solid #fff; color: #fff; padding: 10px; margin: 5px;">❤️</button>
+            <button style="background: none; border: 1px solid #fff; color: #fff; padding: 10px; margin: 5px;">🔥</button>
+            <button style="background: none; border: 1px solid #fff; color: #fff; padding: 10px; margin: 5px;">😂</button>
+        </div>
+    </div>
+
+    <script>
+        console.log('Test page loaded');
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                console.log('Button clicked:', btn.textContent);
+                alert('Button clicked: ' + btn.textContent);
+            });
+        });
+    </script>
+</body>
+</html>

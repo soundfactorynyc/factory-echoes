@@ -3,7 +3,7 @@
 import StatusBar from '../components/StatusBar.astro';
 import LiveStream from '../components/LiveStream.astro';
 import Chat from '../components/Chat.astro';
-import Reactions from '../components/Reactions.astro';
+import SimpleReactions from '../components/SimpleReactions.astro';
 import BeatSync from '../components/BeatSync.astro';
 ---
 
@@ -39,7 +39,7 @@ import BeatSync from '../components/BeatSync.astro';
       <Chat />
       
       <!-- Reactions at the bottom -->
-      <Reactions />
+      <SimpleReactions />
     </div>
     
     <!-- Overlay Components -->
@@ -51,7 +51,7 @@ import BeatSync from '../components/BeatSync.astro';
     <BeatSync />
     
     <!-- Shooting Reactions -->
-    <Reactions />
+    <SimpleReactions />
     
     <!-- Single floating action button -->
     <button class="fab" id="main-grid-btn" aria-label="Open features">
