@@ -5,6 +5,7 @@ import LiveStream from '../components/LiveStream.astro';
 import Chat from '../components/Chat.astro';
 import SimpleReactions from '../components/SimpleReactions.astro';
 import BeatSync from '../components/BeatSync.astro';
+import NewGridOverlay from '../components/NewGridOverlay.astro';
 ---
 
 <!DOCTYPE html>
@@ -42,19 +43,14 @@ import BeatSync from '../components/BeatSync.astro';
       <SimpleReactions />
     </div>
     
-    <!-- Overlay Components -->
-    <!-- <FloatingPlayer client:load /> -->
-    <!-- <GridOverlay client:load /> -->
-    <!-- <ThemeSelector client:load /> -->
-    
     <!-- Beat Sync Visualization -->
     <BeatSync />
     
-    <!-- Shooting Reactions -->
-    <SimpleReactions />
+    <!-- Grid Overlay -->
+    <NewGridOverlay />
     
     <!-- Single floating action button -->
-    <button class="fab" id="main-grid-btn" aria-label="Open features">
+    <button class="fab" id="main-grid-btn" aria-label="Open Grid" onclick="toggleGrid()">
       ⚡
     </button>
   </div>

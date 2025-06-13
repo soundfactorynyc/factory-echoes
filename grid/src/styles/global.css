@@ -221,6 +221,73 @@ input, textarea {
   padding: var(--space-sm);
 }
 
+/* Component Layout Fixes */
+.status-bar {
+  height: 44px;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.live-stream-container {
+  height: 200px; /* Fixed height for live stream */
+  flex-shrink: 0;
+  position: relative;
+  z-index: 5;
+}
+
+.chat-container {
+  flex: 1; /* Take remaining space */
+  min-height: 150px;
+  max-height: 300px; /* Prevent chat from taking all space */
+  overflow: hidden;
+  z-index: 5;
+}
+
+.beat-sync {
+  height: 60px;
+  flex-shrink: 0;
+  z-index: 5;
+}
+
+.simple-reactions {
+  height: 80px;
+  flex-shrink: 0;
+  z-index: 5;
+}
+
+.fab {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  z-index: 100 !important;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #ff6b35, #f7931e);
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+}
+
+.fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6);
+}
+
+/* Ensure all components are visible */
+#mobile-app > * {
+  position: relative;
+  z-index: 5;
+}
+
+/* Make sure WebGL background stays behind */
+#webgl-bg {
+  z-index: -1 !important;
+}
+
 /* Utilities */
 .flex { display: flex; }
 .flex-col { flex-direction: column; }
