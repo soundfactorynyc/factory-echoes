@@ -1,0 +1,102 @@
+---
+// src/components/FloatingPlayer.astro
+export interface Props {
+  owncastUrl?: string;
+}
+
+const { owncastUrl = import.meta.env.PUBLIC_OWNCAST_URL || "https://your-owncast-server.com/embed/video" } = Astro.props;
+---
+
+<div class="floating-player hidden" id="floating-player">
+  <div class="floating-header" id="floating-header">
+    <div class="floating-title">Sound Factory Live</div>
+    <div class="floating-controls">
+      <button class="control-btn" id="floating-close" title="Close">✕</button>
+    </div>
+  </div>
+  <div class="floating-content">
+    <iframe 
+      src={owncastUrl}
+      style="border: none; width: 100%; height: 100%;"
+      allowfullscreen>
+    </iframe>
+  </div>
+</div>
+
+<script>
+  // Simplified FloatingPlayer functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const floatingPlayer = document.getElementById('floating-player');
+    const closeBtn = document.getElementById('floating-close');
+    
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        if (floatingPlayer) {
+          floatingPlayer.classList.add('hidden');
+        }
+      });
+    }
+  });
+</script>
+</script>
+
+<style>
+  .floating-player {
+    position: fixed;
+    top: 80px;
+    right: 16px;
+    width: 280px;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 200;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  .floating-player.hidden {
+    transform: scale(0.8) translateY(-20px);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .floating-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .floating-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+  }
+
+  .control-btn {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    font-size: 12px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+  }
+
+  .floating-content {
+    aspect-ratio: 16 / 9;
+    background: #000;
+  }
+
+  @media (max-width: 375px) {
+    .floating-player {
+      width: calc(100vw - 32px);
+      max-width: 280px;
+    }
+  }
+</style>
+

@@ -1,0 +1,150 @@
+---
+// src/components/ThemeSelector.astro - Build-Safe Version
+const themes = [
+  { id: 'dark', class: 'dark-theme', color: 'linear-gradient(135deg, #000, #333)' },
+  { id: 'pink', class: 'pink-theme', color: 'linear-gradient(135deg, #ff1493, #ff69b4)' },
+  { id: 'jet-black', class: 'jet-black-theme', color: '#000' }
+];
+---
+
+<div class="theme-selector">
+  <div class="theme-options">
+    {themes.map(theme => (
+      <button 
+        class={`theme-btn ${theme.id}`}
+        data-theme={theme.id}
+        style={`background: ${theme.color};`}
+        title={`${theme.id.charAt(0).toUpperCase() + theme.id.slice(1)} Theme`}>
+      </button>
+    ))}
+  </div>
+</div>
+
+<script>
+  // Move all client-side logic here to avoid build issues
+  function initThemeSelector() {
+    function setupEventListeners() {
+      document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const target = e.target as HTMLElement;
+          if (target && target.dataset && target.dataset.theme) {
+            selectTheme(target.dataset.theme);
+          }
+        });
+      });
+    }
+
+    function selectTheme(themeId: string) {
+      // Update active button
+      document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-theme') === themeId);
+      });
+
+      // Update body class
+      document.body.className = themeId === 'dark' ? 'dark-theme' : 
+                                themeId === 'pink' ? 'pink-theme' : 
+                                'jet-black-theme';
+
+      // Add hypnotic mode if it was active
+      if (document.body.dataset.hypnotic === 'true') {
+        document.body.classList.add('hypnotic-mode');
+      }
+
+      // Save preference
+      try {
+        localStorage.setItem('sound-factory-theme', themeId);
+      } catch (e) {
+        console.warn('Could not save theme preference');
+      }
+
+      // Emit theme change event
+      window.dispatchEvent(new CustomEvent('theme-change', { 
+        detail: { theme: themeId } 
+      }));
+    }
+
+    function loadSavedTheme() {
+      try {
+        const savedTheme = localStorage.getItem('sound-factory-theme');
+        if (savedTheme) {
+          selectTheme(savedTheme);
+        }
+      } catch (e) {
+        console.warn('Could not load saved theme');
+      }
+    }
+
+    // Initialize
+    loadSavedTheme();
+    setupEventListeners();
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initThemeSelector);
+  } else {
+    initThemeSelector();
+  }
+</script>
+
+<style>
+  .theme-selector {
+    position: fixed;
+    top: 60px;
+    left: 16px;
+    z-index: 500;
+  }
+
+  .theme-options {
+    display: flex;
+    gap: 8px;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+  }
+
+  .theme-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .theme-btn:hover {
+    transform: scale(1.1);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .theme-btn.active {
+    border-color: #fff;
+    box-shadow: 0 0 10px currentColor;
+  }
+
+  .theme-btn.active::after {
+    content: '✓';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Hypnotic mode theme selector */
+  .hypnotic-mode .theme-selector {
+    animation: selector-float 10s ease-in-out infinite;
+  }
+
+  @keyframes selector-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+</style>

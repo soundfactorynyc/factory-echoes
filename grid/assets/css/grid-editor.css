@@ -1,0 +1,236 @@
+/* Grid Editor Styles */
+:root {
+    --primary-color: #00f2ea;
+    --secondary-color: #ff0050;
+    --background-dark: #000000;
+    --background-light: rgba(255, 255, 255, 0.1);
+    --border-color: rgba(0, 242, 234, 0.3);
+    --text-color: #ffffff;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Editor Controls */
+.editor-toolbar {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    z-index: 2000;
+}
+
+.tool-button {
+    background: none;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--primary-color);
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s ease;
+}
+
+.tool-button:hover {
+    background: rgba(0, 242, 234, 0.1);
+}
+
+.tool-button.active {
+    background: var(--primary-color);
+    color: var(--background-dark);
+}
+
+/* Asset Library */
+.asset-library {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 15px;
+    width: 250px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.asset-category {
+    margin-bottom: 15px;
+}
+
+.asset-category-title {
+    color: var(--primary-color);
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.asset-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.asset-item {
+    aspect-ratio: 1;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    transition: all 0.2s ease;
+}
+
+.asset-item:hover {
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+/* Property Editor */
+.property-editor {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 15px;
+    width: 280px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.property-group {
+    margin-bottom: 15px;
+}
+
+.property-group-title {
+    color: var(--primary-color);
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.property-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.property-label {
+    color: var(--text-color);
+    font-size: 12px;
+    width: 80px;
+}
+
+.property-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.property-input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+/* Animation Editor */
+.animation-timeline {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 15px;
+    width: 80%;
+    height: 150px;
+}
+
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.timeline-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.timeline-track {
+    height: 80px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    position: relative;
+}
+
+.keyframe {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+.keyframe:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .asset-library,
+    .property-editor {
+        width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .asset-library,
+    .property-editor {
+        display: none;
+    }
+    
+    .editor-toolbar {
+        bottom: 20px;
+        top: auto;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (pointer: coarse) {
+    .tool-button,
+    .property-input {
+        min-height: 44px;
+    }
+    
+    .asset-item {
+        min-height: 60px;
+    }
+}

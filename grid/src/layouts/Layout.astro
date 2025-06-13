@@ -1,0 +1,150 @@
+---
+export interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>{title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body class="dark-theme">
+  <canvas id="webgl-bg"></canvas>
+  <div id="app-root">
+    <slot />
+  </div>
+  
+  <script>
+    // Initialize WebGL background
+    import('../scripts/webgl-background');
+  </script>
+</body>
+</html>
+
+<style is:global>
+  /* Import global styles */
+  @import '../styles/global.css';
+  @import '../styles/themes.css';
+  @import '../styles/animations.css';
+  
+  /* Global variables */
+  :root {
+    --space-2xs: 2px;
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-3xl: 48px;
+    --space-4xl: 64px;
+    
+    /* Font sizes */
+    --font-2xs: 0.625rem;
+    --font-xs: 0.75rem;
+    --font-sm: 0.875rem;
+    --font-base: 1rem;
+    --font-lg: 1.125rem;
+    --font-xl: 1.25rem;
+    --font-2xl: 1.5rem;
+    --font-3xl: 1.875rem;
+    
+    /* Border radius */
+    --radius-xs: 2px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-2xl: 24px;
+    --radius-round: 50%;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+    
+    /* Touch targets */
+    --touch-min: 44px;
+    
+    /* Container max width */
+    --container-max: 1200px;
+    
+    /* Additional colors */
+    --color-surface-hover: rgba(255, 255, 255, 0.1);
+    --color-accent-hover: #ff5252;
+    --color-surface-rgb: 30, 30, 30;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    --gradient-surface: linear-gradient(135deg, var(--color-surface), rgba(255, 255, 255, 0.05));
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  #app-root {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    padding-top: calc(var(--touch-min, 44px) + var(--space-sm, 8px));
+  }
+
+  #webgl-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  /* Notification styles */
+  .notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    background: var(--color-accent);
+    color: white;
+    border-radius: 8px;
+    font-weight: 500;
+    z-index: 10000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    max-width: 300px;
+    word-wrap: break-word;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideInRight 0.3s ease forwards;
+  }
+
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+</style>

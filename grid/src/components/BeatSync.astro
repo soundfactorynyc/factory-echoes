@@ -1,0 +1,237 @@
+---
+// src/components/BeatSync.astro
+---
+
+<!-- Beat Sync Visualization Component -->
+<div class="beat-sync">
+  <div class="beat-visualizer">
+    <div class="beat-bars">
+      <div class="beat-bar" style="--delay: 0"></div>
+      <div class="beat-bar" style="--delay: 1"></div>
+      <div class="beat-bar" style="--delay: 2"></div>
+      <div class="beat-bar" style="--delay: 3"></div>
+      <div class="beat-bar" style="--delay: 4"></div>
+    </div>
+    <div class="beat-pulse"></div>
+  </div>
+</div>
+
+<script>
+  class BeatSync {
+    private beatBars: NodeListOf<HTMLElement>;
+    private beatPulse: HTMLElement | null;
+    private isPlaying = false;
+    private bpm = 120;
+    private intervalId: NodeJS.Timeout | null = null;
+    private beatCount = 0;
+
+    constructor() {
+      this.beatBars = document.querySelectorAll('.beat-bar');
+      this.beatPulse = document.querySelector('.beat-pulse');
+      this.init();
+    }
+
+    init() {
+      // Detect audio playback
+      this.detectAudio();
+      
+      // Start beat simulation (will be replaced by real audio analysis)
+      this.startBeatSync();
+      
+      // Listen for theme changes
+      window.addEventListener('theme-change', () => {
+        this.updateVisuals();
+      });
+    }
+
+    detectAudio() {
+      // TODO: Connect to Web Audio API for real beat detection
+      // For now, simulate beats
+      this.isPlaying = true;
+    }
+
+    startBeatSync() {
+      if (this.intervalId) return;
+      
+      const beatInterval = (60 / this.bpm) * 1000; // Convert BPM to milliseconds
+      
+      this.intervalId = setInterval(() => {
+        this.triggerBeat();
+      }, beatInterval);
+    }
+
+    stopBeatSync() {
+      if (this.intervalId) {
+        clearInterval(this.intervalId);
+        this.intervalId = null;
+      }
+    }
+
+    triggerBeat() {
+      this.beatCount++;
+      
+      // Trigger beat bar animation
+      const activeBar = this.beatBars[this.beatCount % this.beatBars.length];
+      activeBar.classList.add('active');
+      
+      // Remove active class after animation
+      setTimeout(() => {
+        activeBar.classList.remove('active');
+      }, 200);
+      
+      // Trigger pulse
+      if (this.beatPulse) {
+        this.beatPulse.classList.add('pulse');
+        setTimeout(() => {
+          this.beatPulse?.classList.remove('pulse');
+        }, 300);
+      }
+      
+      // Send beat event to WebGL background
+      window.dispatchEvent(new CustomEvent('beat', {
+        detail: {
+          count: this.beatCount,
+          strength: Math.random() * 0.5 + 0.5, // Simulate variable intensity
+          bpm: this.bpm
+        }
+      }));
+    }
+
+    updateVisuals() {
+      // Theme-specific beat colors are handled by CSS custom properties
+    }
+
+    setBPM(newBPM: number) {
+      this.bpm = newBPM;
+      this.stopBeatSync();
+      if (this.isPlaying) {
+        this.startBeatSync();
+      }
+    }
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      new BeatSync();
+    });
+  } else {
+    new BeatSync();
+  }
+</script>
+
+<style>
+  .beat-sync {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.7;
+  }
+
+  .beat-visualizer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .beat-bars {
+    display: flex;
+    gap: 4px;
+    align-items: end;
+    height: 40px;
+  }
+
+  .beat-bar {
+    width: 3px;
+    background: var(--color-accent);
+    border-radius: 2px;
+    height: 10px;
+    transition: all 0.1s ease;
+    animation-delay: calc(var(--delay) * 0.05s);
+    opacity: 0.5;
+  }
+
+  .beat-bar.active {
+    height: 40px;
+    opacity: 1;
+    box-shadow: 0 0 10px var(--color-accent);
+    transform: scaleY(1.2);
+  }
+
+  .beat-pulse {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border: 2px solid var(--color-accent);
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.3s ease;
+  }
+
+  .beat-pulse.pulse {
+    opacity: 0.8;
+    transform: scale(1.5);
+    border-width: 1px;
+  }
+
+  /* Theme-specific colors */
+  .dark-theme .beat-bar {
+    background: var(--color-accent);
+    box-shadow: 0 0 5px var(--color-accent);
+  }
+
+  .pink-theme .beat-bar {
+    background: #ff69b4;
+    box-shadow: 0 0 5px #ff69b4;
+  }
+
+  .pink-theme .beat-pulse {
+    border-color: #ff69b4;
+  }
+
+  .jet-black-theme .beat-bar {
+    background: #ffffff;
+    box-shadow: 0 0 5px #ffffff;
+  }
+
+  .jet-black-theme .beat-pulse {
+    border-color: #ffffff;
+  }
+
+  /* Responsive sizing */
+  @media (max-width: 428px) {
+    .beat-sync {
+      transform: translate(-50%, -50%) scale(0.8);
+    }
+    
+    .beat-bars {
+      height: 30px;
+      gap: 3px;
+    }
+    
+    .beat-bar {
+      width: 2px;
+    }
+    
+    .beat-bar.active {
+      height: 30px;
+    }
+    
+    .beat-pulse {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  /* Hide in landscape on small screens */
+  @media (orientation: landscape) and (max-height: 500px) {
+    .beat-sync {
+      display: none;
+    }
+  }
+</style>

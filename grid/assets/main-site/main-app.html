@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sound Factory - Modular Experience</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+<!-- WebGL Background Canvas -->
+<canvas id="webglCanvas"></canvas>
+
+<!-- Main App Container with iPhone Frame -->
+<div class="main-app">
+    <div class="iphone-frame">
+        <div class="iphone-screen">
+            <!-- Notch -->
+            <div class="notch"></div>
+            
+            <!-- Status Bar -->
+            <div class="status-bar">
+                <div class="status-time">9:41</div>
+                <div class="status-icons">📶 📶 🔋</div>
+            </div>
+
+            <!-- App Content -->
+            <div class="app-content">
+                <!-- Layer 1: Magical Reaction Canvas (floats above everything) -->
+                <canvas id="reactionCanvas"></canvas>
+                
+                <!-- Layer 2: Hologram Canvas for name effects -->
+                <canvas id="hologramCanvas"></canvas>
+
+                <!-- Layer 3: Particle Effects Canvas -->
+                <canvas id="particleCanvas"></canvas>
+
+                <!-- History Toggle -->
+                <button class="history-toggle" id="historyToggle">📜</button>
+
+                <!-- TikTok Grid Toggle (Main Feature Button) -->
+                <button class="tiktok-grid-toggle" id="tiktokGridToggle">
+                    <span class="grid-icon">⚡</span>
+                </button>
+
+                <!-- TikTok Style Grid (16 Features) -->
+                <div class="tiktok-grid" id="tiktokGrid">
+                    <button class="tiktok-btn" data-feature="portal">
+                        <div class="tiktok-icon">🌀</div>
+                        <div class="tiktok-label">Portal</div>
+                    </button>
+                    <button class="tiktok-btn" data-feature="mirror">
+                        <div class="tiktok-icon">🪞</div>
+                        <div class="tiktok-label">Mirror</div>
+                    </button>
+                    <button class="tiktok-btn" data-feature="quantum">
+                        <div class="tiktok-icon">⚛️</div>
+                        <div class="tiktok-label">Quantum</div>
+                    </button>
+                    <button class="tiktok-btn" data-feature="holo">
+                        <div class="tiktok-icon">🎭</div>
+                        <div class="tiktok-label">Holo</div>
+                    </button>
+                    <button class="tiktok-btn" data-feature="rewind">
+                        <div class="tiktok-icon">⏪</div>
+                        <div class="tiktok-label">Rewind</div>
+                    </button>
+                    <button class="tiktok-btn" data-feature="freeze">
+                        <div class="tiktok-icon">❄️</div>
+                        <div class="tiktok-label">Freeze</div>
+                    </button>
+                    <button class="tiktok-btn" data-feature="loop">
+                        <div class="tiktok-icon">🔄</div>
+                        <div class="tiktok-label">Loop</div>
+                    </button>
+                    <button class="tiktok-btn" data-feature="bullet">
+                        <div class="tiktok-icon">🎯</div>
+                        <div class="tiktok-label">Bullet</div>
+                    </button>
+                    <button class="tiktok-btn" data-feature="dual">
+                        <div class="tiktok-icon">📱</div>
+                        <div class="tiktok-label">Dual</div>
+                    </button>
+                    <button class="tiktok-btn" data-feature="clone">
+                        <div class="tiktok-icon">👥</div>
+                        <div class="tiktok-label">Clone</div>
+                    </button>
+                    <button class="tiktok-btn" data-feature="feeling">
+                        <div class="tiktok-icon">🔥</div>
+                        <div class="tiktok-label">Vibe</div>
+                    </button>
+                    <button class="tiktok-btn" data-feature="effects">
+                        <div class="tiktok-icon">✨</div>
+                        <div class="tiktok-label">Effects</div>
+                    </button>
+                    <button class="tiktok-btn" data-feature="enhance">
+                        <div class="tiktok-icon">💎</div>
+                        <div class="tiktok-label">Enhance</div>
+                    </button>
+                    <button class="tiktok-btn" data-feature="ai">
+                        <div class="tiktok-icon">🤖</div>
+                        <div class="tiktok-label">AI</div>
+                    </button>
+                    <button class="tiktok-btn" data-feature="live">
+                        <div class="tiktok-icon">🔴</div>
+                        <div class="tiktok-label">Live</div>
+                    </button>
+                    <button class="tiktok-btn" data-feature="galaxy">
+                        <div class="tiktok-icon">🌌</div>
+                        <div class="tiktok-label">Galaxy</div>
+                    </button>
+                </div>
+
+                <!-- Message History -->
+                <div class="message-history" id="messageHistory"></div>
+
+                <!-- Floating Message Container (above chat) -->
+                <div id="floatingContainer"></div>
+
+                <!-- Combo Indicator -->
+                <div class="combo-indicator" id="comboIndicator"></div>
+
+                <!-- Active Modes Display -->
+                <div class="active-modes" id="activeModes"></div>
+
+                <!-- Bottom Section: Chat Layer (pushed to bottom) -->
+                <div class="bottom-section">
+                    <!-- Chat Layer -->
+                    <div class="chat-layer">
+                        <div class="dm-indicator" id="dmIndicator">DM Mode</div>
+                        <div class="chat-label">Group Chat</div>
+                        <div class="chat-input-container">
+                        </div>
+                    </div>
+
+                    <!-- Reaction Panel (at very bottom) -->
+                    <div class="reaction-panel">
+                        <button class="reaction-btn emoji-btn" data-emoji="💜" data-type="love">💜</button>
+                        <button class="reaction-btn emoji-btn" data-emoji="⚡" data-type="fire">⚡</button>
+                        <button class="reaction-btn emoji-btn" data-emoji="😅" data-type="laugh">😅</button>
+                        <button class="reaction-btn emoji-btn" data-emoji="💀" data-type="skull">💀</button>
+                        <button class="reaction-btn emoji-btn" data-emoji="🔔" data-type="bell">🔔</button>
+                        <button class="reaction-btn emoji-btn" data-emoji="✨" data-type="sparkle">✨</button>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- Home indicator -->
+            <div class="home-indicator"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Load JavaScript modules -->
+<script src="../js/webgl-background.js"></script>
+<script src="../js/reaction-system.js"></script>
+<script src="../js/app-controller.js"></script>
+<script src="../js/editor.js"></script>
+
+</body>
+</html>

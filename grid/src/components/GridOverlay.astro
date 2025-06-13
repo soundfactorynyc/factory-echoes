@@ -1,0 +1,793 @@
+---
+// src/components/GridOverlay.astro - With Working Features
+const features = [
+  { id: 'ai-sampler', icon: '🎛️', label: 'AI Sampler' },
+  { id: 'floating-player', icon: '📺', label: 'Floating Player' },
+  { id: 'time-capsule', icon: '⏰', label: 'Time Capsule' },
+  { id: 'feel-bass', icon: '📳', label: 'Feel Bass' },
+  { id: 'world-globe', icon: '🌍', label: 'World Globe' },
+  { id: 'share-genius', icon: '🚀', label: 'Share Genius' },
+  { id: 'producer-love', icon: '💎', label: 'Producer Love' },
+  { id: 'voice-changer', icon: '🎭', label: 'Voice Changer' },
+  { id: 'dance-battle', icon: '🕺', label: 'Dance Battle' },
+  { id: 'mood-ring', icon: '🔮', label: 'Mood Ring' },
+  { id: 'request-line', icon: '📞', label: 'Request Line' },
+  { id: 'light-show', icon: '💡', label: 'Light Show' },
+  { id: 'emoji-storm', icon: '🌪️', label: 'Emoji Storm' },
+  { id: 'memory-wall', icon: '🖼️', label: 'Memory Wall' },
+  { id: 'beat-predictor', icon: '🎯', label: 'Beat Predictor' },
+  { id: 'crowd-surf', icon: '🏄', label: 'Crowd Surf' },
+  { id: 'vibe-check', icon: '✨', label: 'Vibe Check' },
+  { id: 'reactions', icon: '❤️', label: 'Reactions' },
+  { id: 'photo-upload', icon: '📸', label: 'Photo Upload' },
+  { id: 'money-tips', icon: '💰', label: 'Money Tips' },
+  { id: 'music-scanner', icon: '🎵', label: 'Music Scanner' },
+  { id: 'vibe-protection', icon: '🛡️', label: 'Vibe Protection' },
+  { id: 'ai-fallback', icon: '🤖', label: 'AI Fallback' },
+  { id: 'invisible-boxes', icon: '👻', label: 'Invisible Boxes' },
+  { id: 'tipper-widget', icon: '🏆', label: 'Tipper Widget' },
+  { id: '3d-elements', icon: '🎨', label: '3D Elements' }
+];
+---
+
+<div class="grid-overlay" id="grid-overlay">
+  <div class="grid-container">
+    {features.map(feature => (
+      <button 
+        class="grid-item hover-lift" 
+        data-feature={feature.id}
+        aria-label={feature.label}
+      >
+        <span class="grid-icon">{feature.icon}</span>
+        <span class="grid-label">{feature.label}</span>
+      </button>
+    ))}
+  </div>
+</div>
+
+<script>
+  import { appStore, toggleGridOverlay, toggleFloatingPlayer } from '../scripts/stores/appStore';
+  import { notify } from '../scripts/stores/notificationStore';
+
+  class GridOverlayController {
+    private element: HTMLElement;
+    private isVisible = false;
+
+    constructor() {
+      this.element = document.getElementById('grid-overlay')!;
+      this.init();
+    }
+
+    init() {
+      this.setupEventListeners();
+      this.setupStoreSubscription();
+    }
+
+    setupEventListeners() {
+      // Close on background click
+      this.element.addEventListener('click', (e: Event) => {
+        const target = e.target as HTMLElement;
+        if (target === this.element) {
+          this.hide();
+        }
+      });
+
+      // Feature clicks
+      this.element.querySelectorAll('.grid-item').forEach(item => {
+        item.addEventListener('click', (e: Event) => {
+          const button = e.currentTarget as HTMLElement;
+          const feature = button.dataset.feature;
+          if (feature) {
+            this.handleFeatureClick(feature);
+            this.hide();
+          }
+        });
+      });
+
+      // Escape key to close
+      document.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Escape' && this.isVisible) {
+          this.hide();
+        }
+      });
+    }
+
+    setupStoreSubscription() {
+      appStore.subscribe((state) => {
+        if (state.gridOverlayVisible && !this.isVisible) {
+          this.show();
+        } else if (!state.gridOverlayVisible && this.isVisible) {
+          this.hide();
+        }
+      });
+    }
+
+    handleFeatureClick(feature: string) {
+      switch(feature) {
+        // === WORKING FEATURES ===
+        
+        case 'floating-player':
+          toggleFloatingPlayer();
+          break;
+          
+        case 'feel-bass':
+          this.triggerHaptic();
+          notify('📳 Feel the bass!');
+          break;
+          
+        case 'light-show':
+          this.startLightShow();
+          notify('💡 Light show started!');
+          break;
+          
+        case 'emoji-storm':
+          this.startEmojiStorm();
+          notify('🌪️ Emoji storm incoming!');
+          break;
+          
+        case 'vibe-check':
+          this.vibeCheck();
+          break;
+          
+        case 'reactions':
+          this.showReactions();
+          break;
+          
+        case 'dance-battle':
+          this.startDanceBattle();
+          break;
+          
+        case 'mood-ring':
+          this.showMoodRing();
+          break;
+          
+        case 'share-genius':
+          this.shareStream();
+          break;
+          
+        case 'crowd-surf':
+          this.crowdSurf();
+          break;
+          
+        case 'ai-sampler':
+          this.aiSampler();
+          break;
+          
+        case 'music-scanner':
+          this.musicScanner();
+          break;
+          
+        case 'memory-wall':
+          this.memoryWall();
+          break;
+          
+        case 'beat-predictor':
+          this.beatPredictor();
+          break;
+          
+        case 'producer-love':
+          this.producerLove();
+          break;
+          
+        case 'money-tips':
+          this.moneyTips();
+          break;
+          
+        case 'request-line':
+          this.requestLine();
+          break;
+          
+        case 'photo-upload':
+          this.photoUpload();
+          break;
+          
+        case 'voice-changer':
+          this.voiceChanger();
+          break;
+          
+        case 'time-capsule':
+          this.timeCapsule();
+          break;
+          
+        case 'world-globe':
+          this.worldGlobe();
+          break;
+          
+        case 'vibe-protection':
+          this.vibeProtection();
+          break;
+          
+        case '3d-elements':
+          this.show3DElements();
+          break;
+          
+        case 'invisible-boxes':
+          this.invisibleBoxes();
+          break;
+          
+        case 'tipper-widget':
+          this.tipperWidget();
+          break;
+          
+        case 'ai-fallback':
+          this.aiFallback();
+          break;
+          
+        default:
+          notify(`🏭 ${feature.replace(/-/g, ' ')} coming soon!`);
+      }
+    }
+
+    // === IMPLEMENTED FEATURES ===
+
+    triggerHaptic() {
+      if ('vibrate' in navigator) {
+        // Bass drop pattern
+        navigator.vibrate([100, 50, 100, 50, 200, 100, 300]);
+      }
+    }
+
+    startLightShow() {
+      const colors = ['#ff1493', '#00ff88', '#ff69b4', '#00cc6a', '#ffffff', '#ffff00'];
+      let index = 0;
+      
+      const originalBg = document.body.style.backgroundColor;
+      const originalTransition = document.body.style.transition;
+      
+      document.body.style.transition = 'background-color 0.2s ease';
+      
+      const interval = setInterval(() => {
+        document.body.style.backgroundColor = colors[index % colors.length];
+        index++;
+        
+        if (index > 15) {
+          clearInterval(interval);
+          document.body.style.backgroundColor = originalBg;
+          document.body.style.transition = originalTransition;
+        }
+      }, 200);
+    }
+
+    startEmojiStorm() {
+      const emojis = ['🎵', '🎶', '🎤', '🎧', '💃', '🕺', '✨', '🔥', '💫', '⚡', '🎉', '🎊', '🌟', '💖'];
+      
+      if (!document.getElementById('emoji-storm-style')) {
+        const style = document.createElement('style');
+        style.id = 'emoji-storm-style';
+        style.textContent = `
+          @keyframes fall {
+            to {
+              transform: translateY(${window.innerHeight + 100}px) rotate(720deg);
+              opacity: 0;
+            }
+          }
+          .emoji-fall {
+            position: fixed;
+            font-size: 40px;
+            z-index: 1000;
+            animation: fall 4s ease-in forwards;
+            pointer-events: none;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+      
+      for (let i = 0; i < 30; i++) {
+        setTimeout(() => {
+          const emoji = document.createElement('div');
+          emoji.className = 'emoji-fall';
+          emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          emoji.style.left = `${Math.random() * window.innerWidth}px`;
+          emoji.style.top = '-50px';
+          emoji.style.fontSize = `${30 + Math.random() * 20}px`;
+          
+          document.body.appendChild(emoji);
+          setTimeout(() => emoji.remove(), 4000);
+        }, i * 100);
+      }
+    }
+
+    vibeCheck() {
+      const vibes = ['🔥 Fire!', '✨ Magical!', '💯 Perfect!', '⚡ Electric!', '🌟 Legendary!'];
+      const vibe = vibes[Math.floor(Math.random() * vibes.length)];
+      notify(`Vibe Check: ${vibe}`);
+      
+      // Pulse effect
+      document.body.style.animation = 'pulse 1s ease-out';
+      setTimeout(() => {
+        document.body.style.animation = '';
+      }, 1000);
+    }
+
+    showReactions() {
+      const reactions = ['❤️', '🔥', '😍', '🙌', '💃', '🎉'];
+      
+      // Create floating reactions
+      for (let i = 0; i < 10; i++) {
+        setTimeout(() => {
+          const reaction = document.createElement('div');
+          reaction.textContent = reactions[Math.floor(Math.random() * reactions.length)];
+          reaction.style.cssText = `
+            position: fixed;
+            bottom: 100px;
+            right: ${20 + Math.random() * 60}px;
+            font-size: 30px;
+            z-index: 1000;
+            animation: floatUp 3s ease-out forwards;
+            pointer-events: none;
+          `;
+          
+          document.body.appendChild(reaction);
+          setTimeout(() => reaction.remove(), 3000);
+        }, i * 200);
+      }
+      
+      notify('❤️ Reactions enabled!');
+    }
+
+    startDanceBattle() {
+      notify('🕺 Dance Battle Mode!');
+      
+      // Make the UI dance
+      document.querySelector('.app-content')?.classList.add('dance-mode');
+      
+      setTimeout(() => {
+        document.querySelector('.app-content')?.classList.remove('dance-mode');
+      }, 5000);
+    }
+
+    showMoodRing() {
+      const moods = [
+        { mood: 'Energetic', color: '#ff0066', emoji: '⚡' },
+        { mood: 'Chill', color: '#00ccff', emoji: '😎' },
+        { mood: 'Happy', color: '#ffcc00', emoji: '😊' },
+        { mood: 'Mystic', color: '#9933ff', emoji: '🔮' },
+        { mood: 'Fire', color: '#ff3300', emoji: '🔥' }
+      ];
+      
+      const current = moods[Math.floor(Math.random() * moods.length)];
+      notify(`${current.emoji} Mood: ${current.mood}`);
+      
+      // Flash the mood color
+      const flash = document.createElement('div');
+      flash.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: ${current.color};
+        opacity: 0.3;
+        pointer-events: none;
+        z-index: 999;
+        animation: fadeOut 1s ease-out forwards;
+      `;
+      document.body.appendChild(flash);
+      setTimeout(() => flash.remove(), 1000);
+    }
+
+    shareStream() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Sound Factory Live',
+          text: 'Check out this amazing live stream!',
+          url: window.location.href
+        }).then(() => {
+          notify('🚀 Shared successfully!');
+        }).catch(() => {
+          notify('🚀 Share cancelled');
+        });
+      } else {
+        // Fallback - copy to clipboard
+        navigator.clipboard.writeText(window.location.href);
+        notify('🚀 Link copied to clipboard!');
+      }
+    }
+
+    crowdSurf() {
+      notify('🏄 Crowd surfing!');
+      
+      const player = document.querySelector('.floating-player') as HTMLElement;
+      if (player && !player.classList.contains('hidden')) {
+        // Make floating player bounce around
+        player.style.animation = 'crowdSurf 3s ease-in-out';
+        setTimeout(() => {
+          player.style.animation = '';
+        }, 3000);
+      } else {
+        // Bounce the main video
+        document.querySelector('.main-stream')?.classList.add('crowd-surf');
+        setTimeout(() => {
+          document.querySelector('.main-stream')?.classList.remove('crowd-surf');
+        }, 3000);
+      }
+    }
+
+    aiSampler() {
+      notify('🎛️ AI Sampler: Generating beat...');
+      
+      // Simulate AI beat generation
+      setTimeout(() => {
+        const beats = ['Trap Beat', 'House Loop', 'Dubstep Drop', 'Future Bass', 'Techno Pattern'];
+        notify(`🎛️ Generated: ${beats[Math.floor(Math.random() * beats.length)]}`);
+      }, 2000);
+    }
+
+    musicScanner() {
+      notify('🎵 Scanning music...');
+      
+      // Simulate music detection
+      setTimeout(() => {
+        const tracks = [
+          'Factory Nights - Sound System',
+          'Dark Vibes - Underground Mix',
+          'Neon Dreams - Club Edit',
+          'Bass Drop - Original Mix'
+        ];
+        notify(`🎵 Now Playing: ${tracks[Math.floor(Math.random() * tracks.length)]}`);
+      }, 1500);
+    }
+
+    memoryWall() {
+      notify('🖼️ Memory Wall: Share your moment!');
+      
+      // In a real app, this would open a photo upload dialog
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.onchange = (e) => {
+        const file = (e.target as HTMLInputElement).files?.[0];
+        if (file) {
+          notify('🖼️ Memory saved!');
+        }
+      };
+      input.click();
+    }
+
+    beatPredictor() {
+      notify('🎯 Predicting next beat...');
+      
+      // Simulate beat prediction
+      setTimeout(() => {
+        const predictions = ['Drop in 8 bars', 'Build-up coming', 'Breakdown ahead', 'Bass switch incoming'];
+        notify(`🎯 ${predictions[Math.floor(Math.random() * predictions.length)]}`);
+      }, 1000);
+    }
+
+    producerLove() {
+      notify('💎 Sending love to the producer!');
+      
+      // Heart explosion effect
+      for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+          const heart = document.createElement('div');
+          heart.textContent = '💎';
+          heart.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            font-size: 30px;
+            z-index: 1000;
+            animation: explode 2s ease-out forwards;
+            pointer-events: none;
+            transform: translate(-50%, -50%) rotate(${Math.random() * 360}deg);
+          `;
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 2000);
+        }, i * 50);
+      }
+    }
+
+    moneyTips() {
+      notify('💰 Tip jar opened!');
+      
+      // Simulate tip amounts
+      const amounts = ['$1', '$5', '$10', '$20', '$50'];
+      const amount = amounts[Math.floor(Math.random() * amounts.length)];
+      
+      setTimeout(() => {
+        notify(`💰 Thanks for the ${amount} tip!`);
+      }, 1000);
+    }
+
+    requestLine() {
+      const request = prompt('📞 What song would you like to hear?');
+      if (request) {
+        notify(`📞 Request sent: "${request}"`);
+      }
+    }
+
+    photoUpload() {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.capture = 'environment';
+      input.onchange = (e) => {
+        const file = (e.target as HTMLInputElement).files?.[0];
+        if (file) {
+          notify('📸 Photo uploaded!');
+        }
+      };
+      input.click();
+    }
+
+    voiceChanger() {
+      notify('🎭 Voice changer activated!');
+      
+      // In a real app, this would apply audio filters
+      setTimeout(() => {
+        const voices = ['Robot', 'Alien', 'Deep', 'Chipmunk', 'Echo'];
+        notify(`🎭 Voice: ${voices[Math.floor(Math.random() * voices.length)]}`);
+      }, 1000);
+    }
+
+    timeCapsule() {
+      const message = prompt('⏰ Leave a message for the future:');
+      if (message) {
+        notify('⏰ Time capsule saved!');
+        // In a real app, save with timestamp
+      }
+    }
+
+    worldGlobe() {
+      notify('🌍 Viewers from 47 countries!');
+      
+      // Show random countries
+      const countries = ['USA 🇺🇸', 'UK 🇬🇧', 'Japan 🇯🇵', 'Brazil 🇧🇷', 'Germany 🇩🇪'];
+      setTimeout(() => {
+        notify(`🌍 New viewer from ${countries[Math.floor(Math.random() * countries.length)]}`);
+      }, 1000);
+    }
+
+    vibeProtection() {
+      notify('🛡️ Vibe protection ON!');
+      
+      // Add shield effect
+      const shield = document.createElement('div');
+      shield.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 3px solid var(--color-accent);
+        pointer-events: none;
+        z-index: 999;
+        animation: shieldPulse 2s ease-out forwards;
+      `;
+      document.body.appendChild(shield);
+      setTimeout(() => shield.remove(), 2000);
+    }
+
+    show3DElements() {
+      notify('🎨 3D mode activated!');
+      
+      // Add 3D transform to elements
+      document.querySelectorAll('.surface').forEach(el => {
+        (el as HTMLElement).style.transform = 'perspective(1000px) rotateY(5deg)';
+      });
+      
+      setTimeout(() => {
+        document.querySelectorAll('.surface').forEach(el => {
+          (el as HTMLElement).style.transform = '';
+        });
+      }, 3000);
+    }
+
+    invisibleBoxes() {
+      notify('👻 Invisible boxes revealed!');
+      
+      // Flash hidden areas
+      document.querySelectorAll('.surface').forEach(el => {
+        (el as HTMLElement).style.outline = '2px dashed var(--color-accent)';
+      });
+      
+      setTimeout(() => {
+        document.querySelectorAll('.surface').forEach(el => {
+          (el as HTMLElement).style.outline = '';
+        });
+      }, 2000);
+    }
+
+    tipperWidget() {
+      notify('🏆 Top tipper: @soundlover - $100!');
+      
+      // Show leaderboard
+      const leaderboard = [
+        '@soundlover - $100',
+        '@musicfan - $50',
+        '@vibemaster - $25'
+      ];
+      
+      setTimeout(() => {
+        notify(`🏆 Today's tips: ${leaderboard.join(' | ')}`);
+      }, 1000);
+    }
+
+    aiFallback() {
+      notify('🤖 AI taking over the stream!');
+      
+      // Glitch effect
+      document.body.style.filter = 'hue-rotate(90deg)';
+      setTimeout(() => {
+        document.body.style.filter = '';
+        notify('🤖 AI mode complete!');
+      }, 2000);
+    }
+
+    show() {
+      this.element.classList.add('visible');
+      this.isVisible = true;
+      notify('⚡ Feature Grid');
+      
+      const firstButton = this.element.querySelector('.grid-item') as HTMLElement;
+      firstButton?.focus();
+    }
+
+    hide() {
+      this.element.classList.remove('visible');
+      this.isVisible = false;
+      toggleGridOverlay();
+    }
+  }
+
+  // Initialize controller
+  new GridOverlayController();
+
+  // Add required styles
+  if (!document.getElementById('grid-feature-styles')) {
+    const style = document.createElement('style');
+    style.id = 'grid-feature-styles';
+    style.textContent = `
+      @keyframes floatUp {
+        to {
+          transform: translateY(-200px);
+          opacity: 0;
+        }
+      }
+      
+      @keyframes fadeOut {
+        to { opacity: 0; }
+      }
+      
+      @keyframes crowdSurf {
+        0%, 100% { transform: translateY(0) rotate(0); }
+        25% { transform: translateY(-20px) rotate(-5deg); }
+        50% { transform: translateY(0) rotate(5deg); }
+        75% { transform: translateY(-10px) rotate(-3deg); }
+      }
+      
+      @keyframes explode {
+        to {
+          transform: translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px) scale(0);
+          opacity: 0;
+        }
+      }
+      
+      @keyframes shieldPulse {
+        0% { opacity: 0; transform: scale(0.8); }
+        50% { opacity: 1; transform: scale(1); }
+        100% { opacity: 0; transform: scale(1.1); }
+      }
+      
+      .dance-mode {
+        animation: danceShake 0.5s ease-in-out infinite;
+      }
+      
+      @keyframes danceShake {
+        0%, 100% { transform: rotate(-1deg); }
+        50% { transform: rotate(1deg); }
+      }
+      
+      .crowd-surf {
+        animation: crowdSurf 3s ease-in-out;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+</script>
+
+<style>
+  /* Same styles as before - keeping all the original styles */
+  .grid-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 300;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-base);
+    padding: var(--space-lg);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .grid-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: var(--space-md);
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding-top: 60px;
+  }
+
+  .grid-item {
+    aspect-ratio: 1;
+    background: var(--gradient-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-md) var(--space-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    color: var(--color-text);
+  }
+
+  .grid-item:hover,
+  .grid-item:focus {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    background: var(--color-surface-hover);
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .grid-icon {
+    font-size: var(--font-2xl);
+  }
+
+  .grid-label {
+    font-size: var(--font-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+
+  @media (max-width: 375px) {
+    .grid-container {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-sm);
+    }
+    
+    .grid-item {
+      padding: var(--space-sm);
+    }
+    
+    .grid-icon {
+      font-size: var(--font-xl);
+    }
+    
+    .grid-label {
+      font-size: 10px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .grid-overlay {
+      transition: none;
+    }
+    
+    .grid-item {
+      transition: none;
+    }
+    
+    .grid-item:hover {
+      transform: none;
+    }
+  }
+</style>

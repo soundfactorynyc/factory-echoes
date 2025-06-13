@@ -1,0 +1,49 @@
+---
+// src/components/StatusBar.astro
+---
+
+<div class="status-bar">
+  <div class="status-time" id="status-time">9:41</div>
+  <div class="status-icons">
+    <span class="status-signal">📶</span>
+    <span class="status-wifi">📶</span>
+    <span class="status-battery">🔋</span>
+  </div>
+</div>
+
+<script>
+  // Client-side clock update
+  function updateTime() {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const timeElement = document.getElementById('status-time');
+    if (timeElement) {
+      timeElement.textContent = `${hours}:${minutes}`;
+    }
+  }
+
+  updateTime();
+  setInterval(updateTime, 1000);
+</script>
+
+<style>
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-xs);
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    background: var(--color-bg-secondary);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .status-icons {
+    display: flex;
+    gap: var(--space-xs);
+  }
+</style>

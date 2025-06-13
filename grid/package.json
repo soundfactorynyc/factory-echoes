@@ -1,20 +1,42 @@
 {
-  "name": "grid",
+  "name": "sound-factory-astro",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "description": "Sound Factory - Mobile Live Stream App with Astro",
   "scripts": {
     "dev": "astro dev",
+    "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check && tsc --noEmit",
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write .",
+    "clean": "rm -rf dist .astro node_modules/.vite",
+    "clean:all": "rm -rf dist .astro node_modules package-lock.json"
   },
   "dependencies": {
-    "@astrojs/react": "^4.3.0",
-    "astro": "^5.9.1",
-    "rxjs": "^7.8.2",
-    "three": "^0.177.0"
+    "astro": "^5.9.2",
+    "nanostores": "^0.9.5",
+    "@nanostores/persistent": "^0.9.1",
+    "tslib": "^2.6.2"
   },
   "devDependencies": {
-    "@types/three": "^0.177.0"
+    "@astrojs/check": "^0.9.4",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.6.0",
+    "prettier": "^3.1.0",
+    "prettier-plugin-astro": "^0.12.0"
+  },
+  "prettier": {
+    "plugins": ["prettier-plugin-astro"],
+    "overrides": [
+      {
+        "files": "*.astro",
+        "options": {
+          "parser": "astro"
+        }
+      }
+    ]
   }
 }

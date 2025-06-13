@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Test</title>
+    <style>
+        body {
+            background: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        
+        .test-box {
+            background: #333;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .test-button {
+            background: #00f2ea;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-box">
+        <h1>Editable Grid System Test</h1>
+        <p>If you can see this, the HTML is working!</p>
+        <button class="test-button" onclick="alert('JavaScript is working!')">Test Button</button>
+        <div id="test-content" contenteditable="true" style="border: 1px solid #00f2ea; padding: 10px; margin: 10px;">
+            Click here to edit this text!
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sound Factory - Complete Experience</title>/title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* WebGL Background Canvas */
+        #webglCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Animations */*/
+        @keyframes beatPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }   background: #000;
+            border-radius: 40px;
+        @keyframes floatUp {
+            0% {shadow: 
+                opacity: 0;1a1a1a,
+                transform: translateX(-50%) translateY(20px);
+            }   0 20px 40px rgba(0, 0, 0, 0.4);
+            20% {ion: relative;
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+            80% {creen {
+                opacity: 1;
+                transform: translateX(-50%) translateY(-200px);
+            }ackground: #000;
+            100% {-radius: 30px;
+                opacity: 0;n;
+                transform: translateX(-50%) translateY(-250px);
+            }
+        }
+        /* Status Bar */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }   left: 0;
+            right: 0;
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(0, 242, 234, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(0, 242, 234, 0.6); }
+        }   justify-content: space-between;
+            padding: 0 24px;
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }ba(0,0,0,0.8) 0%, transparent 100%);
+            25% { transform: translateX(-2px) rotate(-1deg); }
+            75% { transform: translateX(2px) rotate(1deg); }
+        }status-time {
+            color: #fff;
+        /* iPhone Frame */x;
+        .iphone-frame {: 600;
+            width: 375px;
+            height: 812px;
+            background: #000;
+            border-radius: 40px;
+            padding: 10px;
+            box-shadow:  center;
+                0 0 0 2px #1a1a1a,
+                0 0 0 4px #333,
+                0 20px 40px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 10;rea */
+        }app-content {
+            position: absolute;
+        .iphone-screen {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            border-radius: 30px;ent;
+            overflow: hidden;
+            position: relative;umn;
+        }
+
+        /* Status Bar */utton */
+        .status-bar {{
+            position: absolute;
+            top: 0;px;
+            left: 0;px;
+            right: 0;px;
+            height: 44px;
+            display: flex;ba(0, 0, 0, 0.8);
+            align-items: center;ba(255, 255, 255, 0.2);
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 100;px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+        }   display: flex;
+            align-items: center;
+        .status-time {ntent: center;
+            color: #fff;
+            font-size: 14px;0.3s ease;
+            font-weight: 600;
+        }
+        .edit-toggle:hover {
+        .status-icons { rgba(0, 242, 234, 0.2);
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            color: #fff;#00f2ea;
+            font-size: 12px;
+        }
+
+        /* Add Button */oggle Button */
+        .add-btn {id-toggle {
+            width: 60px;solute;
+            height: 60px;
+            background: linear-gradient(135deg, #00f2ea 0%, #00c4ff 100%);
+            border: none;
+            border-radius: 50%;
+            color: white;inear-gradient(135deg, #000 0%, #1a1a1a 100%);
+            font-size: 24px;d rgba(255, 255, 255, 0.2);
+            cursor: pointer;0%;
+            position: fixed;
+            bottom: 20px;center;
+            right: 20px;ent: center;
+            z-index: 1000;r;
+            display: flex;
+            align-items: center; ease;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 242, 234, 0.3);
+            transition: all 0.3s ease;
+        }   font-size: 24px;
+            color: #fff;
+        .add-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 242, 234, 0.4);
+        }* TikTok Style Grid */
+        .tiktok-grid {
+        /* App Content Area */
+        .app-content {u {
+            position: absolute;
+            top: 44px;px;x;
+            left: 0;0px;nd: rgba(0, 0, 0, 0.95);
+            right: 0;d: rgba(0, 0, 0, 0.9);filter: blur(30px);
+            bottom: 0;x solid rgba(0, 242, 234, 0.3);x solid rgba(255, 255, 255, 0.1);
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+        }   flex-direction: column;   grid-template-columns: repeat(4, 1fr);
+            gap: 8px;            gap: 12px;
+        /* Reaction Canvases */
+        #reactionCanvas, #hologramCanvas, #particleCanvas {
+            position: absolute;
+            top: 0;-bezier(0.4, 0, 0.2, 1);
+            left: 0;tem { 100;
+            width: 100%;x;400px;
+            height: 100%;gba(0, 242, 234, 0.1);uto;
+            pointer-events: none;
+            z-index: 2000;;
+        }   font-size: 14px;tiktok-grid.active {
+            cursor: pointer;            opacity: 1;
+        /* TikTok Grid Toggle Button */ ease;
+        .tiktok-grid-toggle {
+            position: absolute;
+            top: 20px;m:hover {
+            right: 20px;rgba(0, 242, 234, 0.2);uttons */
+            width: 50px;
+            height: 50px;a0a0a 0%, #1a1a1a 100%);
+            background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;;
+            z-index: 50;transparent; center;
+            transition: all 0.3s ease;
+        }   flex-direction: column;   gap: 6px;
+        }            min-height: 70px;
+        .grid-icon {
+            font-size: 24px; */;
+            color: #fff; #hologramCanvas, #particleCanvas { none;
+            z-index: 1;bsolute;
+        }   top: 0;
+            left: 0;        .tiktok-btn:hover {
+        /* TikTok Style Grid */ 234, 0.3);
+        .tiktok-grid {0%; translateY(-2px);
+            position: absolute;e;
+            top: 80px;000;
+            left: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.95);
+            -webkit-backdrop-filter: blur(30px);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;;
+            flex-direction: column;ient(135deg, #000 0%, #1a1a1a 100%);
+            gap: 20px;x solid rgba(255, 255, 255, 0.2);t: 500;
+            opacity: 0;us: 50%;: 1.2;
+            visibility: hidden;
+            transform: scale(0.8) translateY(-20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;er;gba(0, 242, 234, 0.1);
+            max-height: 400px;
+            overflow-y: auto;.3s ease;
+        }   outline: none;
+        }
+        .tiktok-grid.active {
+            opacity: 1;24px;n */
+            visibility: visible;
+            transform: scale(1) translateY(0);
+        }   top: -5px;
+            right: -5px;
+        /* TikTok Grid Buttons */
+        .tiktok-btn {{0px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 12px 8px;
+            cursor: move;gba(0, 0, 0, 0.95);px;
+            transition: all 0.3s ease;lur(30px);
+            display: flex;r: blur(30px);
+            flex-direction: column;255, 255, 255, 0.1);se;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;flex;ontent: center;
+            min-height: 70px;olumn;
+            position: relative;
+            overflow: hidden;
+            -webkit-user-select: none;
+            user-select: none;.8) translateY(-20px);2;
+            transform-origin: center;c-bezier(0.4, 0, 0.2, 1);
+        }   z-index: 100;
+            max-height: 400px;
+        .tiktok-btn.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+            z-index: 1000;e {
+            cursor: grabbing;
+        }   visibility: visible;edit-mode .delete-btn {
+            transform: scale(1) translateY(0);            opacity: 1;
+        .tiktok-btn.editable {
+            border: 2px dashed #00f2ea;
+        }* TikTok Grid Buttons */* Add Button */
+        .tiktok-btn {        .add-btn {
+        .tiktok-btn:hover .delete-btn {(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            opacity: 1; solid rgba(255, 255, 255, 0.1);x;
+        }   border-radius: 16px;   right: 20px;
+            padding: 12px 8px;            width: 60px;
+        /* Resizable Elements */
+        .resizable {on: all 0.3s ease;nd: linear-gradient(135deg, #00f2ea 0%, #00c4ff 100%);
+            position: relative;
+            min-width: 60px;column;0%;
+            min-height: 60px;er;
+        }   justify-content: center;   font-size: 24px;
+            gap: 6px;            cursor: pointer;
+        .resize-handle {70px;x;
+            position: absolute;;
+            width: 10px;dden;ent: center;
+            height: 10px;select: none; 4px 15px rgba(0, 242, 234, 0.3);
+            background: #00f2ea;ase;
+            border-radius: 50%;enter;
+            z-index: 100;
+        }
+        .tiktok-btn.dragging {        .add-btn:hover {
+        .resize-handle.top-left { top: -5px; left: -5px; cursor: nw-resize; }
+        .resize-handle.top-right { top: -5px; right: -5px; cursor: ne-resize; }
+        .resize-handle.bottom-left { bottom: -5px; left: -5px; cursor: sw-resize; }
+        .resize-handle.bottom-right { bottom: -5px; right: -5px; cursor: se-resize; }
+        }        /* Animations */
+        /* Enhanced Draggable Items */
+        .tiktok-btn {ditable {{ transform: scale(1); }
+            transition: all 0.3s ease;;5); }
+            transform-origin: center;
+        }
+        .tiktok-btn:hover .delete-btn {        @keyframes fadeIn {
+        .tiktok-btn.resizing {orm: scale(0.8); }
+            transition: none; }
+            z-index: 1000;
+        }* Resizable Elements */
+        .resizable {        /* Canvas Overlays */
+        .tiktok-btn.being-edited {vas, #particleCanvas {
+            border: 2px solid #00f2ea;
+            box-shadow: 0 0 15px rgba(0, 242, 234, 0.3);
+        }   left: 0;
+            width: 100%;
+        /* Enhanced Zone Styles */
+        .energy-zone {absolute;ents: none;
+            transition: all 0.3s ease;
+        }   height: 10px;
+            background: #00f2ea;    </style>
+        .energy-zone.resizing {
+            transition: none;
+            outline: 2px dashed #00f2ea;
+        }bglCanvas"></canvas>
+        .resize-handle.top-left { top: -5px; left: -5px; cursor: nw-resize; }
+        /* Style Controls */ight { top: -5px; right: -5px; cursor: ne-resize; }>
+        .style-controls {ttom-left { bottom: -5px; left: -5px; cursor: sw-resize; }ame">
+            display: flex;tom-right { bottom: -5px; right: -5px; cursor: se-resize; }-screen">
+            gap: 10px;
+            margin-top: 10px; Items */s-bar">
+            padding: 8px;tatus-time">9:41</div>
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;nter;an>
+            flex-wrap: wrap;
+        }  <span>🔋</span>
+        .tiktok-btn.resizing {                </div>
+        .style-control {none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }tiktok-btn.being-edited {       <!-- Edit Toggle Button -->
+            border: 2px solid #00f2ea;                <div class="edit-toggle" id="editToggle">✏️</div>
+        .style-control label {px rgba(0, 242, 234, 0.3);
+            color: #00f2ea;n -->
+            font-size: 12px;"toggleTikTokGrid()">
+        }* Enhanced Zone Styles */           <span class="grid-icon">⚡</span>
+        .energy-zone {                </div>
+        .style-control input {3s ease;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(0, 242, 234, 0.2);-->
+            border: 1px solid rgba(0, 242, 234, 0.3);
+            border-radius: 4px; #00f2ea; class="delete-btn">×</button>
+            padding: 4px;ok-label">Rhythm Burst</span>
+            color: #fff;
+            width: 60px;s */ class="tiktok-btn draggable-item" draggable="true">
+        }style-controls {               <button class="delete-btn">×</button>
+            display: flex;                        <span class="tiktok-label">BPM Beauty</span>
+        .style-control input[type="color"] {
+            width: 30px;10px; class="tiktok-btn draggable-item" draggable="true">
+            height: 30px;button class="delete-btn">×</button>
+            padding: 0; rgba(0, 0, 0, 0.3); <span class="tiktok-label">Crowd Sync</span>
+            border-radius: 4px;;
+        }   flex-wrap: wrap;           <div class="tiktok-btn draggable-item" draggable="true">
+        }                        <button class="delete-btn">×</button>
+        /* Grid Layout Options */>
+        .zone-grid {ol {</div>
+            display: grid;lass="tiktok-btn draggable-item" draggable="true">
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 12px; <span class="tiktok-label">Energy Wave</span>
+            padding: 10px;
+            min-height: 100px;raggable="true">
+            transition: all 0.3s ease;btn">×</button>
+        }   color: #00f2ea;               <span class="tiktok-label">Vibe Check</span>
+            font-size: 12px;                    </div>
+        .zone-grid.grid-compact { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+        .zone-grid.grid-spacious { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+        .style-control input {                        <span class="tiktok-label">Flow State</span>
+        /* Context Menu */ance: none;
+        .context-menu { none;v class="tiktok-btn draggable-item" draggable="true">
+            position: fixed;(0, 242, 234, 0.2);ton class="delete-btn">×</button>
+            background: rgba(0, 0, 0, 0.95);34, 0.3);label">Beat Match</span>
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 242, 234, 0.3);
+            border-radius: 8px; -->
+            padding: 8px 0;/canvas>
+            z-index: 1000;>
+            min-width: 150px;type="color"] {articleCanvas"></canvas>
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }   height: 30px;/div>
+            padding: 0;    </div>
+        .context-menu-item {px;
+            padding: 8px 16px;
+            color: #fff;
+            cursor: pointer;ns */
+            display: flex;
+            align-items: center;ggle
+            gap: 8px;late-columns: repeat(auto-fill, minmax(100px, 1fr));leTikTokGrid() {
+            transition: all 0.2s ease;okGrid');
+        }   padding: 10px;   grid.classList.toggle('active');
+            min-height: 100px;        }
+        .context-menu-item:hover {ase;
+            background: rgba(0, 242, 234, 0.1);
+        }uctor() {
+        .zone-grid.grid-compact { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }                this.editMode = false;
+        /* Tooltip */id-spacious { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: #fff;xed;upEditMode();
+            padding: 4px 8px;0, 0, 0, 0.95);Button();
+            border-radius: 4px;lter: blur(10px);LBackground();
+            font-size: 12px; blur(10px);
+            pointer-events: none;a(0, 242, 234, 0.3);
+            z-index: 1000; 8px;op() {
+            white-space: nowrap;.getElementById('tiktokGrid');
+        }   z-index: 1000;       if (!grid) return;
+            min-width: 150px;
+        /* Floating Messages */5px rgba(0, 0, 0, 0.3);ent = null;
+        #floatingContainer {
+            position: absolute;
+            top: 0;nu-item {ument.querySelectorAll('.tiktok-btn').forEach(btn => {
+            left: 0; 8px 16px;btn.addEventListener('dragstart', (e) => {
+            right: 0;ff;   draggedElement = btn;
+            bottom: 150px;r;n.classList.add('dragging');
+            pointer-events: none;ffectAllowed = 'move';
+            z-index: 1000;enter;
+        }   gap: 8px;
+            transition: all 0.2s ease;                    btn.addEventListener('dragend', () => {
+        .floating-message {'dragging');
+            position: absolute;
+            bottom: 20px;m:hover {
+            left: 50%;: rgba(0, 242, 234, 0.1);
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;solute;
+            padding: 12px 20px; 0, 0, 0.9);tListener('drop', (e) => {
+            border-radius: 20px;();
+            font-size: 16px;;draggedElement && draggedElement !== btn) {
+            font-weight: 500;x;/ Swap positions
+            animation: floatUp 3s ease-out forwards;
+            max-width: 80%; none; const targetParent = btn.parentNode;
+            text-align: center;aggedNext = draggedElement.nextSibling;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+                            if (draggedNext) {
+        /* Bottom Section */ */    draggedParent.insertBefore(btn, draggedNext);
+        .bottom-section {r {   } else {
+            position: absolute; draggedParent.appendChild(btn);
+            bottom: 0;   }
+            left: 0;
+            right: 0;       if (targetNext) {
+            z-index: 500;;       targetParent.insertBefore(draggedElement, targetNext);
+        }   pointer-events: none;                   } else {
+            z-index: 1000;                                targetParent.appendChild(draggedElement);
+        /* Chat Layer */
+        .chat-layer {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px;bel = btn.querySelector('.tiktok-label');
+            position: relative;eX(-50%);{
+        }   background: rgba(0, 0, 0, 0.9);               label.addEventListener('dblclick', (e) => {
+            backdrop-filter: blur(20px);                            e.stopPropagation();
+        /* Chat Input Container */(255, 255, 255, 0.2);akeEditable(label);
+        .chat-input-container {
+            display: flex;20px;
+            align-items: center;
+            gap: 8px;: 16px;
+            width: 100%; 500;
+            margin-top: 20px;p 3s ease-out forwards;
+            position: relative;document.getElementById('editToggle');
+        }   text-align: center;       const grid = document.getElementById('tiktokGrid');
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);                
+        /* Chat Input */tener('click', () => {
+        .chat-input {editMode;
+            flex: 1;ction */grid.classList.toggle('edit-mode');
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            padding: 8px 16px;ontent = '✅';
+            color: white;
+            font-size: 15px;gle.textContent = '✏️';
+            outline: none;
+            height: 36px;
+        }* Chat Layer */
+        .chat-layer {                // Add delete functionality
+        .chat-input::placeholder { 0, 0.95);istener('click', (e) => {
+            color: rgba(255, 255, 255, 0.4);ins('delete-btn')) {
+        }   border-top: 1px solid rgba(255, 255, 255, 0.1);               e.stopPropagation();
+            padding: 8px;                        const btn = e.target.closest('.tiktok-btn');
+        /* Send Button */ative;f (btn && confirm('Delete this component?')) {
+        .send-button {ove();
+            width: 36px;
+            height: 36px;tainer */
+            border-radius: 10px;
+            border: none;;
+            cursor: pointer;ter;
+            font-size: 16px;
+            transition: all 0.3s ease;tById('addButton');
+            display: flex;px;ton) {
+            align-items: center;EventListener('click', () => this.addNewGridItem());
+            justify-content: center;
+            color: white;
+            background: linear-gradient(135deg, #00f2ea 0%, #ff0050 100%);
+        }chat-input {   addNewGridItem() {
+            flex: 1;                const grid = document.getElementById('tiktokGrid');
+        /* Reaction Panel */(255, 255, 255, 0.05);eturn;
+        .reaction-panel {olid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.95);div');
+            backdrop-filter: blur(20px);aggable-item';
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;x;
+            align-items: center;.createElement('span');
+            padding: 8px;ssName = 'tiktok-label';
+            gap: 4px; = 'New Effect';
+            overflow-x: auto;
+            overflow-y: hidden;r { = document.createElement('button');
+            -webkit-overflow-scrolling: touch;n';
+        }       deleteBtn.innerHTML = '×';
+                
+        /* Reaction Buttons */(deleteBtn);
+        .reaction-btn {appendChild(label);
+            min-width: 32px;
+            height: 38px;ndChild(newItem);
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;p();
+            cursor: pointer;
+            transition: all 0.2s ease;dit mode for the new label
+            display: flex;ditable(label);
+            align-items: center;
+            justify-content: center;
+            color: white;element) {
+            font-family: inherit;adient(135deg, #00f2ea 0%, #ff0050 100%);t = element.textContent;
+            outline: none;rue;
+            flex-shrink: 0;
+            padding: 0 8px;/ssList.add('editable');
+        }reaction-panel {
+            background: rgba(0, 0, 0, 0.95);                const finishEdit = () => {
+        .emoji-btn {-filter: blur(20px);element.contentEditable = false;
+            font-size: 16px;solid rgba(255, 255, 255, 0.1);classList.remove('editable');
+            min-width: 38px;t.textContent.trim() === '') {
+        }   align-items: center;               element.textContent = originalText;
+            padding: 8px;                    }
+        .text-btn {x;
+            font-size: 10px;;
+            font-weight: 700;n;entListener('blur', finishEdit, { once: true });
+            letter-spacing: 0.5px;ling: touch;stener('keypress', (e) => {
+        }           if (e.key === 'Enter') {
+                        e.preventDefault();
+        .money-btn {Buttons */    finishEdit();
+            font-size: 12px;
+            font-weight: 700;e });
+            background: linear-gradient(135deg, #0a3d0a 0%, #1a5a1a 100%);
+            border-color: rgba(76, 175, 80, 0.3);0a0a0a 0%, #1a1a1a 100%);
+            color: #4CAF50;id rgba(255, 255, 255, 0.1);ground() {
+        }   border-radius: 10px;       const canvas = document.getElementById('webglCanvas');
+            cursor: pointer;                if (!canvas) return;
+        .reaction-btn:hover {.2s ease;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }   color: white;       // Simple animated background
+            font-family: inherit;                const ctx = canvas.getContext('2d');
+        /* Notification */= 0;
+        .notification {: 0;
+            position: absolute;=> {
+            top: 50%;(0, 0, canvas.width, canvas.height);
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #ff0050, #00f2ea);
+            color: white;px;anvas.width/2, canvas.height/2, 0,
+            padding: 20px 40px;/2, canvas.width/2
+            border-radius: 20px;
+            font-weight: bold;(0, `rgba(0, 242, 234, ${0.1 + Math.sin(frame * 0.01) * 0.05})`);
+            font-size: 16px;.addColorStop(1, 'rgba(0, 0, 0, 1)');
+            z-index: 3000;00;
+            animation: fadeIn 0.5s ease-out;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }  
+        .money-btn {                    frame++;
+        /* Cursor States */;AnimationFrame(animate);
+        .tiktok-btn {ht: 700;
+            cursor: grab;inear-gradient(135deg, #0a3d0a 0%, #1a5a1a 100%);
+        }   border-color: rgba(76, 175, 80, 0.3);       animate();
+            color: #4CAF50;            }
+        .tiktok-btn.dragging {
+            cursor: grabbing;
+        }reaction-btn:hover {/ Initialize the app when DOM is loaded
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);        document.addEventListener('DOMContentLoaded', () => {
+        .edit-mode .tiktok-btn {55, 255, 255, 0.3);dFactoryApp();
+            border: 2px dashed rgba(0, 242, 234, 0.5);lateY(-2px);
+        });
+    </script>
+        .edit-mode .delete-btn {
+            opacity: 1;
+        }   position: absolute;       opacity: 1;
+            top: 50%;                transform: translateX(-50%) translateY(-200px);
+        .edit-mode .tiktok-label {teX(-50%);
+            cursor: text; translate(-50%, -50%);: rgba(0, 0, 0, 0.95);
+        }deg, #ff0050, #00f2ea);
+
+        /* Editable Label States */
+        .tiktok-label[contenteditable="true"], 20px;
+        .tiktok-label.editable {ld;
+            background: rgba(0, 242, 234, 0.2) !important;
+            border-radius: 4px;   z-index: 3000;   from { opacity: 0; transform: scale(0.8); }
+            padding: 2px 4px;            animation: fadeIn 0.5s ease-out;            to { opacity: 1; transform: scale(1); }
+            outline: 2px solid #00f2ea;: 0 8px 32px rgba(0, 0, 0, 0.5); translateX(-50%) translateY(100px);
+            animation: pulse 1s infinite;
+        }
+, 0.2); }
+        @keyframes pulse {(0, 242, 234, 0.6); }
+            0%, 100% { outline-color: #00f2ea; }
+            50% { outline-color: rgba(0, 242, 234, 0.5); }   transform: translateX(-50%) translateY(0);
+        }        @keyframes shake {
+ragging {{ transform: translateX(0); }
+        /* Energy Zones */g;: translateX(-2px) rotate(-1deg); }
+        .energy-zone {tate(1deg); }
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(0, 242, 234, 0.3);k-btn {center;
+            border-radius: 24px;   cursor: pointer;* iPhone Frame */
+            padding: 15px;        }        .iphone-frame {
+            margin: 10px 0;
+            position: relative;-label {{
+        }xt;: #000;r-gradient(135deg, rgba(0, 242, 234, 0.2), rgba(255, 0, 128, 0.2));
+
+        .zone-header {g: 10px; 12px;
+            display: flex;        /* Energy Zones */            box-shadow: ea;
+            align-items: center;e { 0 2px #1a1a1a,
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 0 5px;
+        }ter;
+   gap: 8px;
+        .zone-title {ve;ze: 14px;
+            color: #00f2ea;
+            font-size: 14px;
+            font-weight: 600;zone-header {   height: 100%;
+            cursor: text;            display: flex;            background: #000;
+        }center;: 30px;
+rgba(0, 242, 234, 0.3), rgba(255, 0, 128, 0.3));
+        .zone-controls {   margin-bottom: 10px;   position: relative;(-2px);
+            display: flex;            padding: 0 5px;        }   position: relative;   box-shadow: 0 8px 25px rgba(0, 242, 234, 0.2);
+            gap: 10px;
+            align-items: center;
+        }
+ea;solute;t(135deg, #00f2ea, #ff0080);
+        .zone-btn {4px;te;
+            background: rgba(0, 242, 234, 0.2);
+            border: 1px solid rgba(0, 242, 234, 0.3);
+            border-radius: 12px;
+            color: #00f2ea;y: flex;
+            padding: 4px 8px;        .zone-controls {            align-items: center;0.7);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease; center;;nt: space-between;
+        }80deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+
+        .zone-btn:hover {deg, rgba(0,0,0,0.8) 0%, transparent 100%);        #webglCanvas {
+            background: rgba(0, 242, 234, 0.3);(0, 242, 234, 0.2);
+        }242, 234, 0.3);
+   border-radius: 12px;   font-size: 14px;
+        .zone-energy-slider {            color: #00f2ea;            font-weight: 600;
+            -webkit-appearance: none;
+            appearance: none; z-index: -1;
+            width: 100%;   cursor: pointer;status-icons {
+            height: 4px;            transition: all 0.2s ease;            display: flex;
+            background: rgba(0, 242, 234, 0.1);
+            border-radius: 2px;
+            margin: 10px 0;
+        } 242, 234, 0.3);;
+#000;
+        .zone-energy-slider::-webkit-slider-thumb {er-radius: 40px;
+            -webkit-appearance: none;zone-energy-slider {* Add Button */
+            width: 16px;            -webkit-appearance: none;        .add-btn {
+            height: 16px;1a,
+            background: #00f2ea;%;px;
+            border-radius: 50%;ar-gradient(135deg, #00f2ea 0%, #00c4ff 100%);
+            cursor: pointer;, 234, 0.1);
+            transition: all 0.2s ease;ius: 2px;ius: 50%;gradient(135deg, #00f2ea 0%, #00c4ff 100%);
+        }   margin: 10px 0;   color: white;ll 0.3s ease;
+        }            font-size: 24px;0%;
+        .zone-energy-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);r::-webkit-slider-thumb {d;le {
+        }
+x;x;xed;x #00f2ea,
+        .zone-energy-value {f0080,
+            color: #00f2ea;a;(0, 242, 234, 0.3);
+            font-size: 12px;
+            position: absolute;   cursor: pointer;   justify-content: center;
+            right: 15px;            transition: all 0.2s ease;            box-shadow: 0 4px 15px rgba(0, 242, 234, 0.3);
+            top: 15px;
+        }
+        .zone-energy-slider::-webkit-slider-thumb:hover {            transition: all 0.3s ease;            background: #000;
+        /* Zone Grid Layout */
+        .tiktok-grid {
+            display: flex;adow: 0 6px 20px rgba(0, 242, 234, 0.4);
+            flex-direction: column;        .zone-energy-value {        }   transform: scale(1.1);
+            gap: 20px;
+        }
+   position: absolute;app-content {
+        .zone-grid {            right: 15px;            position: absolute;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 12px; 0;;
+            padding: 10px;        /* Zone Grid Layout */            bottom: 0;
+            min-height: 100px;
+            transition: all 0.3s ease;
+        }column;column;;
+ng: 20px;
+        .zone-grid.grid-compact { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }erflow-y: auto;
+        .zone-grid.grid-spacious { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+-grid {tionCanvas, #hologramCanvas, #particleCanvas {
+        .energy-zone[data-type="bass"] .tiktok-btn {            display: grid;            position: absolute;ner */
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); repeat(auto-fill, minmax(100px, 1fr));Canvas, #particleCanvas {one {
+        }, 0, 0.8);
+adding: 10px;idth: 100%; rgba(0, 242, 234, 0.2);
+        .energy-zone[data-type="melody"] .tiktok-btn {            min-height: 100px;            height: 100%;x;
+            transition: filter 0.5s ease; ease;;
+        }
+
+        .energy-zone[data-type="rhythm"] .tiktok-btn {-grid.grid-compact { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }-index: 2000;            min-height: 120px;
+            transition: all 0.3s ease;zone-grid.grid-spacious { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }* TikTok Grid Toggle Button */
+        }        .tiktok-grid-toggle {
+"] .tiktok-btn { */ive {
+        /* Touch Device Optimizations */0.3s cubic-bezier(0.4, 0, 0.2, 1);00f2ea;
+        @media (hover: none) { 0.3);
+            .resize-handle {
+                width: 20px;melody"] .tiktok-btn {
+                height: 20px;   transition: filter 0.5s ease;   background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+                opacity: 0.7;        }            border: 2px solid rgba(255, 255, 255, 0.2);
+            }00%);x rgba(255, 0, 128, 0.3);
+.tiktok-btn {55, 255, 0.2);
+            .style-control input {
+                min-height: 44px;
+            }: pointer;ter;
+        /* Touch Device Optimizations */            z-index: 50;ent: center;x;
+            .context-menu-item {ase;
+                padding: 12px 16px;tween;
+                min-height: 44px;0px;all 0.3s ease;            margin-bottom: 15px;
+            }0px;
+        }; 0.1);
+
+        /* Enhanced Accessibility */x;
+        .tiktok-btn:focus-visible,   .style-control input {   color: #fff;zone-title {
+        .zone-btn:focus-visible {                min-height: 44px;            z-index: 1;            color: #00f2ea;
+            outline: 3px solid #00f2ea;
+            outline-offset: 2px;
+        }ntext-menu-item {ition: absolute;
+
+        /* Keyboard Navigation */
+        .keyboard-mode .tiktok-btn:focus,
+        .keyboard-mode .zone-btn:focus {
+            box-shadow: 0 0 0 3px #00f2ea;op-filter: blur(30px);
+        }* Enhanced Accessibility */   backdrop-filter: blur(30px);95);
+        .tiktok-btn:focus-visible,            border: 1px solid rgba(255, 255, 255, 0.1);
+        /* High Contrast Mode */234, 0.1);
+        @media (forced-colors: active) { solid #00f2ea;x;lid rgba(255, 255, 255, 0.1);
+            .tiktok-btn,2px;0px;
+            .energy-zone,
+            .resize-handle {, 0.2);
+                border: 2px solid ButtonText;
+            }
+        }
+a;ezier(0.4, 0, 0.2, 1);
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {ode */to;
+                animation-duration: 0.01ms !important;ors: active) {0px;
+                animation-iteration-count: 1 !important;n,: auto;        .zone-btn {
+                transition-duration: 0.01ms !important; {
+                scroll-behavior: auto !important;   .resize-handle {   opacity: 1;, 0.3);
+            }                border: 2px solid ButtonText;            visibility: visible;
+        }Y(0);
+2px;
+        /* Advanced Edit Mode Styles */
+        .edit-controls {
+            position: fixed;uced-motion: reduce) {
+            bottom: 20px;g, #0a0a0a 0%, #1a1a1a 100%);
+            left: 50%;ration: 0.01ms !important;d rgba(255, 255, 255, 0.1);
+            transform: translateX(-50%);iteration-count: 1 !important; 16px;radient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            background: rgba(0, 0, 0, 0.9);ion: 0.01ms !important;ba(255, 255, 255, 0.1);, 242, 234, 0.3);
+            -webkit-backdrop-filter: blur(10px);l-behavior: auto !important;ove;: 16px;ale(1.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 242, 234, 0.3);   display: flex;
+            border-radius: 12px;            flex-direction: column;se;
+            padding: 10px;les */
+            display: flex;
+            gap: 10px;   position: fixed;   gap: 6px;ms: center;late-columns: repeat(auto-fill, minmax(100px, 1fr));
+            z-index: 2000;            bottom: 20px;            min-height: 70px;center;
+        }
+X(-50%);
+        .edit-control-btn {rgba(0, 0, 0, 0.9);-select: none;
+            background: none;   -webkit-backdrop-filter: blur(10px);   user-select: none;;
+            border: 1px solid rgba(0, 242, 234, 0.3);            backdrop-filter: blur(10px);            transform-origin: center;;;
+            border-radius: 8px;a(0, 242, 234, 0.3);
+            color: #00f2ea;s: 12px;igin: center;
+            padding: 8px 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;orm: rotate(5deg);* Enhanced Grid Item */
+        }        .edit-control-btn {            z-index: 1000;        .enhanced-grid-item {
+one;ble {gradient(135deg, #0a0a0a, #1a1a1a);
+        .edit-control-btn:hover {42, 234, 0.3);
+            background: rgba(0, 242, 234, 0.1);
+        }   color: #00f2ea;tiktok-btn.editable {            padding: 15px;
+            padding: 8px 12px;        .tiktok-btn:hover .delete-btn {
+        .edit-control-btn.active {er;
+            background: #00f2ea;lex;
+            color: #000;;te-btn {            flex-direction: column;
+        }Elements */
+ease;
+        /* Multi-select styles */
+        .selection-box {dth: 60px;s */x;
+            position: absolute;        .edit-control-btn:hover {            min-height: 60px;
+            border: 2px dashed #00f2ea;d: rgba(0, 242, 234, 0.1); relative;   overflow: hidden;
+            background: rgba(0, 242, 234, 0.1);
+            pointer-events: none;
+            z-index: 1000;edit-control-btn.active {   position: absolute;
+        }            background: #00f2ea;            width: 10px;
+(3deg);
+        .multi-selected {
+            outline: 2px solid #00f2ea;
+            outline-offset: 2px;* Multi-select styles */   z-index: 100;
+        }        .selection-box {        }   background: #00f2ea;
+;;        .enhanced-grid-item.editing {
+        /* Grid Guides */ashed #00f2ea;p-left { top: -5px; left: -5px; cursor: nw-resize; }
+        .grid-guides { rgba(0, 242, 234, 0.1);top-right { top: -5px; right: -5px; cursor: ne-resize; }
+            position: absolute;   pointer-events: none;resize-handle.bottom-left { bottom: -5px; left: -5px; cursor: sw-resize; }
+            inset: 0;            z-index: 1000;        .resize-handle.bottom-right { bottom: -5px; right: -5px; cursor: se-resize; }
+            pointer-events: none;-5px; cursor: ne-resize; }        .enhanced-grid-item:hover {
+            z-index: 999;m: -5px; left: -5px; cursor: sw-resize; } 234, 0.5);
+        } bottom: -5px; right: -5px; cursor: se-resize; }: translateY(-2px);
+x solid #00f2ea; all 0.3s ease;
+        .grid-guide {et: 2px;igin: center;/
+            position: absolute;
+            background: rgba(0, 242, 234, 0.3);*/
+        }
+
+        .grid-guide.horizontal {bsolute;00;
+            width: 100%;
+            height: 1px;   pointer-events: none;   transition: none;        }
+        }            z-index: 999;        .tiktok-btn.being-edited {
+
+        .grid-guide.vertical {234, 0.3);
+            height: 100%;grid-guide {tiktok-btn.being-edited {   font-size: 13px;
+            width: 1px;            position: absolute;            border: 2px solid #00f2ea;            text-align: center;
+        }, 0.3); 242, 234, 0.3);
+
+        /* Smart Snap Points */
+        .snap-point {
+            position: absolute;2s ease;
+            width: 6px;   height: 1px;energy-zone.resizing {s ease;
+            height: 6px;        }            transition: none;
+            background: #00f2ea;
+            border-radius: 50%;
+            pointer-events: none;   height: 100%;   transition: none;            background: rgba(0, 242, 234, 0.1);
+            z-index: 1001;            width: 1px;        /* Style Controls */hed #00f2ea;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+snap-point {   margin-top: 10px;
+        .snap-point.active {            position: absolute;            padding: 8px;;
+            opacity: 1;0, 0, 0, 0.3);
+        };us: 12px;
+;
+        /* Enhanced Editable Elements */us: 50%; rgba(0, 0, 0, 0.3);   top: -15px;
+        .editable-element {ents: none;ius: 12px;            right: -15px;
+            position: relative;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .editable-element:hover { {enter;
+            border-color: rgba(0, 242, 234, 0.3);1;l label {-controls {
+        }
+
+        .editable-element.editing {*/
+            border-color: #00f2ea;{;        .enhanced-grid-item.editing .item-controls {
+            box-shadow: 0 0 15px rgba(0, 242, 234, 0.2);
+        }t;
+   transition: all 0.2s ease;   appearance: none;
+        /* Edit Toolbar */        }            background: rgba(0, 242, 234, 0.2);
+        .edit-toolbar {
+            position: absolute;nt:hover {us: 4px;
+            top: -40px;, 242, 234, 0.3);242, 234, 0.2);: 50%;
+            left: 50%; 242, 234, 0.3);;
+            transform: translateX(-50%); 60px;s: 4px;ter;
+            background: rgba(0, 0, 0, 0.9);        .editable-element.editing {        }   padding: 4px;   display: flex;
+            border: 1px solid rgba(0, 242, 234, 0.3);olor: #00f2ea;fff;            align-items: center;
+            border-radius: 8px;5px rgba(0, 242, 234, 0.2);type="color"] {
+            padding: 4px;
+            display: flex;
+            gap: 4px;olor"] {
+            opacity: 0;
+            visibility: hidden;te;ete-btn {
+            transition: all 0.2s ease;  background: #ff4757;
+            z-index: 1000; */
+            -webkit-backdrop-filter: blur(10px);X(-50%);
+            backdrop-filter: blur(10px);d: rgba(0, 0, 0, 0.9);grid;
+        }242, 234, 0.3);eat(auto-fill, minmax(100px, 1fr));
+   border-radius: 8px;   gap: 12px;#00f2ea;
+        .editable-element:hover .edit-toolbar {            padding: 4px;            padding: 10px;
+            opacity: 1;0px;mns: repeat(auto-fill, minmax(100px, 1fr));
+            visibility: visible;
+            top: -45px;   opacity: 0;   padding: 10px;copy-btn {
+        }            visibility: hidden;            min-height: 100px;            background: #ffa502;
+ 0.2s ease;pact { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+        .edit-tool {d-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+            padding: 4px 8px;drop-filter: blur(10px);
+            background: rgba(0, 242, 234, 0.1);   backdrop-filter: blur(10px);* Context Menu */mpact { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }hover {
+            border: none;        }        .context-menu {-spacious { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }scale(1.1);
+            border-radius: 4px;
+            color: #00f2ea;ent:hover .edit-toolbar {: rgba(0, 0, 0, 0.95);
+            font-size: 12px;ur(10px);
+            cursor: pointer;: visible;ilter: blur(10px);
+            display: flex;px;1px solid rgba(0, 242, 234, 0.3);
+            align-items: center;ur(10px);
+            gap: 4px;
+            transition: all 0.2s ease;
+        } 0, 0, 0.95);
+gba(0, 242, 234, 0.1); 4px 15px rgba(0, 0, 0, 0.3);
+        .edit-tool:hover {  border-radius: 12px;
+            background: rgba(0, 242, 234, 0.2); 4px;px;            padding: 15px;
+        }
+
+        .edit-tool.active {   cursor: pointer;   color: #fff;
+            background: #00f2ea;            display: flex;            cursor: pointer;0.3s ease;
+            color: #000;er;;: none;
+        }
+   transition: all 0.2s ease;   gap: 8px;ointer;
+        /* Text Editor */        }            transition: all 0.2s ease;
+        .text-editor {
+            position: absolute;nsform: translateY(0);
+            top: 100%;rgba(0, 242, 234, 0.2);em:hover {ase;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.9);       .style-options {
+            border: 1px solid rgba(0, 242, 234, 0.3);#00f2ea;rgba(0, 242, 234, 0.1);grid;
+            border-radius: 8px;, 1fr);
+            padding: 8px;
+            display: none;ound: rgba(0, 0, 0, 0.9);
+            z-index: 1000;        /* Text Editor */            color: #fff;
+            -webkit-backdrop-filter: blur(10px);;
+            backdrop-filter: blur(10px);bsolute;us: 4px; 0, 0, 0.9);
+        }
+;-events: none;
+        .text-editor.active {px;
+            display: block;gba(0, 0, 0, 0.9);nowrap;
+        }234, 0.3);on label {
+
+        .text-editor input,
+        .text-editor textarea { {
+            width: 100%;lute;
+            background: rgba(0, 242, 234, 0.1);op-filter: blur(10px);es */
+            border: 1px solid rgba(0, 242, 234, 0.3);
+            border-radius: 4px;
+            color: #fff;: 150px;a(0, 242, 234, 0.2);
+            padding: 4px 8px;        .text-editor.active {            pointer-events: none;
+            margin-bottom: 4px;
+        }
+r-events: none;            font-size: 12px;
+        /* Style Editor */        .text-editor input,        .floating-message {
+        .style-editor {extarea {absolute;
+            position: absolute;
+            top: 0;   background: rgba(0, 242, 234, 0.1);   left: 50%;age {or: #00f2ea;
+            right: -220px;            border: 1px solid rgba(0, 242, 234, 0.3);            transform: translateX(-50%);
+            width: 200px;px;(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.9);lur(20px);
+            border: 1px solid rgba(0, 242, 234, 0.3);x;id rgba(255, 255, 255, 0.2);
+            border-radius: 8px;px;(0, 0, 0, 0.9);{
+            padding: 12px;
+            display: none;-radius: 20px;ba(255, 255, 255, 0.2);
+            z-index: 1000;        /* Style Editor */            font-size: 16px;;
+            -webkit-backdrop-filter: blur(10px);{t: 500;x;
+            backdrop-filter: blur(10px);solute;loatUp 3s ease-out forwards;
+        }
+
+        .style-editor.active {ba(0, 0, 0, 0.5);
+            display: block;rgba(0, 0, 0, 0.9);0%;   height: 10px;
+        } rgba(0, 242, 234, 0.3);r;            background: #00f2ea;
+   border-radius: 8px;* Bottom Section */x 32px rgba(0, 0, 0, 0.5);d #000;
+        .style-group {            padding: 12px;        .bottom-section {
+            margin-bottom: 8px;
+        }; */: all 0.2s ease;
+kdrop-filter: blur(10px); {events: all;
+        .style-group label {   backdrop-filter: blur(10px);   right: 0; absolute;ointer;
+            display: block;        }            z-index: 500;
+            color: #00f2ea;
+            font-size: 12px;editing .resize-handle {
+            margin-bottom: 4px;
+        }
+
+        .style-input {resize; }
+            width: 100%;   margin-bottom: 8px;   border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 242, 234, 0.1);        }            padding: 8px;gba(0, 0, 0, 0.95); { bottom: 0; left: 0; cursor: sw-resize; }
+            border: 1px solid rgba(0, 242, 234, 0.3);
+            border-radius: 4px;5, 255, 0.1);
+            color: #fff;  /* Context Menu */
+            padding: 4px 8px;ea;ntainer */
+        }px;iner {
+
+        .style-input[type="color"] {
+            height: 30px;, 0.3);
+            padding: 0;style-input {   width: 100%;x;s: 12px;
+        }            width: 100%;            margin-top: 20px;er;
+, 242, 234, 0.1);;
+        .style-input[type="range"] {id rgba(0, 242, 234, 0.3);min-width: 180px;
+            -webkit-appearance: none;          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            appearance: none;;
+            height: 4px; 4px 8px;{;
+            background: rgba(0, 242, 234, 0.1);
+            border-radius: 2px;
+        }style-input[type="color"] {   border: 1px solid rgba(255, 255, 255, 0.1);
+            height: 30px;            border-radius: 18px;
+        .style-input[type="range"]::-webkit-slider-thumb {;
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;le-input[type="range"] {outline: none;6px;
+            height: 12px;
+            background: #00f2ea;
+            border-radius: 50%;
+            cursor: pointer;, 0.1);
+        }   border-radius: 2px;   color: rgba(255, 255, 255, 0.4);
+        }        }items: center;
+        /* Animation Editor */
+        .animation-editor {
+            position: absolute;none;
+            bottom: -220px;appearance: none;width: 36px;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.9);   background: #00f2ea;   border: none;ba(0, 242, 234, 0.1);
+        }            border-radius: 50%;            cursor: pointer;
+;;0px;
+        initializeReactionSystem() {
+            const canvas = document.getElementById('reactionCanvas');
+            if (!canvas) return;nimation Editor */align-items: center;
+            
+            this.reactionEngine = new ReactionEngine(canvas);
+            this.reactionEngine.onScreenShake = (intensity) => this.screenShake(intensity);
+            this.reactionEngine.onScreenFlash = (color, opacity) => this.screenFlash(color, opacity);
+            this.reactionEngine.start();100%;white;            height: 44px;
+        }ground: rgba(0, 0, 0, 0.9);ion Panel */ar-gradient(135deg, #00f2ea 0%, #ff0050 100%);
+
+        initializeHologramSystem() {
+            const canvas = document.getElementById('hologramCanvas');
+            if (!canvas) return;Canvas');
+            .8) 0%, transparent 100%);
+            this.hologramEngine = new HologramEngine(canvas);
+            this.hologramEngine.start();onEngine = new ReactionEngine(canvas);x;px solid rgba(255, 255, 255, 0.1);
+        }actionEngine.onScreenShake = (intensity) => this.screenShake(intensity);x;flex;{
+his.reactionEngine.onScreenFlash = (color, opacity) => this.screenFlash(color, opacity);verflow-x: auto;er;
+        setupTikTokGrid() {
+            const toggle = document.getElementById('tiktokGridToggle');ch;
+            const grid = document.getElementById('tiktokGrid');
+            
+            if (toggle && grid) {
+                toggle.addEventListener('click', () => {
+                    grid.classList.toggle('active');
+                    toggle.classList.toggle('active');
+                });
+                
+                document.querySelectorAll('.tiktok-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const feature = btn.dataset.feature;
+                        btn.classList.toggle('active');    align-items: center;ale(1); }
+                        this.handleTikTokFeature(feature, btn.classList.contains('active'));if (toggle && grid) {justify-content: center;e;.05); }
+                    });ventListener('click', () => {
+                });
+            }    toggle.classList.toggle('active');ine: none;t: center;
+    }    handleTikTokFeature(feature, isActive) {
+        const messages = {
+            'rhythm-burst': '🥁 Rhythm Burst: Auto-captures 10-15 shots synced to beat drops!',ocument.querySelectorAll('.tiktok-btn').forEach(btn => {ne: none;
+            'bpm-beauty': '💄 BPM Beauty: Face enhancement changes with the music!',       btn.addEventListener('click', (e) => {lex-shrink: 0;
+            'crowd-sync': '👥 Crowd Sync: Everyone contributes one photo at beat drop!',               e.stopPropagation();emoji-btn { 0 8px;lideIn {
+            'temporal-echo': '👻 Temporal Echo: Motion trails synced to rhythm!',                        const feature = btn.dataset.feature;            font-size: 16px;lateY(20px); }
+            'beat-prediction': '🔮 Beat Predict: AI pre-triggers camera for perfect timing!',.toggle('active');
+            'frequency-face': '🎭 Freq Face: Different frequencies enhance facial features!',tains('active'));
+            'beat-reactive': '� Beat React: Camera responds to music beats!',
+            'music-sync': '🎶 Music Sync: Perfect synchronization with soundtrack!',                });        .text-btn {th: 38px;tion System */
+            'bass-boost': '� Bass Boost: Enhanced effects on bass drops!',
+            'vibe-cam': '✨ Vibe Cam: Captures the energy of the moment!',
+            'rhythm-filter': '🌈 Rhythm Filter: Visual effects pulse with music!',
+            'beat-drop': '💥 Beat Drop: Explosive effects on major drops!''rhythm-burst': '🥁 Rhythm Burst: Auto-captures 10-15 shots synced to beat drops!',font-size: 10px;   right: 20px;
+        };ace enhancement changes with the music!',ckground: linear-gradient(135deg, #00f2ea, #ff0080);
+            'crowd-sync': '👥 Crowd Sync: Everyone contributes one photo at beat drop!',ey-btn {pacing: 0.5px;hite;
+            if (isActive) {👻 Temporal Echo: Motion trails synced to rhythm!',
+                this.showNotification(messages[feature] || `${feature} activated!`);redict: AI pre-triggers camera for perfect timing!',
+                encies enhance facial features!',#1a5a1a 100%);
+                if (feature === 'galaxy' && this.webglBg) {-reactive': '� Beat React: Camera responds to music beats!',r-color: rgba(76, 175, 80, 0.3);
+                    this.webglBg.setEffect('galaxy');nc': '🎶 Music Sync: Perfect synchronization with soundtrack!',CAF50;0;eIn 0.3s ease;
+                }   'bass-boost': '� Bass Boost: Enhanced effects on bass drops!',   background: linear-gradient(135deg, #0a3d0a 0%, #1a5a1a 100%);   max-width: 300px;
+            }            'vibe-cam': '✨ Vibe Cam: Captures the energy of the moment!',            border-color: rgba(76, 175, 80, 0.3);        }
+        }Visual effects pulse with music!',
+sive effects on major drops!'g, #1a1a1a 0%, #2a2a2a 100%);
+        createFloatingMessage(text) {        };            border-color: rgba(255, 255, 255, 0.3);
+            const container = document.getElementById('floatingContainer');ft + deltaX}px`;
+            if (!container) return;(135deg, #1a1a1a 0%, #2a2a2a 100%);               break;
+ation(messages[feature] || `${feature} activated!`);55, 255, 255, 0.3);                    case 'top-right':
+            const message = document.createElement('div');yle.width = `${startWidth + deltaX}px`;
+            message.className = 'floating-message';  if (feature === 'galaxy' && this.webglBg) {ication {.height = `${startHeight - deltaY}px`;
+            message.textContent = text;                    this.webglBg.setEffect('galaxy');            position: absolute;aY}px`;
+            
+            container.appendChild(message);
+            
+            setTimeout(() => {
+                if (message.parentNode) {ge(text) {t.style.top = `${startTop + deltaY}px`;
+                    message.parentNode.removeChild(message); document.getElementById('floatingContainer');x;e(-50%, -50%);.style.left = `${startLeft + deltaX}px`;
+                }2ea);
+            }, 3000);
+        }   const message = document.createElement('div');   font-size: 16px;px;
+            message.className = 'floating-message';            z-index: 3000; 20px;
+        sendReaction(content, type, value = 0) {ext;ease-out;
+            if (!this.reactionEngine) return;
+('mousemove', onMouseMove);
+            const colors = {stener('mouseup', onMouseUp);
+                emoji: '#ff6b6b',setTimeout(() => {ursor States */px 32px rgba(0, 0, 0, 0.5);neState();
+                text: '#4ecdc4',
+                money: '#45b7d1'        message.parentNode.removeChild(message);cursor: grab;
+            };ventListener('mousemove', onMouseMove);
+nMouseUp);
+            this.reactionEngine.addReaction({
+                x: Math.random() * 300 + 50,
+                y: Math.random() * 100 + 600,content, type, value = 0) {ement) {
+                content: content,   if (!this.reactionEngine) return;tiktok-btn.dragging {            const controls = document.createElement('div');
+                type: type,        .edit-mode .tiktok-btn {tyle-controls';
+                value: value,
+                color: colors[type] || '#ffffff'
+            });cdc4',-btn {                {
+        }
+
+        showNotification(message) {
+            const notification = document.createElement('div');nEngine.addReaction({ok-label {                    value: '#000000'
+            notification.className = 'notification';   x: Math.random() * 300 + 50,ergy Zones */
+            notification.textContent = message;       y: Math.random() * 100 + 600,energy-zone {
+                            content: content,            background: rgba(0, 0, 0, 0.3);
+            document.body.appendChild(notification); 0.3);
+            
+            setTimeout(() => { || '#ffffff'0, 0.3); '#00f2ea'
+                if (notification.parentNode) {.3);
+                    notification.parentNode.removeChild(notification);
+                }der Width',
+            }, 2000);sage) {                   type: 'number',
+        }n = document.createElement('div');e;operty: 'borderWidth',
+'notification';
+        screenShake(intensity) { = message;
+            const element = document.querySelector('.iphone-frame');
+            if (element) {ndChild(notification);x;
+                element.style.transform = `translate(${Math.random() * intensity - intensity/2}px, ${Math.random() * intensity - intensity/2}px)`;ing: 0 5px;nter;'Radius',
+                setTimeout(() => {setTimeout(() => {justify-content: space-between;           type: 'number',
+                    element.style.transform = 'translate(0, 0)';{       property: 'borderRadius',
+                }, 100);        notification.parentNode.removeChild(notification);e-title {0 5px;alue: '16',
+            }
+        }
+
+        screenFlash(color, opacity) {
+            const flash = document.createElement('div');
+            flash.style.cssText = `ment = document.querySelector('.iphone-frame');ht: 600;                    property: 'opacity',
+                position: fixed; {;e: '1',
+                top: 0;ent.style.transform = `translate(${Math.random() * intensity - intensity/2}px, ${Math.random() * intensity - intensity/2}px)`; flex;
+                left: 0;       setTimeout(() => {   gap: 10px;
+                width: 100%;                    element.style.transform = 'translate(0, 0)';            align-items: center;
+                height: 100%; }
+                background: ${color};
+                opacity: ${opacity};
+                pointer-events: none;            background: rgba(0, 242, 234, 0.2);
+                z-index: 9999;42, 234, 0.3);
+            `;            const flash = document.createElement('div');            border-radius: 12px;ntrol';
+            
+            document.body.appendChild(flash);
+            
+            setTimeout(() => {
+                flash.style.opacity = '0';
+                setTimeout(() => {
+                    if (flash.parentNode) {kground: ${color}; pointer;                input.value = opt.value;
+                        flash.parentNode.removeChild(flash);                opacity: ${opacity};        .zone-btn:hover {ll 0.2s ease;in) input.min = opt.min;
+                    }
+                }, 200);
+            }, 100);
+        }r {0, 242, 234, 0.3);tListener('input', () => {
+            document.body.appendChild(flash);            -webkit-appearance: none;
+        setupDragAndDrop() {
+            const grid = document.getElementById('tiktokGrid');rty] = value;
+            if (!grid) return;
+Timeout(() => {und: rgba(0, 242, 234, 0.1);
+            let draggedElement = null;                    if (flash.parentNode) {            border-radius: 2px;
+flash);
+            // Add drag and drop to all tiktok buttonstrol.appendChild(input);
+            document.querySelectorAll('.tiktok-btn').forEach(btn => {
+                btn.addEventListener('dragstart', (e) => {
+                    draggedElement = btn;
+                    btn.classList.add('dragging');
+                    e.dataTransfer.effectAllowed = 'move';
+                });d');
+            if (!grid) return;            border-radius: 50%;t) {
+                btn.addEventListener('dragend', () => {
+                    btn.classList.remove('dragging');
+                    draggedElement = null;
+                });`;
+ySelectorAll('.tiktok-btn').forEach(btn => {er::-webkit-slider-thumb:hover {
+                btn.addEventListener('dragover', (e) => {                btn.addEventListener('dragstart', (e) => {            transform: scale(1.2);
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                });er.effectAllowed = 'move';);',
+
+                btn.addEventListener('drop', (e) => {ggle('hidden');
+                    e.preventDefault();ddEventListener('dragend', () => { absolute;
+                    if (draggedElement && draggedElement !== btn) { btn.classList.remove('dragging');15px;ea;
+                        // Swap positions                    draggedElement = null;            top: 15px; 12px;
+                        const draggedParent = draggedElement.parentNode;
+                        const targetParent = btn.parentNode;
+                        const draggedNext = draggedElement.nextSibling;Listener('dragover', (e) => {*/
+                        const targetNext = btn.nextSibling;
+t = 'move';eft) + 20}px`;
+                        if (draggedNext) {
+                            draggedParent.insertBefore(btn, draggedNext);endChild(clone);
+                        } else {tn.addEventListener('drop', (e) => {ay: flex;               this.setupElementInteractivity(clone);
+                            draggedParent.appendChild(btn);     e.preventDefault();x-direction: column;                    }
+                        }           if (draggedElement && draggedElement !== btn) {zone-grid {x;
+                        // Swap positions            display: grid;
+                        if (targetNext) {onst draggedParent = draggedElement.parentNode;-columns: repeat(auto-fill, minmax(100px, 1fr));
+                            targetParent.insertBefore(draggedElement, targetNext);
+                        } else {Sibling;
+                            targetParent.appendChild(draggedElement);            const targetNext = btn.nextSibling;min-height: 100px;mns: repeat(auto-fill, minmax(100px, 1fr));t.style.zIndex = '1000';
+                        }
+                    }
+                });ore(btn, draggedNext);
+inmax(80px, 1fr)); }
+                // Make labels editable on double click            draggedParent.appendChild(btn);id.grid-spacious { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+                const label = btn.querySelector('.tiktok-label');
+                if (label) {
+                    label.addEventListener('dblclick', (e) => {if (targetNext) {transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);o-fill, minmax(120px, 1fr)); }
+                        e.stopPropagation();fore(draggedElement, targetNext);
+                        this.makeEditable(label);       } else {one[data-type="bass"] .tiktok-btn {                {
+                    });             targetParent.appendChild(draggedElement);-zone[data-type="melody"] .tiktok-btn {4, 0, 0.2, 1);
+                }                        }            transition: filter 0.5s ease;
+            });
+        }e();
+
+        setupEditMode() {on double click
+            const editToggle = document.getElementById('editToggle');;
+            const grid = document.getElementById('tiktokGrid');
+            tener('dblclick', (e) => { */
+            editToggle?.addEventListener('click', () => {   e.stopPropagation();: none) {
+                const isEditMode = grid.classList.contains('edit-mode');       this.makeEditable(label);ze-handle {');
+                grid.classList.toggle('edit-mode');     }); width: 20px;mizations */me = 'context-menu-item';
+                editToggle.classList.toggle('active');       }       height: 20px;{L = `${opt.icon} ${opt.label}`;
+                            });                opacity: 0.7; () => {
+                if (isEditMode) {
+                    editToggle.textContent = '✏️';
+                } else {t {
+                    editToggle.textContent = '✅';
+                }onst grid = document.getElementById('tiktokGrid');
+            });                        .style-control input {            
+ener('click', () => {ld(menu);
+            // Add delete functionality= grid.classList.contains('edit-mode');x;
+            document.addEventListener('click', (e) => {                grid.classList.toggle('edit-mode');                min-height: 44px;
+                if (e.target.classList.contains('delete-btn')) {le('active');(() => {
+                    e.stopPropagation();
+                    const btn = e.target.closest('.tiktok-btn');ditMode) {ght: 44px;                    if (!menu.contains(e.target)) {
+                    if (btn && confirm('Delete this component?')) {
+                        btn.remove();
+                    }ntent = '✅';
+                }
+            });
+        };
+/ Add delete functionalityutline: 3px solid #00f2ea;        }
+        initializeAddButton() {   document.addEventListener('click', (e) => {* Keyboard Navigation */
+            const addButton = document.getElementById('addButton');                if (e.target.classList.contains('delete-btn')) {        .keyboard-mode .tiktok-btn:focus,
+            if (addButton) {
+                addButton.addEventListener('click', () => this.addNewGridItem());
+            }
+
+            // Load saved grid statetch existing items
+            this.loadGridState();;
+ok-btn draggable-item';
+            // Save grid state on changesnewItem.draggable = true;
+            const grid = document.getElementById('tiktokGrid');${Date.now()}`);
+            if (grid) {
+                const observer = new MutationObserver(() => this.saveGridState());
+                observer.observe(grid, { const deleteBtn = document.createElement('button');
+                    childList: true, 
+                    subtree: true, 
+                    characterData: true 
+                });// Create icon
+            }ment('div');
+        }on';
+icon.textContent = '✨';
+        addNewGridItem() {
+            const grid = document.getElementById('tiktokGrid');// Create label
+            if (!grid) return;;
+k-label';
+            const newItem = document.createElement('div');label.contentEditable = false;
+            newItem.className = 'tiktok-btn draggable-item';
+            newItem.draggable = true;
+            // Append elements in correct order
+            const label = document.createElement('span');;
+            label.className = 'tiktok-label';con);
+            label.textContent = 'New Effect';   newItem.appendChild(label);
+                        
+            const deleteBtn = document.createElement('button');handler for the new item
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.innerHTML = '×';ion();
+                            const feature = newItem.dataset.feature;
+            newItem.appendChild(deleteBtn);
+            newItem.appendChild(label);st.contains('active'));
+            
+            grid.appendChild(newItem);
+            
+            // Make the new item draggable and editable
+            this.setupDragAndDrop();Make the new item draggable and editable
+                        this.setupDragAndDrop();
+            // Immediately enter edit mode for the new label
+            this.makeEditable(label);   // Immediately enter edit mode for the new label
+                        this.makeEditable(label);
+            // Save the updated grid state
+            this.saveGridState();
+        }();
+        }ound: rgba(0, 0, 0, 0.9);
+        saveGridState() {ur(10px);
+            const grid = document.getElementById('tiktokGrid');ment.getElementById('tiktokGrid');er: blur(10px);{Math.round(rect.width)} × ${Math.round(rect.height)}`;
+            if (!grid) return;) return;
+
+            const items = Array.from(grid.querySelectorAll('.tiktok-btn')).map(btn => {wItem = document.createElement('div');            padding: 10px;r: blur(10px);assList.remove('hidden');
+                const label = btn.querySelector('.tiktok-label'); draggable-item';
+                return {
+                    label: label ? label.textContent : '',ener('mouseleave', () => {
+                    // Add any other properties you want to saveement('span');dden');
+                };';
+            });
+
+            localStorage.setItem('gridState', JSON.stringify(items));ent('button');            border: 1px solid rgba(0, 242, 234, 0.3);
+        }assName = 'delete-btn';
+tn draggable-item';
+        loadGridState() {4, 0.3);rue;
+            const grid = document.getElementById('tiktokGrid');
+            if (!grid) return;ndChild(label);
+
+            const savedState = localStorage.getItem('gridState');ointer;extContent = label;
+            if (savedState) {
+                try {new item draggable and editableer;   const deleteBtn = document.createElement('button');
+                    const items = JSON.parse(savedState);tn.className = 'delete-btn';
+                    
+                    // Clear existing items new labelnd: rgba(0, 242, 234, 0.1);
+                    grid.innerHTML = '';itable(label);
+                    m.appendChild(labelEl);
+                    // Recreate saved itemsctive {2, 234, 0.1);
+                    items.forEach(item => {
+                        const newItem = document.createElement('div');
+                        newItem.className = 'tiktok-btn draggable-item';
+                        newItem.draggable = true;tate() {
+                        onst grid = document.getElementById('tiktokGrid');
+                        const label = document.createElement('span');   if (!grid) return;
+                        label.className = 'tiktok-label';
+                        label.textContent = item.label;
+                        
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.className = 'delete-btn';
+                        deleteBtn.innerHTML = '×';
+                                    
+                        newItem.appendChild(deleteBtn);y editing
+                        newItem.appendChild(label);;
+                        grid.appendChild(newItem);
+                    });
+                    
+                    // Reinitialize drag and droption.addRange(range);
+                    this.setupDragAndDrop();
+                } catch (e) {            const finishEdit = () => {
+                    console.error('Error loading grid state:', e);
+                }
+            }trim() === '') {
+        } = originalText;
+
+        makeEditable(element) {/ Save state after editing
+            const originalText = element.textContent;ate();
+            element.contentEditable = true;   };
+            element.focus();
+            element.classList.add('editable');            element.addEventListener('blur', finishEdit, { once: true });
+EventListener('keypress', (e) => {
+            const finishEdit = () => {ey === 'Enter') {
+                element.contentEditable = false;
+                element.classList.remove('editable');;
+                if (element.textContent.trim() === '') {
+                    element.textContent = originalText;
+                }
+            };
+
+            element.addEventListener('blur', finishEdit, { once: true });           items.forEach(item => {
+            element.addEventListener('keypress', (e) => {                        const newItem = document.createElement('div');            width: 100%; super.createZone(title, type);
+                if (e.key === 'Enter') {Name = 'tiktok-btn draggable-item';vity(zone);
+                    e.preventDefault();ble = true;
+                    finishEdit();
+                }= document.createElement('span');
+            }, { once: true });Name = 'tiktok-label';
+        }tContent = item.label;: 1px;
+    }
+               const deleteBtn = document.createElement('button');            transition: all 0.3s ease;
+    class GridManager {                        deleteBtn.className = 'delete-btn';
+        constructor() {Btn.innerHTML = '×';
+            this.selectedElements = new Set();
+            this.clipboard = [];eBtn);
+            this.undoStack = [];                        newItem.appendChild(label);
+            this.redoStack = [];appendChild(newItem);round: #00f2ea;
+            this.gridSize = 10; // pixels
+            this.isSnapping = true;
+            this.editMode = 'move'; // move, resize, rotate 1001;le(1.05) rotate(3deg);
+        }
+
+        initializeAdvancedEditing() {
+            this.createEditControls();
+            this.setupKeyboardShortcuts();
+            this.setupMultiSelect();
+            this.setupGridGuides();00f2ea;
+            this.setupUndoRedo();;
+            this.setupTouchEvents();
+        }
+
+        createEditControls() {ent.classList.add('editable');            border: 2px solid transparent;
+            const controls = document.createElement('div');
+            controls.className = 'edit-controls';
+
+            const buttons = [
+                { icon: '✋', label: 'Move', mode: 'move' },{42, 234, 0.3);
+                { icon: '↔️', label: 'Resize', mode: 'resize' },ement.textContent = originalText;.
+                { icon: '🔄', label: 'Rotate', mode: 'rotate' },
+                { icon: '🔲', label: 'Grid Snap', action: () => this.toggleSnapping() },lement.editing {
+                { icon: '📋', label: 'Copy', action: () => this.copySelected() },
+                { icon: '📥', label: 'Paste', action: () => this.paste() },nt.addEventListener('blur', finishEdit, { once: true });px rgba(0, 242, 234, 0.2);
+                { icon: '↩️', label: 'Undo', action: () => this.undo() },ent.addEventListener('keypress', (e) => {
+                { icon: '↪️', label: 'Redo', action: () => this.redo() }
+            ];     e.preventDefault();        /* Edit Toolbar */none;
+                    finishEdit();
+            buttons.forEach(btn => {
+                const button = document.createElement('button');   }, { once: true });
+                button.className = 'edit-control-btn';        }
+                button.innerHTML = `${btn.icon} ${btn.label}`;
+                
+                if (btn.mode) {
+                    button.onclick = () => {        constructor() {
+                        this.editMode = btn.mode; = new Set();
+                        document.querySelectorAll('.edit-control-btn').forEach(b => b.classList.remove('active'));
+                        button.classList.add('active');
+                    };
+                    if (btn.mode === 'move') button.classList.add('active');
+                } else {
+                    button.onclick = btn.action;
+                }
+                
+                controls.appendChild(button);
+            });reateEditControls();
+            this.setupKeyboardShortcuts();
+            document.body.appendChild(controls);
+        }sible;0.2s ease;
+
+        setupKeyboardShortcuts() {setupTouchEvents();
+            document.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT') return;ve-handle {
+        createEditControls() {ing: 4px 8px;
+                const actions = { document.createElement('div'););
+                    'Delete': () => this.deleteSelected(),edit-controls';der: none;
+                    'c': (e) => e.metaKey && this.copySelected(),
+                    'v': (e) => e.metaKey && this.paste(),
+                    'z': (e) => e.metaKey && (e.shiftKey ? this.redo() : this.undo()),ve' },   font-size: 12px;
+                    'a': (e) => e.metaKey && this.selectAll(e), 'resize' },            cursor: pointer;
+                    'ArrowUp': (e) => this.moveSelected(0, e.shiftKey ? -10 : -1),                { icon: '🔄', label: 'Rotate', mode: 'rotate' },
+                    'ArrowDown': (e) => this.moveSelected(0, e.shiftKey ? 10 : 1),) => this.toggleSnapping() },
+                    'ArrowLeft': (e) => this.moveSelected(e.shiftKey ? -10 : -1, 0),
+                    'ArrowRight': (e) => this.moveSelected(e.shiftKey ? 10 : 1, 0){ icon: '📥', label: 'Paste', action: () => this.paste() },            transition: all 0.2s ease;
+                };el: 'Undo', action: () => this.undo() },
+: 'Redo', action: () => this.redo() }
+                if (actions[e.key]) {
+                    e.preventDefault();
+                    actions[e.key](e);
+                }ment('button');
+            });tn';
+        }.label}`;
+                
+        setupMultiSelect() {
+            let selecting = false;     button.onclick = () => {y: 0;
+            let startX, startY;                        this.editMode = btn.mode;        /* Text Editor */pacity 0.2s ease;
+            const selectionBox = document.createElement('div');ntrol-btn').forEach(b => b.classList.remove('active'));
+            selectionBox.className = 'selection-box';t.add('active');
+            document.body.appendChild(selectionBox);                    };
+de === 'move') button.classList.add('active'); 0;
+            document.addEventListener('mousedown', (e) => { {
+                if (e.button !== 0 || e.target.closest('.tiktok-btn, .edit-controls')) return;ckground: rgba(0, 0, 0, 0.9);
+                42, 234, 0.3);
+                selecting = true;
+                startX = e.clientX;ntrols.appendChild(button);
+                startY = e.clientY;            });
+                selectionBox.style.left = startX + 'px';
+                selectionBox.style.top = startY + 'px';ols);
+                selectionBox.style.width = '0px';
+                selectionBox.style.height = '0px';
+                selectionBox.style.display = 'block';
+t.addEventListener('keydown', (e) => {
+                if (!e.shiftKey) this.clearSelection();                if (e.target.tagName === 'INPUT') return;lay: block;
+            });
+ const actions = {
+            document.addEventListener('mousemove', (e) => {                    'Delete': () => this.deleteSelected(),, 234, 0.1);
+                if (!selecting) return;lected(),
+metaKey && this.paste(),
+                const rect = {tKey ? this.redo() : this.undo()),
+                    left: Math.min(startX, e.clientX),     'a': (e) => e.metaKey && this.selectAll(e),3);
+                    top: Math.min(startY, e.clientY),           'ArrowUp': (e) => this.moveSelected(0, e.shiftKey ? -10 : -1),
+                    width: Math.abs(e.clientX - startX),                    'ArrowDown': (e) => this.moveSelected(0, e.shiftKey ? 10 : 1),            color: #fff;
+                    height: Math.abs(e.clientY - startY)eft': (e) => this.moveSelected(e.shiftKey ? -10 : -1, 0),
+                };d(e.shiftKey ? 10 : 1, 0)gin-bottom: 4px;{
+ef4444;
+                Object.assign(selectionBox.style, {
+                    left: rect.left + 'px',                if (actions[e.key]) {
+                    top: rect.top + 'px',yle-editor {
+                    width: rect.width + 'px',
+                    height: rect.height + 'px'
+                });
+
+                this.updateSelection(rect);
+            });
+
+            document.addEventListener('mouseup', () => {
+                selecting = false;cument.createElement('div');
+                selectionBox.style.display = 'none';
+            });ild(selectionBox);x);
+        }
+usedown', (e) => {;
+        setupGridGuides() {f (e.button !== 0 || e.target.closest('.tiktok-btn, .edit-controls')) return;            right: 0;
+            const guides = document.createElement('div');  
+            guides.className = 'grid-guides';       selecting = true;play: block;
+            document.body.appendChild(guides);                startX = e.clientX;        }snap-line.vertical {
+e.clientY;
+            this.createSnapPoints = (element) => {
+                const rect = element.getBoundingClientRect();tyle.top = startY + 'px';
+                const points = [                selectionBox.style.width = '0px';
+                    { x: rect.left, y: rect.top },
+                    { x: rect.left + rect.width/2, y: rect.top },bel {
+                    { x: rect.right, y: rect.top },
+                    { x: rect.left, y: rect.top + rect.height/2 },ction();
+                    { x: rect.right, y: rect.top + rect.height/2 },
+                    { x: rect.left, y: rect.bottom },
+                ];.addEventListener('mousemove', (e) => {        }touch-gesture {
+                if (!selecting) return;
+                points.forEach(point => {
+                    const snapPoint = document.createElement('div'); const rect = {
+                    snapPoint.className = 'snap-point';                    left: Math.min(startX, e.clientX),
+                    snapPoint.style.left = `${point.x}px`;
+                    snapPoint.style.top = `${point.y}px`;           width: Math.abs(e.clientX - startX),
+                    guides.appendChild(snapPoint);                    height: Math.abs(e.clientY - startY)
+                });
+            };
+electionBox.style, {
+            this.updateSnapPoints = (element) => {                    left: rect.left + 'px',
+                const points = guides.querySelectorAll('.snap-point');   top: rect.top + 'px',
+                points.forEach(point => {
+                    point.remove();px'
+                });
+                this.createSnapPoints(element);
+            };
+        }       appearance: none;
+
+        saveZoneState() {
+            const grid = document.getElementById('tiktokGrid');cting = false;;;
+            if (!grid) return;
+
+            const zones = Array.from(grid.querySelectorAll('.energy-zone')).map(zone => {
+                const title = zone.querySelector('.zone-title').textContent;
+                const energy = zone.querySelector('.zone-energy-slider').value;() {
+                const type = zone.dataset.type;ides = document.createElement('div');
+                const items = Array.from(zone.querySelectorAll('.tiktok-btn')).map(btn => ({
+                    label: btn.querySelector('.tiktok-label').textContentt.body.appendChild(guides);nd: #00f2ea;zeAddButton();
+                }));: 50%;
+
+                return { title, energy, type, items };   const rect = element.getBoundingClientRect();
+            });       const points = [</html>
+                    { x: rect.left, y: rect.top },position: absolute;            bottom: -220px;            left: 0;            width: 100%;            background: rgba(0, 0, 0, 0.9);        }        initializeReactionSystem() {            const canvas = document.getElementById('reactionCanvas');            if (!canvas) return;                        this.reactionEngine = new ReactionEngine(canvas);            this.reactionEngine.onScreenShake = (intensity) => this.screenShake(intensity);            this.reactionEngine.onScreenFlash = (color, opacity) => this.screenFlash(color, opacity);            this.reactionEngine.start();        }        initializeHologramSystem() {            const canvas = document.getElementById('hologramCanvas');            if (!canvas) return;                        this.hologramEngine = new HologramEngine(canvas);            this.hologramEngine.start();        }        setupTikTokGrid() {            const toggle = document.getElementById('tiktokGridToggle');            const grid = document.getElementById('tiktokGrid');                        if (toggle && grid) {                toggle.addEventListener('click', () => {                    grid.classList.toggle('active');                    toggle.classList.toggle('active');                });                                document.querySelectorAll('.tiktok-btn').forEach(btn => {                    btn.addEventListener('click', (e) => {                        e.stopPropagation();                        const feature = btn.dataset.feature;                        btn.classList.toggle('active');                        this.handleTikTokFeature(feature, btn.classList.contains('active'));                    });                });            }    }    handleTikTokFeature(feature, isActive) {        const messages = {            'rhythm-burst': '🥁 Rhythm Burst: Auto-captures 10-15 shots synced to beat drops!',            'bpm-beauty': '💄 BPM Beauty: Face enhancement changes with the music!',            'crowd-sync': '👥 Crowd Sync: Everyone contributes one photo at beat drop!',            'temporal-echo': '👻 Temporal Echo: Motion trails synced to rhythm!',            'beat-prediction': '🔮 Beat Predict: AI pre-triggers camera for perfect timing!',            'frequency-face': '🎭 Freq Face: Different frequencies enhance facial features!',            'beat-reactive': '� Beat React: Camera responds to music beats!',            'music-sync': '🎶 Music Sync: Perfect synchronization with soundtrack!',            'bass-boost': '� Bass Boost: Enhanced effects on bass drops!',            'vibe-cam': '✨ Vibe Cam: Captures the energy of the moment!',            'rhythm-filter': '🌈 Rhythm Filter: Visual effects pulse with music!',            'beat-drop': '💥 Beat Drop: Explosive effects on major drops!'        };                        if (isActive) {                this.showNotification(messages[feature] || `${feature} activated!`);                                if (feature === 'galaxy' && this.webglBg) {                    this.webglBg.setEffect('galaxy');                }            }        }        createFloatingMessage(text) {            const container = document.getElementById('floatingContainer');            if (!container) return;            const message = document.createElement('div');            message.className = 'floating-message';            message.textContent = text;                        container.appendChild(message);                        setTimeout(() => {                if (message.parentNode) {                    message.parentNode.removeChild(message);                }            }, 3000);        }        sendReaction(content, type, value = 0) {            if (!this.reactionEngine) return;            const colors = {                emoji: '#ff6b6b',                text: '#4ecdc4',                money: '#45b7d1'            };            this.reactionEngine.addReaction({                x: Math.random() * 300 + 50,                y: Math.random() * 100 + 600,                content: content,                type: type,                value: value,                color: colors[type] || '#ffffff'            });        }        showNotification(message) {            const notification = document.createElement('div');            notification.className = 'notification';            notification.textContent = message;                        document.body.appendChild(notification);                        setTimeout(() => {                if (notification.parentNode) {                    notification.parentNode.removeChild(notification);                }            }, 2000);        }        screenShake(intensity) {            const element = document.querySelector('.iphone-frame');            if (element) {                element.style.transform = `translate(${Math.random() * intensity - intensity/2}px, ${Math.random() * intensity - intensity/2}px)`;                setTimeout(() => {                    element.style.transform = 'translate(0, 0)';                }, 100);            }        }        screenFlash(color, opacity) {            const flash = document.createElement('div');            flash.style.cssText = `                position: fixed;                top: 0;                left: 0;                width: 100%;                height: 100%;                background: ${color};                opacity: ${opacity};                pointer-events: none;                z-index: 9999;            `;                        document.body.appendChild(flash);                        setTimeout(() => {                flash.style.opacity = '0';                setTimeout(() => {                    if (flash.parentNode) {                        flash.parentNode.removeChild(flash);                    }                }, 200);            }, 100);        }        setupDragAndDrop() {            const grid = document.getElementById('tiktokGrid');            if (!grid) return;            let draggedElement = null;            // Add drag and drop to all tiktok buttons            document.querySelectorAll('.tiktok-btn').forEach(btn => {                btn.addEventListener('dragstart', (e) => {                    draggedElement = btn;                    btn.classList.add('dragging');                    e.dataTransfer.effectAllowed = 'move';                });                btn.addEventListener('dragend', () => {                    btn.classList.remove('dragging');                    draggedElement = null;                });                btn.addEventListener('dragover', (e) => {                    e.preventDefault();                    e.dataTransfer.dropEffect = 'move';                });                btn.addEventListener('drop', (e) => {                    e.preventDefault();                    if (draggedElement && draggedElement !== btn) {                        // Swap positions                        const draggedParent = draggedElement.parentNode;                        const targetParent = btn.parentNode;                        const draggedNext = draggedElement.nextSibling;                        const targetNext = btn.nextSibling;                        if (draggedNext) {                            draggedParent.insertBefore(btn, draggedNext);                        } else {                            draggedParent.appendChild(btn);                        }                        if (targetNext) {                            targetParent.insertBefore(draggedElement, targetNext);                        } else {                            targetParent.appendChild(draggedElement);                        }                    }                });                // Make labels editable on double click                const label = btn.querySelector('.tiktok-label');                if (label) {                    label.addEventListener('dblclick', (e) => {                        e.stopPropagation();                        this.makeEditable(label);                    });                }            });        }        setupEditMode() {            const editToggle = document.getElementById('editToggle');            const grid = document.getElementById('tiktokGrid');                        editToggle?.addEventListener('click', () => {                const isEditMode = grid.classList.contains('edit-mode');                grid.classList.toggle('edit-mode');                editToggle.classList.toggle('active');                                if (isEditMode) {                    editToggle.textContent = '✏️';                } else {                    editToggle.textContent = '✅';                }            });            // Add delete functionality            document.addEventListener('click', (e) => {                if (e.target.classList.contains('delete-btn')) {                    e.stopPropagation();                    const btn = e.target.closest('.tiktok-btn');                    if (btn && confirm('Delete this component?')) {                        btn.remove();                    }                }            });        }        initializeAddButton() {            const addButton = document.getElementById('addButton');            if (addButton) {                addButton.addEventListener('click', () => this.addNewGridItem());            }            // Load saved grid state            this.loadGridState();            // Save grid state on changes            const grid = document.getElementById('tiktokGrid');            if (grid) {                const observer = new MutationObserver(() => this.saveGridState());                observer.observe(grid, {                     childList: true,                     subtree: true,                     characterData: true                 });            }        }        addNewGridItem() {            const grid = document.getElementById('tiktokGrid');            if (!grid) return;            const newItem = document.createElement('div');            newItem.className = 'tiktok-btn draggable-item';            newItem.draggable = true;                        const label = document.createElement('span');            label.className = 'tiktok-label';            label.textContent = 'New Effect';                        const deleteBtn = document.createElement('button');            deleteBtn.className = 'delete-btn';            deleteBtn.innerHTML = '×';                        newItem.appendChild(deleteBtn);            newItem.appendChild(label);                        grid.appendChild(newItem);                        // Make the new item draggable and editable            this.setupDragAndDrop();                        // Immediately enter edit mode for the new label            this.makeEditable(label);                        // Save the updated grid state            this.saveGridState();        }        saveGridState() {            const grid = document.getElementById('tiktokGrid');            if (!grid) return;            const items = Array.from(grid.querySelectorAll('.tiktok-btn')).map(btn => {                const label = btn.querySelector('.tiktok-label');                return {                    label: label ? label.textContent : '',                    // Add any other properties you want to save                };            });            localStorage.setItem('gridState', JSON.stringify(items));        }        loadGridState() {            const grid = document.getElementById('tiktokGrid');            if (!grid) return;            const savedState = localStorage.getItem('gridState');            if (savedState) {                try {                    const items = JSON.parse(savedState);                                        // Clear existing items                    grid.innerHTML = '';                                        // Recreate saved items                    items.forEach(item => {                        const newItem = document.createElement('div');                        newItem.className = 'tiktok-btn draggable-item';                        newItem.draggable = true;                                                const label = document.createElement('span');                        label.className = 'tiktok-label';                        label.textContent = item.label;                                                const deleteBtn = document.createElement('button');                        deleteBtn.className = 'delete-btn';                        deleteBtn.innerHTML = '×';                                                newItem.appendChild(deleteBtn);                        newItem.appendChild(label);                        grid.appendChild(newItem);                    });                                        // Reinitialize drag and drop                    this.setupDragAndDrop();                } catch (e) {                    console.error('Error loading grid state:', e);                }            }        }        makeEditable(element) {            const originalText = element.textContent;            element.contentEditable = true;            element.focus();            element.classList.add('editable');            const finishEdit = () => {                element.contentEditable = false;                element.classList.remove('editable');                if (element.textContent.trim() === '') {                    element.textContent = originalText;                }            };            element.addEventListener('blur', finishEdit, { once: true });            element.addEventListener('keypress', (e) => {                if (e.key === 'Enter') {                    e.preventDefault();                    finishEdit();                }            }, { once: true });        }    }    class GridManager {        constructor() {            this.selectedElements = new Set();            this.clipboard = [];            this.undoStack = [];            this.redoStack = [];            this.gridSize = 10; // pixels            this.isSnapping = true;            this.editMode = 'move'; // move, resize, rotate        }        initializeAdvancedEditing() {            this.createEditControls();            this.setupKeyboardShortcuts();            this.setupMultiSelect();            this.setupGridGuides();            this.setupUndoRedo();            this.setupTouchEvents();        }        createEditControls() {            const controls = document.createElement('div');            controls.className = 'edit-controls';            const buttons = [                { icon: '✋', label: 'Move', mode: 'move' },                { icon: '↔️', label: 'Resize', mode: 'resize' },                { icon: '🔄', label: 'Rotate', mode: 'rotate' },                { icon: '🔲', label: 'Grid Snap', action: () => this.toggleSnapping() },                { icon: '📋', label: 'Copy', action: () => this.copySelected() },                { icon: '📥', label: 'Paste', action: () => this.paste() },                { icon: '↩️', label: 'Undo', action: () => this.undo() },                { icon: '↪️', label: 'Redo', action: () => this.redo() }            ];            buttons.forEach(btn => {                const button = document.createElement('button');                button.className = 'edit-control-btn';                button.innerHTML = `${btn.icon} ${btn.label}`;                                if (btn.mode) {                    button.onclick = () => {                        this.editMode = btn.mode;                        document.querySelectorAll('.edit-control-btn').forEach(b => b.classList.remove('active'));                        button.classList.add('active');                    };                    if (btn.mode === 'move') button.classList.add('active');                } else {                    button.onclick = btn.action;                }                                controls.appendChild(button);            });            document.body.appendChild(controls);        }        setupKeyboardShortcuts() {            document.addEventListener('keydown', (e) => {                if (e.target.tagName === 'INPUT') return;                const actions = {                    'Delete': () => this.deleteSelected(),                    'c': (e) => e.metaKey && this.copySelected(),                    'v': (e) => e.metaKey && this.paste(),                    'z': (e) => e.metaKey && (e.shiftKey ? this.redo() : this.undo()),                    'a': (e) => e.metaKey && this.selectAll(e),                    'ArrowUp': (e) => this.moveSelected(0, e.shiftKey ? -10 : -1),                    'ArrowDown': (e) => this.moveSelected(0, e.shiftKey ? 10 : 1),                    'ArrowLeft': (e) => this.moveSelected(e.shiftKey ? -10 : -1, 0),                    'ArrowRight': (e) => this.moveSelected(e.shiftKey ? 10 : 1, 0)                };                if (actions[e.key]) {                    e.preventDefault();                    actions[e.key](e);                }            });        }        setupMultiSelect() {            let selecting = false;            let startX, startY;            const selectionBox = document.createElement('div');            selectionBox.className = 'selection-box';            document.body.appendChild(selectionBox);            document.addEventListener('mousedown', (e) => {                if (e.button !== 0 || e.target.closest('.tiktok-btn, .edit-controls')) return;                                selecting = true;                startX = e.clientX;                startY = e.clientY;                selectionBox.style.left = startX + 'px';                selectionBox.style.top = startY + 'px';                selectionBox.style.width = '0px';                selectionBox.style.height = '0px';                selectionBox.style.display = 'block';                if (!e.shiftKey) this.clearSelection();            });            document.addEventListener('mousemove', (e) => {                if (!selecting) return;                const rect = {                    left: Math.min(startX, e.clientX),                    top: Math.min(startY, e.clientY),                    width: Math.abs(e.clientX - startX),                    height: Math.abs(e.clientY - startY)                };                Object.assign(selectionBox.style, {                    left: rect.left + 'px',                    top: rect.top + 'px',                    width: rect.width + 'px',                    height: rect.height + 'px'                });                this.updateSelection(rect);            });            document.addEventListener('mouseup', () => {                selecting = false;                selectionBox.style.display = 'none';            });        }        setupGridGuides() {            const guides = document.createElement('div');            guides.className = 'grid-guides';            document.body.appendChild(guides);            this.createSnapPoints = (element) => {                const rect = element.getBoundingClientRect();                const points = [                    { x: rect.left, y: rect.top },                    { x: rect.left + rect.width/2, y: rect.top },                    { x: rect.right, y: rect.top },                    { x: rect.left, y: rect.top + rect.height/2 },                    { x: rect.right, y: rect.top + rect.height/2 },                    { x: rect.left, y: rect.bottom },                ];                points.forEach(point => {                    const snapPoint = document.createElement('div');                    snapPoint.className = 'snap-point';                    snapPoint.style.left = `${point.x}px`;                    snapPoint.style.top = `${point.y}px`;                    guides.appendChild(snapPoint);                });            };            this.updateSnapPoints = (element) => {                const points = guides.querySelectorAll('.snap-point');                points.forEach(point => {                    point.classList.remove('active');                });                if (element) {                    const rect = element.getBoundingClientRect();                    const activePoints = [                        { x: rect.left, y: rect.top },                        { x: rect.left + rect.width/2, y: rect.top },                        { x: rect.right, y: rect.top },                        { x: rect.left, y: rect.top + rect.height/2 },                        { x: rect.right, y: rect.top + rect.height/2 },                        { x: rect.left, y: rect.bottom },                    ];                    activePoints.forEach(point => {                        const snapPoint = document.elementFromPoint(point.x, point.y);                        if (snapPoint && snapPoint.classList.contains('snap-point')) {                            snapPoint.classList.add('active');                        }                    });                }            };        }        setupUndoRedo() {            // Initialize undo/redo stacks            this.undoStack = [];            this.redoStack = [];            // Listen for changes in the grid            const observer = new MutationObserver(() => {                this.saveUndoState();            });            observer.observe(document.getElementById('tiktokGrid'), {                childList: true,                subtree: true            });            // Keyboard shortcuts for undo/redo            document.addEventListener('keydown', (e) => {                if (e.metaKey && e.key === 'z') {                    e.preventDefault();                    this.undo();                } else if (e.metaKey && e.shiftKey && e.key === 'z') {                    e.preventDefault();                    this.redo();                }            });        }        saveUndoState() {            const grid = document.getElementById('tiktokGrid');            if (!grid) return;            // Get current state            const state = Array.from(grid.children).map(item => {                return {                    label: item.querySelector('.tiktok-label').innerText,                    style: item.getAttribute('style'),                    classList: Array.from(item.classList)                };            });            // Push to undo stack            this.undoStack.push(state);            // Limit stack size            if (this.undoStack.length > 50) {                this.undoStack.shift();            }            // Clear redo stack            this.redoStack = [];        }        undo() {            if (this.undoStack.length === 0) return;            // Pop from undo stack            const state = this.undoStack.pop();            this.redoStack.push(state);            this.applyState(state);        }        redo() {            if (this.redoStack.length === 0) return;            // Pop from redo stack            const state = this.redoStack.pop();            this.undoStack.push(state);            this.applyState(state);        }        applyState(state) {            const grid = document.getElementById('tiktokGrid');            if (!grid) return;            // Clear current grid            grid.innerHTML = '';            // Restore state            state.forEach(itemState => {                const item = document.createElement('div');                item.className = 'tiktok-btn';                item.setAttribute('style', itemState.style);                itemState.classList.forEach(cls => item.classList.add(cls));                const label = document.createElement('span');                label.className = 'tiktok-label';                label.innerText = itemState.label;                item.appendChild(label);                grid.appendChild(item);            });            // Reapply interactivity            this.setupDragAndDrop();            this.setupEditMode();        }        setupTouchEvents() {            const grid = document.getElementById('tiktokGrid');            if (!grid) return;            let startX, startY, isDragging = false;            grid.addEventListener('touchstart', (e) => {                if (e.touches.length > 1) return;                startX = e.touches[0].clientX;                startY = e.touches[0].clientY;                isDragging = false;            });            grid.addEventListener('touchmove', (e) => {                if (e.touches.length > 1) return;                const dx = e.touches[0].clientX - startX;                const dy = e.touches[0].clientY - startY;                if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {                    isDragging = true;                    // Implement dragging logic here                }            });            grid.addEventListener('touchend', (e) => {                if (e.changedTouches.length > 1) return;                if (!isDragging) {                    // Handle tap events                    const btn = e.changedTouches[0].target.closest('.tiktok-btn');                    if (btn) {                        btn.classList.toggle('active');                    }                }            });        }        initializeZones() {            const grid = document.getElementById('tiktokGrid');            if (!grid) return;            // Create initial zones            for (let i = 0; i < 3; i++) {                this.createZone(`Zone ${i+1}`, 'bass');            }        }        createZone(title, type = 'bass') {            const grid = document.getElementById('tiktokGrid');            if (!grid) return;            const zone = document.createElement('div');            zone.className = 'energy-zone';            zone.setAttribute('data-type', type);            const header = document.createElement('div');            header.className = 'zone-header';            const titleLabel = document.createElement('div');            titleLabel.className = 'zone-title';            titleLabel.textContent = title;            const controls = document.createElement('div');            controls.className = 'zone-controls';            const deleteBtn = document.createElement('button');            deleteBtn.className = 'delete-btn';            deleteBtn.innerHTML = '×';            deleteBtn.addEventListener('click', (e) => {                e.stopPropagation();                if (confirm('Delete this zone?')) {                    zone.remove();                    this.saveZoneState();                }            });            const typeSelect = document.createElement('select');            typeSelect.className = 'zone-type-select';            typeSelect.innerHTML = `                <option value="bass">Bass</option>                <option value="melody">Melody</option>                <option value="rhythm">Rhythm</option>            `;            typeSelect.value = type;            typeSelect.addEventListener('change', (e) => {                const newType = e.target.value;                zone.setAttribute('data-type', newType);                this.updateZoneStyles(zone, newType);                this.saveZoneState();            });            controls.appendChild(deleteBtn);            controls.appendChild(typeSelect);            header.appendChild(titleLabel);            header.appendChild(controls);            zone.appendChild(header);            const gridContainer = document.createElement('div');            gridContainer.className = 'zone-grid';            zone.appendChild(gridContainer);            grid.appendChild(zone);            // Initialize grid and events            this.initializeZoneGrid(gridContainer);            this.setupZoneEvents(zone);        }        initializeZoneGrid(grid) {            // Add drag and drop to zone grid            this.setupDragAndDrop(grid);            // Add initial items            for (let i = 0; i < 4; i++) {                const item = this.createGridItem(`Item ${i+1}`);                grid.appendChild(item);            }        }        setupZoneEvents(zone) {            // Resizable zone            this.makeResizable(zone);            // Style controls            const controls = this.createStyleControls(zone);            zone.appendChild(controls);            // Context menu            zone.addEventListener('contextmenu', (e) => {                e.preventDefault();                this.createContextMenu(e.clientX, e.clientY, zone);            });            // Double click to edit            zone.addEventListener('dblclick', (e) => {                if (e.target === zone) {                    zone.classList.add('being-edited');                    controls.classList.remove('hidden');                }            });            // Tooltip            const tooltip = document.createElement('div');            tooltip.className = 'tooltip hidden';            zone.appendChild(tooltip);                        zone.addEventListener('mousemove', (e) => {                if (zone.classList.contains('resizing')) return;                                const rect = zone.getBoundingClientRect();                tooltip.textContent = `${Math.round(rect.width)} × ${Math.round(rect.height)}`;                tooltip.style.left = `${e.clientX - rect.left}px`;                tooltip.style.top = `${e.clientY - rect.top - 20}px`;                tooltip.classList.remove('hidden');            });                        zone.addEventListener('mouseleave', () => {                tooltip.classList.add('hidden');            });        }        updateZoneStyles(zone, type) {            const styles = {                bass: {                    background: 'rgba(255, 0, 0, 0.1)',                    borderColor: 'rgba(255, 0, 0, 0.7)'                },                melody: {                    background: 'rgba(0, 255, 0, 0.1)',                    borderColor: 'rgba(0, 255, 0, 0.7)'                },                rhythm: {                    background: 'rgba(0, 0, 255, 0.1)',                    borderColor: 'rgba(0, 0, 255, 0.7)'                }            };            const { background, borderColor } = styles[type] || styles.bass;            zone.style.background = background;            zone.style.borderColor = borderColor;        }        saveZoneState() {            const grid = document.getElementById('tiktokGrid');            if (!grid) return;            const zones = Array.from(grid.querySelectorAll('.energy-zone')).map(zone => {                const title = zone.querySelector('.zone-title').textContent;                const energy = zone.querySelector('.zone-energy-slider').value;                const type = zone.dataset.type;                const items = Array.from(zone.querySelectorAll('.tiktok-btn')).map(btn => ({                    label: btn.querySelector('.tiktok-label').textContent                }));                return { title, energy, type, items };            });            localStorage.setItem('zoneState', JSON.stringify(zones));        }        loadZoneState() {            const saved = localStorage.getItem('zoneState');            if (!saved) return;            try {                const zones = JSON.parse(saved);                zones.forEach(zoneData => {                    const zone = this.createZone(zoneData.title, zoneData.type);                    const slider = zone.querySelector('.zone-energy-slider');
+            localStorage.setItem('zoneState', JSON.stringify(zones));ft + rect.width/2, y: rect.top },           const value = zone.querySelector('.zone-energy-value');
+        }p },                    
+energy;
+        loadZoneState() {        { x: rect.right, y: rect.top + rect.height/2 },';
+            const saved = localStorage.getItem('zoneState');y: rect.bottom },
+            if (!saved) return;uerySelector('.zone-grid');
+
+            try {tem(item.label);
+                const zones = JSON.parse(saved);    const snap = document.createElement('div');d(itemEl);
+                zones.forEach(zoneData => {
+                    const zone = this.createZone(zoneData.title, zoneData.type);{p.x}px`;
+                    const slider = zone.querySelector('.zone-energy-slider');
+                    const value = zone.querySelector('.zone-energy-value'); guides.appendChild(snap);
+                     });
+                    slider.value = zoneData.energy;   };
+                    value.textContent = zoneData.energy + '%';
+                    > {
+                    const zoneGrid = zone.querySelector('.zone-grid');es.querySelectorAll('.snap-point');
+                    zoneData.items.forEach(item => {> {
+                        const itemEl = this.createGridItem(item.label);        const x = index % 3 * 50;
+                        zoneGrid.appendChild(itemEl);index / 3) * 50;es = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+                    });x}px`;
+                    
+                    this.updateZoneEnergy(zone, zoneData.energy);('div');
+                });
+            } catch (e) {
+                console.error('Error loading zone state:', e);
+            }ddEventListener('mousedown', (e) => {
+        }tiktokGrid');                    e.stopPropagation();
+);
+        makeResizable(element) {
+            element.classList.add('resizable');om(grid.querySelectorAll('.energy-zone')).map(zone => {
+            const handles = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];Selector('.zone-title').textContent;
+            value;
+            handles.forEach(pos => {
+                const handle = document.createElement('div');Array.from(zone.querySelectorAll('.tiktok-btn')).map(btn => ({
+                handle.className = `resize-handle ${pos}`;ector('.tiktok-label').textContent);
+                element.appendChild(handle);
+                
+                handle.addEventListener('mousedown', (e) => {
+                    e.stopPropagation();
+                    this.startResize(element, pos, e);
+                });tartLeft = element.offsetLeft;
+            });
+        }
+
+        startResize(element, position, event) {ge.getItem('zoneState');ientX - startX;
+            event.preventDefault();
+            element.classList.add('resizing');
+            
+            const startX = event.clientX;
+            const startY = event.clientY;zoneData => {artWidth + deltaX}px`;
+            const startWidth = element.offsetWidth;   const zone = this.createZone(zoneData.title, zoneData.type);rtHeight + deltaY}px`;
+            const startHeight = element.offsetHeight;      const slider = zone.querySelector('.zone-energy-slider');
+            const startLeft = element.offsetLeft;        const value = zone.querySelector('.zone-energy-value');
+            const startTop = element.offsetTop;nt.style.width = `${startWidth - deltaX}px`;
+            ht = `${startHeight + deltaY}px`;
+            const onMouseMove = (e) => { deltaX}px`;
+                const deltaX = e.clientX - startX;
+                const deltaY = e.clientY - startY;zone.querySelector('.zone-grid');    case 'top-right':
+                      zoneData.items.forEach(item => {yle.width = `${startWidth + deltaX}px`;
+                switch(position) {            const itemEl = this.createGridItem(item.label);ight = `${startHeight - deltaY}px`;
+                    case 'bottom-right':
+                        element.style.width = `${startWidth + deltaX}px`;
+                        element.style.height = `${startHeight + deltaY}px`;           left':
+                        break;                    this.updateZoneEnergy(zone, zoneData.energy);idth = `${startWidth - deltaX}px`;
+                    case 'bottom-left':
+                        element.style.width = `${startWidth - deltaX}px`;
+                        element.style.height = `${startHeight + deltaY}px`;state:', e);
+                        element.style.left = `${startLeft + deltaX}px`;}
+                        break;
+                    case 'top-right':
+                        element.style.width = `${startWidth + deltaX}px`;
+                        element.style.height = `${startHeight - deltaY}px`;'resizable');
+                        element.style.top = `${startTop + deltaY}px`;op-right', 'bottom-left', 'bottom-right'];ist.remove('resizing');
+                        break;MouseMove);
+                    case 'top-left':s.forEach(pos => {
+                        element.style.width = `${startWidth - deltaX}px`;onst handle = document.createElement('div');
+                        element.style.height = `${startHeight - deltaY}px`;-handle ${pos}`;
+                        element.style.top = `${startTop + deltaY}px`;d(handle);
+                        element.style.left = `${startLeft + deltaX}px`;Move);
+                        break;ner('mousedown', (e) => {ent.addEventListener('mouseup', onMouseUp);
+                }  e.stopPropagation();
+            };   this.startResize(element, pos, e);
+            
+            const onMouseUp = () => {
+                element.classList.remove('resizing');
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);osition, event) {
+                this.saveZoneState();preventDefault();  {
+            };nt.classList.add('resizing');        label: 'Background',
+            
+            document.addEventListener('mousemove', onMouseMove);ientX;
+            document.addEventListener('mouseup', onMouseUp);       value: '#000000'
+        }lement.offsetWidth;                },
+= element.offsetHeight;
+        createStyleControls(element) {startLeft = element.offsetLeft;
+            const controls = document.createElement('div'); startTop = element.offsetTop;
+            controls.className = 'style-controls';Color',
+             => {00f2ea'
+            const options = [ - startX;,
+                {e.clientY - startY;
+                    label: 'Background',
+                    type: 'color',on) {
+                    property: 'background',m-right':rWidth',
+                    value: '#000000'       element.style.width = `${startWidth + deltaX}px`;  value: '1',
+                },          element.style.height = `${startHeight + deltaY}px`;   unit: 'px'
+                {            break;
+                    label: 'Border Color',t':
+                    type: 'color',deltaX}px`;
+                    property: 'borderColor',artHeight + deltaY}px`;
+                    value: '#00f2ea'        element.style.left = `${startLeft + deltaX}px`;  property: 'borderRadius',
+                },
+                {
+                    label: 'Border Width',        element.style.width = `${startWidth + deltaX}px`;
+                    type: 'number',- deltaY}px`;
+                    property: 'borderWidth',top = `${startTop + deltaY}px`;city',
+                    value: '1',
+                    unit: 'px'opacity',
+                },startWidth - deltaX}px`;   value: '1',
+                {artHeight - deltaY}px`;
+                    label: 'Radius',        element.style.top = `${startTop + deltaY}px`;
+                    type: 'number',ft + deltaX}px`;
+                    property: 'borderRadius',
+                    value: '16',
+                    unit: 'px'
+                },
+                {nMouseUp = () => {ent.createElement('div');
+                    label: 'Opacity',element.classList.remove('resizing'); 'style-control';
+                    type: 'number',r('mousemove', onMouseMove);
+                    property: 'opacity',r('mouseup', onMouseUp);ocument.createElement('label');
+                    value: '1',t.label;
+                    min: '0',
+                    max: '1',ocument.createElement('input');
+                    step: '0.1'tListener('mousemove', onMouseMove);nput.type = opt.type;
+                }   document.addEventListener('mouseup', onMouseUp);  input.value = opt.value;
+            ];        }    if (opt.min) input.min = opt.min;
+            
+            options.forEach(opt => {
+                const control = document.createElement('div');Element('div');
+                control.className = 'style-control';-controls';input.addEventListener('input', () => {
+                
+                const label = document.createElement('label');const options = [.unit;
+                label.textContent = opt.label;style[opt.property] = value;
+                   label: 'Background',
+                const input = document.createElement('input');
+                input.type = opt.type;background',
+                input.value = opt.value;'
+                if (opt.min) input.min = opt.min;
+                if (opt.max) input.max = opt.max;
+                if (opt.step) input.step = opt.step;  label: 'Border Color',
+                   type: 'color',
+                input.addEventListener('input', () => {lor',
+                    let value = input.value;f2ea'
+                    if (opt.unit) value += opt.unit;
+                    element.style[opt.property] = value;
+                    this.saveZoneState();
+                });
+                
+                control.appendChild(label);
+                control.appendChild(input);nit: 'px'
+                controls.appendChild(control);st options = [
+            });    {
+            les',
+            return controls;er',           icon: '🎨',
+        }erRadius',                    action: () => {
+?.classList.toggle('hidden');
+        createContextMenu(x, y, element) {nit: 'px'
+            const menu = document.createElement('div');
+            menu.className = 'context-menu';
+            menu.style.left = `${x}px`;
+            menu.style.top = `${y}px`;er',        icon: '📋',
+            ity',) => {
+            const options = [ element.cloneNode(true);
+                {in: '0',= `${parseInt(element.style.left) + 20}px`;
+                    label: 'Edit Styles',  max: '1',tyle.top = `${parseInt(element.style.top) + 20}px`;
+                    icon: '🎨',   step: '0.1'entNode.appendChild(clone);
+                    action: () => {
+                        element.querySelector('.style-controls')?.classList.toggle('hidden');
+                    }
+                },
+                {teElement('div');ont',
+                    label: 'Duplicate',ol.className = 'style-control';
+                    icon: '📋',
+                    action: () => {  const label = document.createElement('label');
+                        const clone = element.cloneNode(true);    label.textContent = opt.label;
+                        clone.style.left = `${parseInt(element.style.left) + 20}px`;
+                        clone.style.top = `${parseInt(element.style.top) + 20}px`;');
+                        element.parentNode.appendChild(clone);
+                        this.setupElementInteractivity(clone);
+                    } = opt.min;  action: () => {
+                },t.max = opt.max;       element.style.zIndex = '1';
+                {t.step = opt.step;
+                    label: 'Bring to Front',
+                    icon: '⬆️','input', () => {
+                    action: () => {     let value = input.value;
+                        element.style.zIndex = '1000';        if (opt.unit) value += opt.unit;con: '🗑️',
+                    }ty] = value;  action: () => {
+                },        this.saveZoneState();       element.remove();
+                {
+                    label: 'Send to Back',
+                    icon: '⬇️',;
+                    action: () => {
+                        element.style.zIndex = '1';ontrol);
+                    }
+                }, = document.createElement('div');
+                { controls;ntext-menu-item';        }        createContextMenu(x, y, element) {            const menu = document.createElement('div');            menu.className = 'context-menu';            menu.style.left = `${x}px`;            menu.style.top = `${y}px`;                        const options = [                {                    label: 'Edit Styles',                    icon: '🎨',                    action: () => {                        element.querySelector('.style-controls')?.classList.toggle('hidden');                    }                },                {                    label: 'Duplicate',                    icon: '📋',                    action: () => {                        const clone = element.cloneNode(true);                        clone.style.left = `${parseInt(element.style.left) + 20}px`;                        clone.style.top = `${parseInt(element.style.top) + 20}px`;                        element.parentNode.appendChild(clone);                        this.setupElementInteractivity(clone);                    }                },                {                    label: 'Bring to Front',                    icon: '⬆️',                    action: () => {                        element.style.zIndex = '1000';                    }                },                {                    label: 'Send to Back',                    icon: '⬇️',                    action: () => {                        element.style.zIndex = '1';                    }                },                {                    label: 'Delete',                    icon: '🗑️',                    action: () => {                        element.remove();                        this.saveZoneState();                    }                }            ];                        options.forEach(opt => {                const item = document.createElement('div');                item.className = 'context-menu-item';                item.innerHTML = `${opt.icon} ${opt.label}`;                item.onclick = () => {                    opt.action();                    menu.remove();                };                menu.appendChild(item);            });                        document.body.appendChild(menu);                        // Close menu on outside click            setTimeout(() => {                const closeMenu = (e) => {                    if (!menu.contains(e.target)) {                        menu.remove();                        document.removeEventListener('click', closeMenu);                    }                };                document.addEventListener('click', closeMenu);            });        }        setupElementInteractivity(element) {            // Make resizable            this.makeResizable(element);                        // Add style controls            const controls = this.createStyleControls(element);            controls.classList.add('hidden');            element.appendChild(controls);                        // Context menu            element.addEventListener('contextmenu', (e) => {                e.preventDefault();                this.createContextMenu(e.clientX, e.clientY, element);            });                        // Double click to edit            element.addEventListener('dblclick', (e) => {                if (e.target === element) {                    element.classList.add('being-edited');                    controls.classList.remove('hidden');                }            });                        // Tooltip            const tooltip = document.createElement('div');            tooltip.className = 'tooltip hidden';            element.appendChild(tooltip);                        element.addEventListener('mousemove', (e) => {                if (element.classList.contains('resizing')) return;                                const rect = element.getBoundingClientRect();                tooltip.textContent = `${Math.round(rect.width)} × ${Math.round(rect.height)}`;                tooltip.style.left = `${e.clientX - rect.left}px`;                tooltip.style.top = `${e.clientY - rect.top - 20}px`;                tooltip.classList.remove('hidden');            });                        element.addEventListener('mouseleave', () => {                tooltip.classList.add('hidden');
+                    label: 'Delete',
+                    icon: '🗑️',
+                    action: () => {
+                        element.remove();        createGridItem(label) {
+                        this.saveZoneState();ent('div');
+                    }'tiktok-btn draggable-item';
+                }
+            ];
+            ent.createElement('span');
+            options.forEach(opt => {
+                const item = document.createElement('div');
+                item.className = 'context-menu-item';
+                item.innerHTML = `${opt.icon} ${opt.label}`;const deleteBtn = document.createElement('button');
+                item.onclick = () => {Name = 'delete-btn';
+                    opt.action();
+                    menu.remove();
+                };
+                menu.appendChild(item);m.appendChild(labelEl);
+            });
+            ctive
+            document.body.appendChild(menu);
+            
+            // Close menu on outside click
+            setTimeout(() => {
+                const closeMenu = (e) => {
+                    if (!menu.contains(e.target)) {one(title, type = '') {
+                        menu.remove();const zone = super.createZone(title, type);
+                        document.removeEventListener('click', closeMenu);ElementInteractivity(zone);
+                    }
+                };
+                document.addEventListener('click', closeMenu);
+            });alize the app when DOM is loaded
+        }
+
+        setupElementInteractivity(element) {Manager.init();
+            // Make resizable
+            this.makeResizable(element);
+            
+            // Add style controls
+            const controls = this.createStyleControls(element);
+            controls.classList.add('hidden');
+            element.appendChild(controls);
+                        // Context menu            element.addEventListener('contextmenu', (e) => {                e.preventDefault();                this.createContextMenu(e.clientX, e.clientY, element);            });                        // Double click to edit            element.addEventListener('dblclick', (e) => {                if (e.target === element) {                    element.classList.add('being-edited');                    controls.classList.remove('hidden');                }            });                        // Tooltip            const tooltip = document.createElement('div');            tooltip.className = 'tooltip hidden';            element.appendChild(tooltip);                        element.addEventListener('mousemove', (e) => {                if (element.classList.contains('resizing')) return;                                const rect = element.getBoundingClientRect();                tooltip.textContent = `${Math.round(rect.width)} × ${Math.round(rect.height)}`;                tooltip.style.left = `${e.clientX - rect.left}px`;                tooltip.style.top = `${e.clientY - rect.top - 20}px`;                tooltip.classList.remove('hidden');            });                        element.addEventListener('mouseleave', () => {                tooltip.classList.add('hidden');            });        }        createGridItem(label) {            const item = document.createElement('div');            item.className = 'tiktok-btn draggable-item';            item.draggable = true;                        const labelEl = document.createElement('span');            labelEl.className = 'tiktok-label';            labelEl.textContent = label;                        const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.innerHTML = '×';
+            
+            item.appendChild(deleteBtn);
+            item.appendChild(labelEl);
+            
+            // Make it fully interactive
+            this.setupElementInteractivity(item);
+            
+            return item;
+        }
+
+        createZone(title, type = '') {
+            const zone = super.createZone(title, type);
+            this.setupElementInteractivity(zone);
+            return zone;
+        }
+    }
+    // Initialize the app when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+            const gridManager = new GridManager();
+            gridManager.init();
+            gridManager.setupDragAndDrop();
+            gridManager.setupEditMode();
+            gridManager.initializeAddButton();
+        });
+    </script>
+</body>
+</html>
+            gridManager.initializeAddButton();
+        });
+    </script>
+
+    <!-- Add Button -->
+    <div class="add-btn" id="addButton">+</div>
+</body>

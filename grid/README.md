@@ -1,212 +1,306 @@
-# GRID OS Integration Core
+# 🎵 Sound Factory - Mobile Live Stream App
 
-The GRID OS Integration Core serves as the central nervous system for the GRID OS application, providing a robust and flexible architecture for event-driven, reactive programming.
+A modern, mobile-first live streaming application built with Astro, featuring TikTok-style interactions, real-time chat, and immersive WebGL backgrounds.
 
-## Overview
+## ✨ Features
 
-The Integration Core is designed to facilitate seamless communication between various components of the GRID OS, including:
+### 🎭 **Interactive Components**
+- **Floating Player**: Draggable, resizable video player with touch support
+- **Grid Overlay**: Feature-rich overlay with quick access to app functions
+- **Theme Selector**: Switch between Dark, Pink, and Jet Black themes
+- **Status Bar**: Mobile-style status bar with live clock
+- **Live Chat**: Real-time chat with auto-messages and user interactions
 
-- Real-time event processing
-- WebGL shader management
-- Audio-visual synchronization
-- Haptic feedback
-- Network communication
-- AI integration
+### 🎨 **Visual Experience**
+- **WebGL Background**: Animated, theme-responsive backgrounds (space, clouds, grid)
+- **Touch Optimized**: 44px minimum touch targets, ripple effects
+- **Smooth Animations**: CSS transitions and keyframe animations
+- **Mobile First**: Responsive design optimized for mobile devices
+- **Custom Themes**: Multiple visual themes with instant switching
 
-## Architecture
+### 🛠 **Technical Features**
+- **Nanostores**: Reactive state management with persistence
+- **TypeScript**: Full type safety throughout the codebase
+- **Modern CSS**: CSS variables, grid layouts, flexbox
+- **Astro Framework**: Static site generation with island architecture
+- **PWA Ready**: Service worker support and offline capabilities
 
-The Integration Core is built around several key components:
+## 🚀 Getting Started
 
-### Event Bus
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
 
-The Event Bus is the central communication hub of the Integration Core, allowing components to publish and subscribe to events without direct coupling. It provides:
+### Installation
 
-- Input streams for raw events (WebSocket messages, device motion, touch gestures, etc.)
-- Processed streams for enhanced events (chat analysis, beat prediction, money flow, etc.)
-- Output streams for commands (grid commands, haptic commands, shader commands, etc.)
+```bash
+# Clone the repository
+git clone <your-repo>
+cd sound-factory-astro
 
-### Shader System
+# Install dependencies
+npm install
 
-The Shader System manages WebGL shaders and materials, providing:
+# Start development server
+npm run dev
 
-- Shader loading and unloading
-- Material presets (carbon fiber, gold accent, cyan glow, studio metal)
-- Post-processing effects (bloom, motion blur, chromatic aberration, film grain)
+# Build for production
+npm run build
 
-### Lifecycle Manager
-
-The Lifecycle Manager handles the initialization, shutdown, and error recovery of the Integration Core, providing:
-
-- Initialization and shutdown procedures
-- Error recovery strategies for network failures, Claude timeouts, memory pressure, and thermal throttling
-
-### Integration Types
-
-The Integration Core provides a rich set of type definitions for:
-
-- Event types (WebSocket messages, device motion, touch gestures, etc.)
-- Command types (grid commands, haptic commands, shader commands, etc.)
-- Network types (exponential backoff, duplex streams, CRDTs, etc.)
-- AI types (Claude agents, mood analysis, beat prediction, etc.)
-
-## Usage
-
-Here's a simple example of how to use the Integration Core:
-
-```typescript
-import { createIntegrationCore } from './integration';
-import { createShaderSystem } from './integration/shaderSystem';
-
-// Create the integration core
-const core = createIntegrationCore();
-
-// Create the shader system
-const shaderSystem = createShaderSystem();
-
-// Initialize the integration core
-async function initializeCore() {
-  try {
-    console.log('Initializing GRID OS Integration Core...');
-    await core.lifecycle.initialize();
-    console.log('GRID OS Integration Core initialized successfully!');
-    
-    // Set up event subscriptions
-    setupEventSubscriptions();
-  } catch (error) {
-    console.error('Failed to initialize GRID OS Integration Core:', error);
-  }
-}
-
-// Set up event subscriptions
-function setupEventSubscriptions() {
-  // Subscribe to WebSocket messages
-  core.eventBus.inputs.websocket$.subscribe(message => {
-    console.log('Received WebSocket message:', message);
-  });
-  
-  // Subscribe to beat prediction events
-  core.eventBus.processed.beatPrediction$.subscribe(prediction => {
-    console.log('Beat prediction:', prediction);
-    
-    // Apply visual effects based on the beat
-    if (prediction.intensity > 0.8) {
-      // Trigger a shader effect
-      core.eventBus.outputs.shaderCommands$.next({
-        type: 'apply',
-        shader: 'beatReactive',
-        data: {
-          intensity: prediction.intensity,
-          color: [0, 1, 1]
-        },
-        priority: 'high'
-      });
-    }
-  });
-}
-
-// Initialize the core
-initializeCore();
+# Preview production build
+npm run preview
 ```
 
-## Components
+## 📁 Project Structure
 
-### Event Bus
-
-The Event Bus provides a central hub for all system events, allowing components to communicate with each other without direct coupling.
-
-```typescript
-// Publish an event
-core.eventBus.publish('customEvent', { data: 'value' });
-
-// Subscribe to an event
-const subscription = core.eventBus.subscribe('customEvent', data => {
-  console.log('Received custom event:', data);
-});
-
-// Unsubscribe when done
-subscription.unsubscribe();
+```
+src/
+├── components/           # Reusable Astro components
+│   ├── StatusBar.astro  # Mobile status bar
+│   ├── Header.astro     # App header with branding
+│   ├── LiveStream.astro # Main stream component
+│   ├── Chat.astro       # Interactive chat
+│   ├── FloatingPlayer.astro # Draggable video player
+│   ├── GridOverlay.astro    # Feature grid overlay
+│   ├── GridItem.astro   # Individual grid items
+│   └── ThemeSelector.astro  # Theme switching
+├── layouts/
+│   └── Layout.astro     # Base layout template
+├── pages/
+│   └── index.astro      # Main application page
+├── scripts/
+│   ├── stores/          # State management
+│   │   ├── appStore.ts     # Main app state
+│   │   ├── notificationStore.ts # Notification system
+│   │   └── eventBus.ts     # Event communication
+│   └── webgl-background.ts # WebGL background renderer
+└── styles/
+    ├── global.css       # Global styles and utilities
+    ├── themes.css       # Theme definitions
+    └── animations.css   # Animation keyframes
 ```
 
-### Shader System
+## 🎮 Component Guide
 
-The Shader System manages WebGL shaders and materials, providing a high-level API for shader operations.
+### StatusBar
+```astro
+<StatusBar />
+```
+Mobile-style status bar with live clock and system icons.
 
+### Header
+```astro
+<Header />
+```
+App branding with "SOUND FACTORY" logo and live indicator.
+
+### LiveStream
+```astro
+<LiveStream initialViewers={1247} />
+```
+Main streaming component with viewer count and controls.
+
+### Chat
+```astro
+<Chat />
+```
+Interactive chat with auto-messages and user input.
+
+### FloatingPlayer
+```astro
+<FloatingPlayer client:load />
+```
+Draggable video player (requires client-side hydration).
+
+### GridOverlay
+```astro
+<GridOverlay client:load />
+```
+Feature grid with app functions (requires client-side hydration).
+
+### ThemeSelector
+```astro
+<ThemeSelector client:load />
+```
+Theme switching component (requires client-side hydration).
+
+## 🎨 Themes
+
+### Dark Theme (Default)
+- Space background with stars and nebula
+- Dark color palette
+- Blue accent colors
+
+### Pink Theme
+- Dreamy cloud background
+- Pink and magenta gradients
+- Soft, ethereal feel
+
+### Jet Black Theme
+- Minimal black background
+- Subtle grid pattern
+- High contrast design
+
+## 🛠 State Management
+
+### App Store (`appStore.ts`)
 ```typescript
-// Load a shader
-const shader = shaderSystem.loadShader('myShader', vertexSource, fragmentSource);
+import { appStore, toggleGridOverlay } from '../scripts/stores/appStore';
 
-// Apply a material
-shaderSystem.applyMaterial('myShader', 'cyanGlow');
+// Read state
+const state = appStore.get();
 
-// Enable post-processing effects
-shaderSystem.setPostProcessing('bloom', true);
+// Update state
+appStore.setKey('theme', 'pink');
+
+// Use helpers
+toggleGridOverlay();
 ```
 
-### Lifecycle Manager
-
-The Lifecycle Manager handles the initialization, shutdown, and error recovery of the Integration Core.
-
+### Persistent Settings
 ```typescript
-// Initialize the core
-await core.lifecycle.initialize();
+import { persistentSettings } from '../scripts/stores/appStore';
 
-// Shutdown the core
-await core.lifecycle.shutdown();
-
-// Recover from a network failure
-await core.lifecycle.errorRecovery.networkFailure();
+// Auto-saved to localStorage
+persistentSettings.setKey('theme', 'dark');
 ```
 
-## Advanced Features
-
-### Claude AI Integration
-
-The Integration Core provides seamless integration with Claude AI agents for advanced features like:
-
-- Mood analysis
-- Beat prediction
-- Chat enhancement
-- Visual direction
-- Safety intervention
-- Creative idea generation
-- Personality adaptation
-
-### Reactive Programming
-
-The Integration Core is built around reactive programming principles, using RxJS for event streams and operators.
-
+### Notifications
 ```typescript
-// Create a custom flow
-const customFlow = pipe(
-  filter(event => event.type === 'custom'),
-  map(event => ({ ...event, processed: true })),
-  scan((acc, event) => [...acc, event], [])
-);
+import { notify } from '../scripts/stores/notificationStore';
 
-// Apply the flow
-const processed$ = source$.pipe(customFlow);
+notify('🎵 Welcome to Sound Factory!');
+notify('Theme changed!', 2000); // Custom duration
 ```
 
-### Network Communication
+## 🎯 Performance
 
-The Integration Core provides robust network communication features, including:
+### Optimizations
+- **Static Generation**: Pre-rendered at build time
+- **Island Architecture**: Minimal JavaScript hydration
+- **CSS Variables**: Efficient theme switching
+- **WebGL**: Hardware-accelerated backgrounds
+- **Lazy Loading**: Components load when needed
 
-- WebSocket connections
-- Peer-to-peer mesh networks
-- Duplex streams
-- Conflict-free replicated data types (CRDTs)
-- Jitter buffers
-- Packet scheduling
+### Bundle Size
+- **Base**: ~50KB gzipped
+- **WebGL**: ~15KB additional
+- **Stores**: ~5KB additional
 
-### Sensor Fusion
+## 📱 Mobile Features
 
-The Integration Core provides sensor fusion capabilities for combining data from multiple sensors:
+### Touch Support
+- **44px minimum touch targets**
+- **Touch feedback with ripple effects**
+- **Swipe gestures for navigation**
+- **Prevent bounce scrolling on iOS**
 
-- Motion sensors (accelerometer, gyroscope, magnetometer)
-- Audio sensors (microphone, system audio)
-- Touch sensors (raw touch, gestures, pressure, hover)
-- Camera sensors (frames, face detection, hand detection, environment detection, depth)
+### Responsive Design
+- **Mobile-first approach**
+- **Flexible grid layouts**
+- **Optimized for portrait orientation**
+- **Touch-optimized interactions**
 
-## License
+## 🔧 Development
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+### Environment Variables
+Create `.env` file for customization:
+```env
+# Owncast server URL for live streaming
+PUBLIC_OWNCAST_URL=https://stream.soundfactorynyc.com
+
+# Optional: Analytics tracking
+PUBLIC_ANALYTICS_ID=your-analytics-id
+
+# Optional: API endpoints
+PUBLIC_API_URL=https://live.soundfactorynyc.com
+
+# Development settings
+DEV_HOST=localhost
+DEV_PORT=3000
+```
+
+Copy `.env.example` to `.env` and configure your settings:
+```bash
+cp .env.example .env
+```
+
+### Scripts
+```bash
+npm run dev        # Start development server
+npm run build      # Build for production
+npm run preview    # Preview production build
+npm run check      # Type checking
+npm run format     # Format code with Prettier
+```
+
+## 🚀 Deployment
+
+### Static Hosting
+Build generates static files in `dist/`:
+```bash
+npm run build
+```
+
+### Supported Platforms
+- **Vercel**: Zero-config deployment
+- **Netlify**: Drag and drop deployment
+- **GitHub Pages**: Static hosting
+- **Any CDN**: Standard HTML/CSS/JS
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+### Code Style
+- Use Prettier for formatting
+- Follow TypeScript best practices
+- Write semantic HTML
+- Use CSS custom properties
+- Document component props
+
+## 📄 License
+
+MIT License - see LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- **Astro**: Amazing static site generator
+- **Nanostores**: Lightweight state management
+- **WebGL**: Hardware-accelerated graphics
+- **CSS Grid**: Modern layout system
+
+---
+
+Built with ❤️ for the live streaming community.
+│   └── pages/
+│       └── index.astro
+└── package.json
+```
+
+Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+
+There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+
+Any static assets, like images, can be placed in the `public/` directory.
+
+## 🧞 Commands
+
+All commands are run from the root of the project, from a terminal:
+
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies                            |
+| `npm run dev`             | Starts local dev server at `localhost:4321`      |
+| `npm run build`           | Build your production site to `./dist/`          |
+| `npm run preview`         | Preview your build locally, before deploying     |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `npm run astro -- --help` | Get help using the Astro CLI                     |
+
+## 👀 Want to learn more?
+
+Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

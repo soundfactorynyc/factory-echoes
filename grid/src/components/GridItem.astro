@@ -1,0 +1,61 @@
+---
+export interface Props {
+  id: string;
+  title: string;
+  content: string;
+  className?: string;
+}
+
+const { id, title, content, className = '' } = Astro.props;
+---
+
+<div class={`grid-item ${className}`} data-id={id}>
+  <div class="item-header">
+    <span class="item-title">{title}</span>
+    <button class="delete-btn" style="display: none;">×</button>
+  </div>
+  <div class="item-content" set:html={content}></div>
+</div>
+
+<style>
+  .grid-item {
+    min-height: 150px;
+    transition: all 0.3s ease;
+  }
+
+  .item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .item-title {
+    font-weight: bold;
+    font-size: 1.1em;
+  }
+
+  .delete-btn {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    transition: all 0.3s ease;
+  }
+
+  .delete-btn:hover {
+    background: #ff5252;
+    transform: scale(1.1);
+  }
+
+  .item-content {
+    color: #666;
+  }
+</style>

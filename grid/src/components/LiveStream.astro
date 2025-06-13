@@ -1,0 +1,292 @@
+---
+// src/components/LiveStream.astro - Clean Mobile Design
+interface Props {
+  initialViewers?: number;
+  owncastUrl?: string;
+}
+
+const { 
+  initialViewers = 1247,
+  owncastUrl = import.meta.env.PUBLIC_OWNCAST_URL || "https://watch.owncast.online/embed/video"
+} = Astro.props;
+---
+
+<div class="live-stream-container">
+  <!-- Minimal header integrated into stream -->
+  <div class="stream-overlay">
+    <div class="stream-info">
+      <div class="live-badge">
+        <span class="live-dot"></span>
+        <span>LIVE</span>
+      </div>
+      <div class="stream-title">Sound Factory</div>
+    </div>
+    <div class="stream-stats">
+      <span class="viewer-count">
+        <span id="viewer-count">{initialViewers.toLocaleString()}</span> viewers
+      </span>
+    </div>
+  </div>
+  
+  <!-- Full screen video -->
+  <div class="video-container">
+    <iframe 
+      id="live-stream-iframe"
+      src={owncastUrl}
+      style="border: none;"
+      allowfullscreen
+      allow="autoplay; fullscreen; picture-in-picture">
+    </iframe>
+    
+    <!-- Loading placeholder -->
+    <div class="stream-placeholder" id="stream-placeholder">
+      <div class="pulse-icon">📡</div>
+      <p>Connecting...</p>
+    </div>
+  </div>
+  
+  <!-- Minimal controls overlay -->
+  <div class="stream-controls">
+    <button class="control-btn" id="stream-mute" aria-label="Mute">
+      🔊
+    </button>
+    <button class="control-btn" id="stream-fullscreen" aria-label="Fullscreen">
+      ⛶
+    </button>
+  </div>
+</div>
+
+<script>
+  let isMuted = false;
+  let viewerCount = parseInt(document.querySelector('.live-stream-container')?.getAttribute('data-initial-viewers') || '1247');
+  
+  // Hide placeholder when iframe loads
+  const iframe = document.getElementById('live-stream-iframe') as HTMLIFrameElement;
+  const placeholder = document.getElementById('stream-placeholder');
+  
+  if (iframe && placeholder) {
+    iframe.addEventListener('load', () => {
+      placeholder.style.display = 'none';
+    });
+    
+    setTimeout(() => {
+      if (placeholder.style.display !== 'none') {
+        placeholder.style.display = 'none';
+      }
+    }, 3000);
+  }
+
+  // Mute button
+  document.getElementById('stream-mute')?.addEventListener('click', (e) => {
+    const btn = e.target as HTMLElement;
+    isMuted = !isMuted;
+    btn.textContent = isMuted ? '🔇' : '🔊';
+    
+    if (iframe?.contentWindow) {
+      iframe.contentWindow.postMessage({ command: 'mute', muted: isMuted }, '*');
+    }
+  });
+
+  // Fullscreen
+  document.getElementById('stream-fullscreen')?.addEventListener('click', async () => {
+    try {
+      const container = document.querySelector('.video-container') as HTMLElement;
+      if (container?.requestFullscreen) {
+        await container.requestFullscreen();
+      }
+    } catch (error) {
+      if (import.meta.env.DEV) console.error('Fullscreen error:', error);
+    }
+  });
+
+  // Update viewer count
+  setInterval(() => {
+    const change = Math.floor(Math.random() * 20) - 10;
+    viewerCount = Math.max(100, viewerCount + change);
+    
+    const viewerElement = document.getElementById('viewer-count');
+    if (viewerElement) {
+      viewerElement.textContent = viewerCount.toLocaleString();
+    }
+  }, 5000);
+</script>
+
+<style>
+  .live-stream-container {
+    position: relative;
+    flex: 1;
+    display: flex;
+    background: #000;
+    overflow: hidden;
+  }
+
+  /* Video takes full space */
+  .video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  #live-stream-iframe {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  /* Overlay info on top of video */
+  .stream-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 16px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .stream-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 0, 0, 0.9);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    color: white;
+    width: fit-content;
+  }
+
+  .live-dot {
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .stream-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  }
+
+  .stream-stats {
+    text-align: right;
+  }
+
+  .viewer-count {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(0, 0, 0, 0.5);
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+
+  /* Minimal controls */
+  .stream-controls {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+  }
+
+  .control-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .control-btn:active {
+    transform: scale(0.9);
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Loading placeholder */
+  .stream-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    color: white;
+    z-index: 5;
+  }
+
+  .pulse-icon {
+    font-size: 48px;
+    animation: pulse 2s ease-in-out infinite;
+    margin-bottom: 16px;
+  }
+
+  .stream-placeholder p {
+    font-size: 14px;
+    opacity: 0.7;
+  }
+
+  @keyframes pulse {
+    0%, 100% { 
+      opacity: 1; 
+      transform: scale(1); 
+    }
+    50% { 
+      opacity: 0.5; 
+      transform: scale(1.1); 
+    }
+  }
+
+  /* Mobile optimizations */
+  @media (max-width: 375px) {
+    .stream-overlay {
+      padding: 8px 12px;
+    }
+    
+    .stream-title {
+      font-size: 14px;
+    }
+    
+    .viewer-count {
+      font-size: 11px;
+    }
+    
+    .control-btn {
+      width: 36px;
+      height: 36px;
+      font-size: 14px;
+    }
+  }
+</style>
